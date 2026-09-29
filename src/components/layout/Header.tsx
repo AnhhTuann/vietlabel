@@ -527,7 +527,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               </Button>
 
               <div className="text-center text-xs text-slate-500">
-                Hotline hỗ trợ: <strong className="text-slate-800">028 3765 8888</strong>
+                Hotline hỗ trợ: <a href="tel:0868968089" className="text-slate-800 font-bold hover:text-[#E8531D]">086 896 8089</a>
               </div>
             </div>
           </div>

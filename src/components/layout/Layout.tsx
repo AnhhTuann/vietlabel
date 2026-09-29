@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { FloatingContact } from './FloatingContact';
+import { ChatWidget } from '../chat/ChatWidget';
+import { MobileBottomNav } from './MobileBottomNav';
 import { QuoteModal } from '../ui/QuoteModal';
 
 export const Layout: React.FC = () => {
@@ -15,7 +16,7 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFC] text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFC] text-slate-800 antialiased selection:bg-amber-500 selection:text-white pb-16 md:pb-0">
       <Header onOpenQuoteModal={handleOpenQuote} />
 
       <main className="flex-grow">
@@ -23,7 +24,8 @@ export const Layout: React.FC = () => {
       </main>
 
       <Footer />
-      <FloatingContact onOpenQuoteModal={() => handleOpenQuote()} />
+      <ChatWidget />
+      <MobileBottomNav onOpenQuoteModal={() => handleOpenQuote()} />
 
       <QuoteModal
         isOpen={isQuoteOpen}

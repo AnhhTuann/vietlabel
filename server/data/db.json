@@ -1,0 +1,273 @@
+{
+  "users": [
+    {
+      "id": "user_admin_01",
+      "name": "Nguyễn Văn Admin",
+      "email": "admin@vietlabel.com.vn",
+      "passwordHash": "$2b$10$t9pS1P5td8rgeQ8SfRcniOMLZV3HQPGg2DqWhrZ3vGCNTHTUcI/by",
+      "role": "ADMIN",
+      "telegramUserId": "admin_tele",
+      "active": true,
+      "failedLoginAttempts": 0,
+      "createdAt": "2026-09-29T05:16:30.479Z",
+      "updatedAt": "2026-09-29T05:16:30.479Z"
+    },
+    {
+      "id": "user_manager_01",
+      "name": "Lê Hoàng Nam (Trưởng phòng KD)",
+      "email": "manager@vietlabel.com.vn",
+      "passwordHash": "$2b$10$t9pS1P5td8rgeQ8SfRcniOt1NjX0IwJ5oKNpnjh7qwELsfY3JrMG6",
+      "role": "MANAGER",
+      "telegramUserId": "manager_tele",
+      "active": true,
+      "failedLoginAttempts": 0,
+      "createdAt": "2026-09-29T05:16:30.479Z",
+      "updatedAt": "2026-09-29T05:16:54.397Z"
+    },
+    {
+      "id": "user_sales_01",
+      "name": "Trần Thu Hà (Sales Senior)",
+      "email": "sales@vietlabel.com.vn",
+      "passwordHash": "$2b$10$t9pS1P5td8rgeQ8SfRcniOvpk00mDmNXZbNOe/2JMSm.zgFkNZIQe",
+      "role": "SALES",
+      "telegramUserId": "ha_sales",
+      "active": true,
+      "failedLoginAttempts": 0,
+      "createdAt": "2026-09-29T05:16:30.479Z",
+      "updatedAt": "2026-09-29T05:16:34.322Z"
+    }
+  ],
+  "leads": [
+    {
+      "id": "LEAD-MUM8A-1001",
+      "code": "#1001",
+      "status": "CLAIMED",
+      "score": "HOT",
+      "source": "web",
+      "customerName": "Hoàng Minh Tuấn",
+      "company": "Công ty Cổ phần Dược phẩm BioPharm",
+      "phone": "0988776655",
+      "email": "tuan.hoang@biopharm.vn",
+      "industry": "Dược phẩm & Y tế",
+      "productType": "Tem nhãn Pop-up gập mở 4 trang",
+      "quantity": "30.000 tem",
+      "deadline": "Cần gấp trong 5 ngày",
+      "hasDesignFile": true,
+      "brief": {
+        "productType": "Tem nhãn Pop-up gập mở 4 trang",
+        "quantity": "30.000 tem",
+        "deadline": "Cần gấp trong 5 ngày",
+        "material": "Decal nhựa PP kháng nước, keo y tế bóc dán 50 lần",
+        "dimensions": "60 x 90 mm",
+        "finishing": "Cán màng mờ, phủ UV định hình logo, bế răng cưa",
+        "notes": "Bên mình còn cần lưu ý gì thêm về màu sắc không?"
+      },
+      "missingFields": [],
+      "createdAt": "2026-09-29T05:16:30.763Z",
+      "updatedAt": "2026-09-29T05:17:13.905Z",
+      "assignedToId": "user_sales_01",
+      "claimedBy": "Trần Thu Hà (Sales Senior)",
+      "claimedAt": "2026-09-29T05:16:47.770Z",
+      "telegramMessageId": 922387
+    }
+  ],
+  "conversations": [
+    {
+      "id": "conv_demo_01",
+      "leadId": "LEAD-MUM8A-1001",
+      "sessionId": "sess_demo_01",
+      "channel": "web",
+      "mode": "BOT",
+      "lastMessageAt": "2026-09-29T05:17:24.302Z",
+      "createdAt": "2026-09-29T05:16:30.763Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_01",
+      "conversationId": "conv_demo_01",
+      "sender": "CUSTOMER",
+      "text": "Bên mình cần đặt 30.000 tem pop-up gập mở cho chai thuốc siro kháng sinh, có thể gấp 4 trang hướng dẫn sử dụng được không?",
+      "createdAt": "2026-09-29T05:01:30.764Z"
+    },
+    {
+      "id": "msg_02",
+      "conversationId": "conv_demo_01",
+      "sender": "BOT",
+      "text": "Dạ chào anh Tuấn! Vietlabel hoàn toàn có dây chuyền sản xuất tem Pop-up gập mở đa tầng từ 3 đến 8 trang chuẩn GMP dược phẩm. Tem có thể mở ra đọc hướng dẫn và dán lại nhiều lần bằng lớp keo chuyên dụng.\n\nCho em hỏi kích thước chai thuốc dự kiến và anh đã có sẵn file thiết kế chưa ạ?",
+      "createdAt": "2026-09-29T05:02:30.764Z"
+    },
+    {
+      "id": "msg_03",
+      "conversationId": "conv_demo_01",
+      "sender": "CUSTOMER",
+      "text": "Kích thước khoảng 60x90mm, file thiết kế AI bên mình có sẵn rồi, cần giao hàng trong 5 ngày tới tại Bình Dương.",
+      "createdAt": "2026-09-29T05:04:30.764Z"
+    },
+    {
+      "id": "msg_04",
+      "conversationId": "conv_demo_01",
+      "sender": "BOT",
+      "text": "Dạ tuyệt vời! Em đã tổng hợp Customer Brief cho anh. Do đơn hàng có số lượng 30.000 tem và tiến độ gấp 5 ngày, em đã kết nối ưu tiên đến Trưởng bộ phận Kinh doanh để báo giá có chiết khấu tốt nhất ngay ạ.",
+      "createdAt": "2026-09-29T05:05:30.764Z"
+    },
+    {
+      "id": "msg_1790659027117_8n41",
+      "conversationId": "conv_demo_01",
+      "sender": "SYSTEM",
+      "text": "Chuyên viên tư vấn Lê Hoàng Nam (Trưởng phòng KD) đã tiếp quản cuộc trò chuyện.",
+      "createdAt": "2026-09-29T05:17:07.117Z"
+    },
+    {
+      "id": "msg_1790659033907_y3mj",
+      "conversationId": "conv_demo_01",
+      "sender": "CUSTOMER",
+      "text": "Bên mình còn cần lưu ý gì thêm về màu sắc không?",
+      "createdAt": "2026-09-29T05:17:13.907Z"
+    },
+    {
+      "id": "msg_1790659039751_fyst",
+      "conversationId": "conv_demo_01",
+      "sender": "STAFF",
+      "staffId": "user_manager_01",
+      "staffName": "Lê Hoàng Nam (Trưởng phòng KD)",
+      "text": "Dạ anh Tuấn yên tâm, bên em in chuẩn G7 Master màu sắc chuẩn 100% so với Pantone ạ. Em vừa gửi hợp đồng mẫu qua Zalo anh nhé!",
+      "createdAt": "2026-09-29T05:17:19.751Z"
+    },
+    {
+      "id": "msg_1790659044301_z6po",
+      "conversationId": "conv_demo_01",
+      "sender": "SYSTEM",
+      "text": "Đã hoàn trả hội thoại cho Trợ lý AI.",
+      "createdAt": "2026-09-29T05:17:24.301Z"
+    },
+    {
+      "id": "msg_1790659044302_5gt5",
+      "conversationId": "conv_demo_01",
+      "sender": "BOT",
+      "text": "Chào anh/chị, em là Trợ lý AI Vietlabel! Em đã quay trở lại để tiếp tục hỗ trợ tư vấn quy cách và vật liệu bao bì. Anh/chị cần hỏi thêm thông tin gì cứ nhắn em nhé!",
+      "createdAt": "2026-09-29T05:17:24.302Z"
+    }
+  ],
+  "notes": [],
+  "events": [
+    {
+      "id": "ev_1790659044302_release",
+      "leadId": "LEAD-MUM8A-1001",
+      "type": "RELEASED",
+      "actorId": "user_manager_01",
+      "actorName": "Lê Hoàng Nam (Trưởng phòng KD)",
+      "createdAt": "2026-09-29T05:17:24.302Z"
+    },
+    {
+      "id": "ev_1790659027117_takeover",
+      "leadId": "LEAD-MUM8A-1001",
+      "type": "TAKEOVER",
+      "actorId": "user_manager_01",
+      "actorName": "Lê Hoàng Nam (Trưởng phòng KD)",
+      "createdAt": "2026-09-29T05:17:07.117Z"
+    },
+    {
+      "id": "ev_1790659007770_claim",
+      "leadId": "LEAD-MUM8A-1001",
+      "type": "CLAIMED",
+      "actorId": "user_sales_01",
+      "actorName": "Trần Thu Hà (Sales Senior)",
+      "payload": {
+        "claimedAt": "2026-09-29T05:16:47.770Z"
+      },
+      "createdAt": "2026-09-29T05:16:47.770Z"
+    },
+    {
+      "id": "ev_01",
+      "leadId": "LEAD-MUM8A-1001",
+      "type": "CREATED",
+      "payload": {
+        "source": "web_ai_chat",
+        "score": "HOT"
+      },
+      "createdAt": "2026-09-29T05:16:30.763Z"
+    },
+    {
+      "id": "ev_02",
+      "leadId": "LEAD-MUM8A-1001",
+      "type": "STATUS_CHANGED",
+      "payload": {
+        "from": "NEW",
+        "to": "NEEDS_HUMAN",
+        "reason": "Lead HOT với số lượng 30.000 tem"
+      },
+      "createdAt": "2026-09-29T05:16:30.763Z"
+    }
+  ],
+  "notificationLogs": [
+    {
+      "id": "notif_em_1790659033906",
+      "leadId": "LEAD-MUM8A-1001",
+      "channel": "email",
+      "status": "SENT",
+      "sentAt": "2026-09-29T05:17:13.906Z"
+    },
+    {
+      "id": "notif_tg_1790659033906",
+      "leadId": "LEAD-MUM8A-1001",
+      "channel": "telegram",
+      "status": "SENT",
+      "sentAt": "2026-09-29T05:17:13.906Z"
+    },
+    {
+      "id": "notif_01",
+      "leadId": "LEAD-MUM8A-1001",
+      "channel": "telegram",
+      "status": "SENT",
+      "sentAt": "2026-09-29T05:16:30.763Z"
+    }
+  ],
+  "kbDocuments": [
+    {
+      "id": "kb_certifications_faq",
+      "title": "CHỨNG NHẬN QUỐC TẾ, GIỜ LÀM VIỆC VÀ CÂU HỎI THƯỜNG GẶP (FAQ)",
+      "filePath": "certifications_faq.md",
+      "content": "# CHỨNG NHẬN QUỐC TẾ, GIỜ LÀM VIỆC VÀ CÂU HỎI THƯỜNG GẶP (FAQ)\n\n## 1. Chứng chỉ chất lượng của Vietlabel\n- **ISO 9001:2015**: Hệ thống quản lý chất lượng đồng bộ, kiểm soát tỉ lệ lỗi dưới 0.1%.\n- **G7 Master Facility Colors**: Chuẩn cân bằng xám quốc tế do Idealliance (Hoa Kỳ) chứng nhận, đảm bảo màu sắc in tái hiện chuẩn xác 100% so với file thiết kế.\n- **FSC CoC (Forest Stewardship Council)**: Giấy có nguồn gốc rừng trồng bền vững, hỗ trợ xuất khẩu Châu Âu & Mỹ.\n- **RoHS / REACH & Food Contact Safe**: Mực in gốc đậu nành và màng an toàn không chứa kim loại nặng, đạt chuẩn đóng gói thực phẩm và dược phẩm.\n\n## 2. Thông tin liên hệ & Giờ làm việc\n- **Tên doanh nghiệp**: Công ty Cổ phần Sản xuất Thương mại Vietlabel\n- **Trụ sở & Nhà máy**: 266/6 Lê Thị Riêng, Phường Thới An, TP. Hồ Chí Minh\n- **Hotline dự toán B2B**: (+84) 086 896 8089 / (028) 3765 8888\n- **Email tiếp nhận file**: thien@vietlabel.com.vn / baogia@vietlabel.com.vn\n- **Zalo OA**: 086 896 8089\n- **Giờ làm việc văn phòng**: Thứ Hai đến Thứ Bảy, 08:00 – 17:30.\n\n## 3. Câu hỏi thường gặp\n- **Hỏi: Vietlabel có nhận thiết kế lại hoặc chỉnh sửa file in không?**\n  *Đáp: Có. Đội ngũ kỹ sư tiền kỳ (Prepress) của Vietlabel hỗ trợ kiểm tra file in, dàn trang, bù lé (trapping) và chỉnh sửa thông số kỹ thuật miễn phí cho khách hàng.*\n- **Hỏi: Nếu sản phẩm bị bong tróc keo hoặc sai màu thì xử lý thế nào?**\n  *Đáp: Vietlabel cam kết bảo hành 100% đổi mới hoặc hoàn tiền ngay trong 48 giờ nếu sản phẩm không đúng mẫu duyệt ban đầu.*\n- **Hỏi: AI có thể báo giá chính xác luôn không?**\n  *Đáp: AI chỉ cung cấp khoảng giá tham khảo sơ bộ hoặc thông số kỹ thuật. Bảng giá chính thức có chiết khấu theo số lượng sẽ do chuyên viên dự toán tính toán chi tiết và gửi qua Zalo/Email cho khách hàng trong 2 giờ.*\n",
+      "status": "APPROVED",
+      "updatedAt": "2026-09-29T05:17:28.361Z",
+      "ingestedAt": "2026-09-29T05:17:28.361Z"
+    },
+    {
+      "id": "kb_materials",
+      "title": "CHẤT LIỆU, MỰC IN VÀ GIA CÔNG BỀ MẶT TẠI VIETLABEL",
+      "filePath": "materials.md",
+      "content": "# CHẤT LIỆU, MỰC IN VÀ GIA CÔNG BỀ MẶT TẠI VIETLABEL\n\n## 1. Vật liệu Decal & Tem nhãn\n- **Decal giấy thường (Kham/Fasson)**: Chi phí tối ưu, thích hợp bao bì khô, thực phẩm hộp, dán thùng.\n- **Decal nhựa PP/PE/BOPP**: Không rách, chống thấm nước 100%, chịu dầu mỡ và môi trường lạnh -20°C (dán đông lạnh).\n- **Decal xi bạc (Silver Metallized PET)**: Tạo hiệu ứng ánh kim kim loại cao cấp, chống trầy xước, chịu nhiệt độ cao và máy móc.\n- **Decal vỡ / Tem niêm phong Void**: Tự vỡ vụn khi bóc hoặc để lại chữ \"VOID / OPENED\" chống làm giả, bảo vệ thương hiệu.\n- **Decal cảm nhiệt trực tiếp & gián tiếp (Direct / Thermal Transfer)**: Dành cho máy in mã vạch kho vận, tem truy xuất nguồn gốc.\n\n## 2. Vật liệu Bao bì giấy\n- **Giấy Ivory 250 - 450 gsm**: Độ trắng cao, mịn màng một mặt, bề mặt in ảnh sắc nét, phù hợp hộp mỹ phẩm, dược.\n- **Giấy Kraft nâu/trắng nguyên sinh**: Thân thiện môi trường, tái chế 100%, phong cách mộc mạc organic.\n- **Carton sóng E, B, BC**: Chịu lực va đập, bảo vệ sản phẩm dễ vỡ khi vận chuyển xa.\n\n## 3. Công nghệ hoàn thiện & Gia công sau in\n- Cán màng bóng (Gloss), cán màng mờ (Matte), màng cát xúc giác nhám mịn (Soft-touch).\n- Ép kim vàng, bạc, hologram 7 màu (Hot Stamping Foil) định vị chính xác ±0.05mm.\n- Phủ UV định hình cục bộ (Spot UV), dập nổi 3D (Embossing) và thúc chìm (Debossing).\n- Bế khuôn cuộn tự động theo bước răng cho máy dán nhãn công nghiệp tốc độ 200 - 400 chai/phút.\n",
+      "status": "APPROVED",
+      "updatedAt": "2026-09-29T05:17:28.362Z",
+      "ingestedAt": "2026-09-29T05:17:28.362Z"
+    },
+    {
+      "id": "kb_process_and_moq",
+      "title": "QUY TRÌNH ĐẶT HÀNG, TIẾN ĐỘ SẢN XUẤT VÀ SỐ LƯỢNG TỐI THIỂU (MOQ)",
+      "filePath": "process_and_moq.md",
+      "content": "# QUY TRÌNH ĐẶT HÀNG, TIẾN ĐỘ SẢN XUẤT VÀ SỐ LƯỢNG TỐI THIỂU (MOQ)\n\n## 1. Số lượng đặt hàng tối thiểu (MOQ)\n- **Tem nhãn Decal cuộn Flexo**: Từ 1.000 - 2.000 nhãn tùy kích thước (hỗ trợ in test mẫu số lượng ít trên máy KTS).\n- **Hộp cứng cao cấp (Rigid Boxes)**: Từ 500 hộp.\n- **Hộp giấy mềm Folding Cartons**: Từ 1.000 hộp.\n- **Túi giấy Kraft**: Từ 1.000 túi.\n- **Thùng carton sóng bồi Offset**: Từ 500 thùng.\n- **Tem Pop-up gập mở**: Từ 3.000 tem.\n\n## 2. Thời gian sản xuất & Giao hàng\n- **Làm mẫu thử (Mockup CAD / In Proof màu)**: 1 - 2 ngày làm việc sau khi chốt bản vẽ thiết kế.\n- **Sản xuất hàng loạt đơn hàng tem nhãn cuộn**: 3 - 5 ngày làm việc. Đơn hàng gấp có thể hỗ trợ 48 giờ.\n- **Sản xuất hộp cứng / túi giấy phức tạp**: 5 - 7 ngày làm việc.\n- **Giao hàng**: Miễn phí vận chuyển nội thành TP. Hồ Chí Minh cho đơn hàng đủ điều kiện; hỗ trợ giao chành xe hoặc container đi các tỉnh toàn quốc và xuất khẩu.\n\n## 3. Quy trình làm việc 5 bước tại Vietlabel\n1. **Tiếp nhận & Thẩm định kỹ thuật**: Tư vấn vật liệu, kết cấu, quy cách dán máy hoặc dán tay.\n2. **Báo giá & Hợp đồng**: Gửi dự toán chi tiết kèm điều khoản thanh toán rõ ràng trong 2 giờ.\n3. **In mẫu kiểm tra thực tế (Proofing)**: Khách hàng duyệt màu sắc và độ bám dính keo trước khi sản xuất hàng loạt.\n4. **Sản xuất & Kiểm tra KCS theo ca**: Kiểm tra độ bám mực, độ tách bóc keo, độ sai lệch màu delta E < 2.\n5. **Đóng gói & Giao nhận tận nơi**: Cuộn màng PE co nhiệt, đóng thùng carton dán tem nhận diện lô.\n",
+      "status": "APPROVED",
+      "updatedAt": "2026-09-29T05:17:28.362Z",
+      "ingestedAt": "2026-09-29T05:17:28.362Z"
+    },
+    {
+      "id": "kb_products",
+      "title": "DANH MỤC SẢN PHẨM & NĂNG LỰC SẢN XUẤT VIETLABEL",
+      "filePath": "products.md",
+      "content": "# DANH MỤC SẢN PHẨM & NĂNG LỰC SẢN XUẤT VIETLABEL\n\nCông ty Cổ phần Sản xuất Thương mại Vietlabel là đơn vị chuyên nghiệp hàng đầu tại Việt Nam trong lĩnh vực in ấn tem nhãn cuộn decal công nghiệp và bao bì giấy cao cấp.\n\n## 1. Tem nhãn Decal cuộn & Tờ\n- **Tem nhãn Dầu nhớt & Hóa chất**: Decal nhựa tổng hợp PP/PE, chịu dầu khoáng, kháng nước rửa, chịu dung môi kiềm, dán bám chắc chắn trên can HDPE 0.8L - 4L và phuy 200L.\n- **Tem nhãn Pop-up (Gập mở đa tầng)**: Booklet label mở ra 3-8 trang thông tin, gấp z-fold, keo bóc dán mở lại (resealable) lên tới 50 lần. Phù hợp dược phẩm, nông dược xuất khẩu, mỹ phẩm nhiều thứ tiếng.\n- **Tem nhãn Dược phẩm & Y tế chuẩn GMP**: Decal vỡ chống giả, tem bảo mật Hologram 7 màu, in vi mô micro-text, keo an toàn y tế.\n- **Tem nhãn Mỹ phẩm cao cấp**: Màng xi bạc kim loại, ép kim vàng/bạc/hologram, cán màng cát, UV định hình cục bộ.\n- **Tem nhãn Nông sản & Thực phẩm OCOP**: Giấy Kraft tự nhiên, decal bóc dán dễ lau chùi, keo đạt chuẩn tiếp xúc thực phẩm.\n\n## 2. Bao bì hộp giấy cao cấp\n- **Hộp cứng nắp nam châm & nắp âm dương**: Carton đặc 2mm - 3.5mm bồi giấy mỹ thuật ép kim, khay mút EVA định hình lót nhung.\n- **Hộp giấy mềm Folding Carton**: Giấy Ivory, Duplex 250gsm - 400gsm in Offset 6 màu UV, tráng phủ bóng/mờ/UV định vị. Dùng cho dược phẩm, mỹ phẩm, thực phẩm.\n\n## 3. Túi giấy & Thùng Carton\n- **Túi giấy Kraft sinh học**: Kraft Nhật/Châu Âu 120-250gsm, quai xoắn tự tiêu hủy, tải trọng 3-10kg.\n- **Thùng Carton sóng 3 lớp, 5 lớp, 7 lớp**: Sóng B, C, E, BC bồi Offset cán màng chống thấm nước xuất khẩu EU/Mỹ.\n",
+      "status": "APPROVED",
+      "updatedAt": "2026-09-29T05:17:28.362Z",
+      "ingestedAt": "2026-09-29T05:17:28.362Z"
+    }
+  ],
+  "settings": {
+    "working_hours": "08:00 - 17:30",
+    "escalation_minutes": 10,
+    "hot_threshold_quantity": 5000,
+    "telegram_enabled": true,
+    "zalo_enabled": false,
+    "email_enabled": true
+  },
+  "nextLeadCounter": 1002
+}

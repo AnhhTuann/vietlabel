@@ -17,7 +17,7 @@ export const FloatingContact: React.FC<FloatingContactProps> = ({ onOpenQuoteMod
 
   return (
     <div
-      className="fixed bottom-6 right-5 z-40 flex flex-col items-end gap-2.5"
+      className="hidden md:flex fixed bottom-6 right-5 z-40 flex-col items-end gap-2.5"
       role="complementary"
       aria-label="Kênh liên hệ nhanh"
     >
