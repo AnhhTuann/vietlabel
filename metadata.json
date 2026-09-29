@@ -1,0 +1,6 @@
+{
+  "name": "An Phát Packaging - Nhà sản xuất bao bì giấy chuyên nghiệp B2B",
+  "description": "Nhà máy sản xuất bao bì giấy cao cấp: hộp giấy, túi giấy, thùng carton, tem nhãn và giải pháp bao bì B2B đạt chứng nhận FSC, ISO 9001, HACCP.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

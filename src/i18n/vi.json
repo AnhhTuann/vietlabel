@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Về chúng tôi",
+    "about_overview": "Giới thiệu chung",
+    "about_team": "Đội ngũ lãnh đạo",
+    "about_certifications": "Chứng nhận & Tiêu chuẩn",
+    "about_profile": "Hồ sơ năng lực",
+    "products": "Sản phẩm",
+    "capabilities": "Năng lực",
+    "sustainability": "Phát triển bền vững",
+    "technology": "Công nghệ & Máy móc",
+    "news": "Tin tức",
+    "careers": "Tuyển dụng",
+    "contact": "Liên hệ",
+    "quote": "Báo giá nhanh"
+  },
+  "hero": {
+    "title": "Đối tác chiến lược cung cấp giải pháp bao bì tối ưu, nâng tầm giá trị thương hiệu",
+    "subtitle": "Hơn 20 năm kinh nghiệm sản xuất bao bì giấy chuyên nghiệp, đáp ứng tiêu chuẩn xuất khẩu toàn cầu FSC, ISO 9001, HACCP và G7.",
+    "cta_products": "Khám phá sản phẩm",
+    "cta_contact": "Liên hệ tư vấn"
+  },
+  "stats": {
+    "title": "Nền tảng doanh nghiệp vững chắc",
+    "desc": "Vietlabel tự hào là đơn vị tiên phong áp dụng công nghệ in ấn hiện đại và quy trình quản lý chất lượng khép kín, mang lại giải pháp đóng gói & tem nhãn chuẩn mực cho hơn 500+ thương hiệu hàng đầu.",
+    "stat1_value": "200+",
+    "stat1_label": "Nhân sự tay nghề cao",
+    "stat2_value": "10 Triệu+",
+    "stat2_label": "Sản lượng bao bì / năm",
+    "stat3_value": "05+",
+    "stat3_label": "Hệ thống tiêu chuẩn quốc tế",
+    "stat4_value": "20+",
+    "stat4_label": "Năm kinh nghiệm phát triển"
+  },
+  "products_section": {
+    "badge": "DANH MỤC SẢN PHẨM",
+    "title": "Giải pháp bao bì giấy toàn diện",
+    "subtitle": "Đa dạng mẫu mã, chất liệu cao cấp và kỹ thuật hoàn thiện tinh xảo cho mọi ngành hàng",
+    "view_all": "Xem tất cả sản phẩm",
+    "learn_more": "Tìm hiểu chi tiết"
+  },
+  "values": {
+    "badge": "GIÁ TRỊ CỐT LÕI",
+    "title": "Lý do doanh nghiệp chọn Vietlabel",
+    "subtitle": "Chúng tôi không chỉ bán bao bì, chúng tôi đồng hành xây dựng giải pháp bảo vệ và tôn vinh thương hiệu của bạn.",
+    "tab1_title": "Giải pháp bao bì toàn diện theo yêu cầu",
+    "tab1_desc": "Đội ngũ R&D và thiết kế cấu trúc hỗ trợ từ ý tưởng, dựng mẫu 3D thực tế, lựa chọn chất liệu phù hợp nhất đến sản xuất đại trà tối ưu chi phí.",
+    "tab2_title": "Đáp ứng tiêu chuẩn khắt khe",
+    "tab2_desc": "Hệ thống quản lý chất lượng đạt ISO 9001:2015, chứng nhận chuỗi hành trình FSC bảo vệ rừng và tiêu chuẩn HACCP cho bao bì tiếp xúc thực phẩm an toàn.",
+    "tab3_title": "Đa dạng hoá sản phẩm",
+    "tab3_desc": "Cung cấp trọn gói từ hộp cứng cao cấp, hộp giấy mềm, túi giấy thời trang, túi giấy thực phẩm, thùng carton đến tem nhãn và ấn phẩm trưng bày POSM.",
+    "tab4_title": "Công nghệ hiện đại",
+    "tab4_desc": "Dây chuyền máy in Offset Heidelberg (Đức), máy bế tự động Bobst (Thụy Sĩ), công nghệ ép kim, dập nổi và tráng phủ UV định hình sắc nét.",
+    "tab5_title": "Đội ngũ chuyên nghiệp",
+    "tab5_desc": "Hơn 200 kỹ sư công nghệ in, thợ bậc cao và chuyên viên tư vấn tận tâm, cam kết tiến độ giao hàng chuẩn xác 99.8% trên toàn quốc."
+  },
+  "clients": {
+    "title": "Khách hàng & Đối tác chiến lược",
+    "subtitle": "Được tin chọn bởi các tập đoàn đa quốc gia và thương hiệu bán lẻ hàng đầu tại Việt Nam và quốc tế"
+  },
+  "solutions": {
+    "badge": "QUY TRÌNH HỢP TÁC",
+    "title": "Giải pháp toàn diện 3 bước tối ưu",
+    "subtitle": "Quy trình làm việc rõ ràng, minh bạch giúp tiết kiệm thời gian và ngân sách của doanh nghiệp",
+    "step1_title": "Cung ứng linh hoạt",
+    "step1_desc": "Chủ động nguồn giấy nguyên liệu chuẩn FSC, đáp ứng linh hoạt đơn hàng từ quy mô thử nghiệm đến hàng triệu bản trong thời gian ngắn nhất.",
+    "step2_title": "Tối ưu chi phí",
+    "step2_desc": "Tư vấn thiết kế bình trang (layout) thông minh, cấu trúc khuôn bế tiết kiệm giấy và giải pháp đóng gói giảm thể tích vận chuyển tối đa.",
+    "step3_title": "Định hình phong cách riêng",
+    "step3_desc": "Tùy biến hiệu ứng bề mặt độc bản: ép kim holo, phủ bóng cát, cán màng nhung, bế cửa sổ PET để sản phẩm nổi bật hoàn toàn trên kệ hàng.",
+    "cta": "Tư vấn thêm cùng chuyên gia"
+  },
+  "certificates": {
+    "badge": "TIÊU CHUẨN QUỐC TẾ",
+    "title": "Hệ thống chứng nhận & Kiểm định chất lượng",
+    "subtitle": "Cam kết trách nhiệm với môi trường, an toàn sức khỏe người tiêu dùng và chất lượng in ấn đồng nhất",
+    "view_cert": "Xem bản gốc chứng chỉ"
+  },
+  "machines": {
+    "badge": "HẠ TẦNG SẢN XUẤT",
+    "title": "Trang thiết bị máy móc hiện đại",
+    "subtitle": "Hơn 50 thiết bị công nghệ cao nhập khẩu từ Đức, Nhật Bản và Thụy Sĩ đặt tại nhà máy rộng 15,000m²",
+    "view_all_tech": "Xem chi tiết hệ thống công nghệ"
+  },
+  "news_section": {
+    "badge": "TIN TỨC & BÀI VIẾT",
+    "title": "Thông tin ngành & Hoạt động doanh nghiệp",
+    "view_all": "Xem tất cả bài viết"
+  },
+  "contact": {
+    "title": "Liên hệ với chúng tôi",
+    "subtitle": "Hãy gửi yêu cầu hoặc quy cách bao bì & tem nhãn, chuyên viên tư vấn của Vietlabel sẽ phản hồi bảng dự toán chi tiết trong vòng 2 giờ làm việc.",
+    "full_name": "Họ và tên",
+    "full_name_placeholder": "Nguyễn Văn A",
+    "company": "Tên công ty / Thương hiệu",
+    "company_placeholder": "Công ty TNHH Thực phẩm Sạch",
+    "email": "Email liên hệ",
+    "email_placeholder": "contact@doanhnghiep.vn",
+    "phone": "Số điện thoại",
+    "phone_placeholder": "0912 345 678",
+    "product_interest": "Dòng sản phẩm quan tâm",
+    "quantity": "Số lượng dự kiến",
+    "message": "Mô tả chi tiết yêu cầu kỹ thuật & quy cách",
+    "message_placeholder": "Ví dụ: Kích thước 20x15x8cm, giấy Ivory 350gsm, in 4 màu, cán màng mờ, ép kim logo...",
+    "submit": "Gửi yêu cầu báo giá",
+    "sending": "Đang gửi dữ liệu...",
+    "success_title": "Gửi yêu cầu thành công!",
+    "success_desc": "Cảm ơn bạn đã liên hệ. Bộ phận kinh doanh Vietlabel sẽ kết nối ngay với bạn.",
+    "hotline": "Hotline tư vấn 24/7",
+    "address_title": "Địa chỉ nhà máy & Văn phòng",
+    "working_hours": "Giờ làm việc: Thứ 2 - Thứ 7 (8:00 - 17:30)"
+  },
+  "footer": {
+    "about_text": "Vietlabel - Nhà sản xuất bao bì giấy & tem nhãn chuyên nghiệp B2B với hơn 20 năm phát triển, sở hữu nhà máy 15.000m² đạt chuẩn quốc tế FSC và ISO 9001.",
+    "quick_links": "Liên kết nhanh",
+    "products_col": "Danh mục bao bì",
+    "contact_col": "Thông tin liên hệ",
+    "factory_address": "Nhà máy: Lô B2-12, KCN Tân Bình Mở Rộng, P. Tây Thạnh, Q. Tân Phú, TP. HCM",
+    "office_address": "Văn phòng: Tầng 6, Tòa nhà Vietlabel, 142 Cộng Hòa, P. 12, Q. Tân Bình, TP. HCM",
+    "copyright": "© 2026 Vietlabel Packaging Corp. Bản quyền đã được bảo hộ."
+  }
+}

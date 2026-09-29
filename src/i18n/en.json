@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "about_overview": "Company Overview",
+    "about_team": "Leadership Team",
+    "about_certifications": "Certifications & Standards",
+    "about_profile": "Company Profile",
+    "products": "Products",
+    "capabilities": "Capabilities",
+    "sustainability": "Sustainability",
+    "technology": "Technology & Equipment",
+    "news": "News",
+    "careers": "Careers",
+    "contact": "Contact",
+    "quote": "Get a Quote"
+  },
+  "hero": {
+    "title": "Strategic Partner Delivering Optimal Packaging Solutions to Elevate Brand Value",
+    "subtitle": "Over 20 years of excellence in precision paper packaging manufacturing, meeting global export standards: FSC, ISO 9001, HACCP, and G7.",
+    "cta_products": "Explore Products",
+    "cta_contact": "Contact Our Experts"
+  },
+  "stats": {
+    "title": "Solid Enterprise Foundation",
+    "desc": "Vietlabel is a pioneer in modern offset printing, labeling and integrated quality control, providing standard packaging solutions to more than 500+ leading brands across Vietnam and overseas.",
+    "stat1_value": "200+",
+    "stat1_label": "Skilled Workforce",
+    "stat2_value": "10M+",
+    "stat2_label": "Annual Packaging Units",
+    "stat3_value": "05+",
+    "stat3_label": "Global Standard Systems",
+    "stat4_value": "20+",
+    "stat4_label": "Years in Industry"
+  },
+  "products_section": {
+    "badge": "PRODUCT CATEGORIES",
+    "title": "Comprehensive Paper Packaging Solutions",
+    "subtitle": "Versatile designs, premium certified materials, and exquisite finishing techniques for every industry",
+    "view_all": "View All Products",
+    "learn_more": "Learn More"
+  },
+  "values": {
+    "badge": "CORE VALUES",
+    "title": "Why Global Enterprises Choose Vietlabel",
+    "subtitle": "We don't merely manufacture packaging; we partner with you to engineer solutions that protect and celebrate your brand identity.",
+    "tab1_title": "End-to-End Custom Packaging Solutions",
+    "tab1_desc": "Our in-house R&D and structural design team supports you from concept, 3D structural mockups, and certified material sourcing to high-speed batch manufacturing.",
+    "tab2_title": "Strict Quality Compliance",
+    "tab2_desc": "Quality management certified under ISO 9001:2015, FSC Chain-of-Custody for sustainable forestry, and HACCP compliance for food-contact packaging safety.",
+    "tab3_title": "Broad Product Portfolio",
+    "tab3_desc": "Full-spectrum manufacturing from rigid gift boxes, folding cartons, retail paper bags, bread bags, corrugated shipping boxes to security scratch cards and POSM retail displays.",
+    "tab4_title": "State-of-the-Art Technology",
+    "tab4_desc": "Heidelberg 6-color offset presses (Germany), Bobst high-precision automatic die-cutters (Switzerland), and computer-controlled foil stamping and spot UV coating lines.",
+    "tab5_title": "Professional Engineering Team",
+    "tab5_desc": "Over 200 print technologists, master craftsmen, and dedicated packaging consultants, maintaining a 99.8% on-time delivery record nationwide and export."
+  },
+  "clients": {
+    "title": "Strategic Clients & Partners",
+    "subtitle": "Trusted by multinational corporations and market-leading retail brands across Southeast Asia and global markets"
+  },
+  "solutions": {
+    "badge": "COLLABORATION PROCESS",
+    "title": "Our 3-Step Comprehensive Solution",
+    "subtitle": "A transparent, structured workflow engineered to save operational time and optimize your procurement budget",
+    "step1_title": "Flexible Sourcing & Production",
+    "step1_desc": "Direct access to FSC-certified paperboard supplies, accommodating orders from pilot validation batches to multi-million production runs with agile lead times.",
+    "step2_title": "Cost & Layout Optimization",
+    "step2_desc": "Expert structural engineering to maximize sheet imposition efficiency, minimize trim waste, and engineer flat-packing geometries that cut logistics costs.",
+    "step3_title": "Distinctive Brand Finishes",
+    "step3_desc": "Customizable surface embellishments: holographic cold/hot foil stamping, tactile sand varnishing, soft-touch matte lamination, and laser-precise window patching.",
+    "cta": "Request Technical Consultation"
+  },
+  "certificates": {
+    "badge": "GLOBAL STANDARDS",
+    "title": "Certifications & Quality Verification",
+    "subtitle": "Demonstrating our commitment to environmental responsibility, consumer safety, and consistent color reproduction",
+    "view_cert": "View Certificate Document"
+  },
+  "machines": {
+    "badge": "MANUFACTURING INFRASTRUCTURE",
+    "title": "Advanced Machinery & Automation",
+    "subtitle": "Over 50 high-precision units imported from Germany, Japan, and Switzerland across our 15,000m² manufacturing hub",
+    "view_all_tech": "Explore Technology Fleet"
+  },
+  "news_section": {
+    "badge": "NEWS & INSIGHTS",
+    "title": "Industry Trends & Corporate Updates",
+    "view_all": "View All Articles"
+  },
+  "contact": {
+    "title": "Get in Touch with Us",
+    "subtitle": "Submit your packaging specifications and our technical estimators will respond with a tailored quotation within 2 business hours.",
+    "full_name": "Full Name",
+    "full_name_placeholder": "John Doe",
+    "company": "Company Name / Brand",
+    "company_placeholder": "Acme Food & Beverage Inc.",
+    "email": "Business Email",
+    "email_placeholder": "contact@company.com",
+    "phone": "Phone Number",
+    "phone_placeholder": "+84 912 345 678",
+    "product_interest": "Product Category of Interest",
+    "quantity": "Estimated Quantity",
+    "message": "Technical Specifications & Requirements",
+    "message_placeholder": "E.g., Size 20x15x8cm, Ivory paperboard 350gsm, 4-color offset, matte lamination, gold foil logo...",
+    "submit": "Submit Quotation Request",
+    "sending": "Submitting Request...",
+    "success_title": "Request Submitted Successfully!",
+    "success_desc": "Thank you for reaching out. Vietlabel's sales engineering team will contact you shortly.",
+    "hotline": "24/7 Technical Hotline",
+    "address_title": "Factory & Corporate Office",
+    "working_hours": "Working Hours: Mon - Sat (8:00 AM - 5:30 PM)"
+  },
+  "footer": {
+    "about_text": "Vietlabel - Professional B2B paper packaging & labels manufacturer with over 20 years of experience, operating a 15,000m² international facility certified under FSC and ISO 9001.",
+    "quick_links": "Quick Links",
+    "products_col": "Packaging Categories",
+    "contact_col": "Contact Information",
+    "factory_address": "Factory: Lot B2-12, Tan Binh Industrial Park Expansion, Tay Thanh, Tan Phu, HCMC",
+    "office_address": "Office: 6th Floor, Vietlabel Building, 142 Cong Hoa, Ward 12, Tan Binh, HCMC",
+    "copyright": "© 2026 Vietlabel Packaging Corp. All rights reserved."
+  }
+}
