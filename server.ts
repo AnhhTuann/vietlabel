@@ -10,6 +10,7 @@ import { webhookRouter } from './server/routes/webhook';
 import { telegramWebhookRouter } from './server/routes/telegramWebhook';
 import { adminRouter } from './server/routes/admin';
 import { cmsRouter } from './server/routes/cms';
+import { contactRouter } from './server/routes/contact';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,7 @@ async function startServer() {
   app.use('/api/lead', leadRouter);
   app.use('/api/upload', uploadRouter);
   app.use('/api/feedback', feedbackRouter);
+  app.use('/api/contact', contactRouter);
   app.use('/api/webhook', webhookRouter);
   app.use('/api/telegram/webhook', telegramWebhookRouter);
   app.use('/api/admin', adminRouter);

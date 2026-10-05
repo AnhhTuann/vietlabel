@@ -10,9 +10,10 @@ import {
   LeadEvent,
   NotificationLog,
   KbDocument,
-  Setting,
   Category,
   Product,
+  Post,
+  Job,
 } from './schema';
 
 interface DatabaseSchema {
@@ -26,6 +27,8 @@ interface DatabaseSchema {
   kbDocuments: KbDocument[];
   categories: Category[];
   products: Product[];
+  posts: Post[];
+  jobs: Job[];
   settings: Record<string, any>;
   nextLeadCounter: number;
 }
@@ -66,6 +69,8 @@ class DatabaseStore {
       kbDocuments: [],
       categories: [],
       products: [],
+      posts: [],
+      jobs: [],
       settings: {
         working_hours: '08:00 - 17:30',
         escalation_minutes: 10,
@@ -499,6 +504,66 @@ class DatabaseStore {
         const idx = this.data.products.findIndex(p => p.id === id);
         if (idx !== -1) {
           this.data.products.splice(idx, 1);
+          this.save();
+          return true;
+        }
+        return false;
+      },
+    };
+  }
+  public get posts() {
+    return {
+      list: () => [...this.data.posts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+      findById: (id: string) => this.data.posts.find(p => p.id === id),
+      findBySlug: (slug: string) => this.data.posts.find(p => p.slug === slug),
+      create: (post: Post) => {
+        this.data.posts.unshift(post);
+        this.save();
+        return post;
+      },
+      update: (id: string, updates: Partial<Post>) => {
+        const idx = this.data.posts.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          this.data.posts[idx] = { ...this.data.posts[idx], ...updates, updatedAt: new Date().toISOString() };
+          this.save();
+          return this.data.posts[idx];
+        }
+        return null;
+      },
+      delete: (id: string) => {
+        const idx = this.data.posts.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          this.data.posts.splice(idx, 1);
+          this.save();
+          return true;
+        }
+        return false;
+      },
+    };
+  }
+
+  public get jobs() {
+    return {
+      list: () => [...this.data.jobs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+      findById: (id: string) => this.data.jobs.find(j => j.id === id),
+      create: (job: Job) => {
+        this.data.jobs.unshift(job);
+        this.save();
+        return job;
+      },
+      update: (id: string, updates: Partial<Job>) => {
+        const idx = this.data.jobs.findIndex(j => j.id === id);
+        if (idx !== -1) {
+          this.data.jobs[idx] = { ...this.data.jobs[idx], ...updates, updatedAt: new Date().toISOString() };
+          this.save();
+          return this.data.jobs[idx];
+        }
+        return null;
+      },
+      delete: (id: string) => {
+        const idx = this.data.jobs.findIndex(j => j.id === id);
+        if (idx !== -1) {
+          this.data.jobs.splice(idx, 1);
           this.save();
           return true;
         }

@@ -136,3 +136,30 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+export interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  imageUrl?: string;
+  category: string;
+  status: 'DRAFT' | 'PUBLISHED';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Job {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string;
+  requirements: string;
+  benefits: string;
+  status: 'OPEN' | 'CLOSED';
+  deadline: string;
+  createdAt: string;
+  updatedAt: string;
+}

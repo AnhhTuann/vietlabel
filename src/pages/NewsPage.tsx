@@ -3,11 +3,44 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar, Clock, ArrowRight, Search, Newspaper } from 'lucide-react';
 import { SEO } from '../lib/seo';
-import { POSTS_LIST } from '../data/posts';
+import { api } from '../lib/api';
 import { SectionTitle } from '../components/ui/SectionTitle';
 
 export const NewsPage: React.FC = () => {
   const { i18n } = useTranslation();
+  const [postsList, setPostsList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await api.get('/cms/posts');
+        // Map CMS post format to frontend format, or fallback
+        const mapped = res.data.map((p: any) => ({
+          id: p.id,
+          slug: p.slug,
+          category: p.category,
+          titleVi: p.title,
+          titleEn: p.title,
+          summaryVi: p.summary,
+          summaryEn: p.summary,
+          image: p.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+          categoryNameVi: p.category,
+          categoryNameEn: p.category,
+          date: new Date(p.createdAt).toLocaleDateString('vi-VN'),
+          readTimeVi: '5 phút đọc',
+          readTimeEn: '5 min read',
+          status: p.status
+        })).filter((p: any) => p.status === 'PUBLISHED');
+        setPostsList(mapped);
+      } catch(err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
   const currentLang = i18n.language;
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,7 +52,7 @@ export const NewsPage: React.FC = () => {
     { id: 'hoat-dong-cong-ty', labelVi: 'Hoạt động công ty', labelEn: 'Company Updates' },
   ];
 
-  const filteredPosts = POSTS_LIST.filter((post) => {
+  const filteredPosts = postsList.filter((post) => {
     if (selectedCategory !== 'all' && post.category !== selectedCategory) {
       return false;
     }

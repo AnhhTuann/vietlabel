@@ -18,7 +18,28 @@ import {
 import { SEO } from '../lib/seo';
 import { SectionTitle } from '../components/ui/SectionTitle';
 import { Button } from '../components/ui/Button';
-import { JOBS_LIST, type JobPosition } from '../data/jobs';
+import { api } from '../lib/api';
+  
+  export interface JobPosition {
+    id: string;
+    departmentVi: string;
+    departmentEn: string;
+    titleVi: string;
+    titleEn: string;
+    locationVi: string;
+    locationEn: string;
+    typeVi: string;
+    typeEn: string;
+    salaryVi: string;
+    salaryEn: string;
+    deadline: string;
+    responsibilitiesVi: string[];
+    responsibilitiesEn: string[];
+    requirementsVi: string[];
+    requirementsEn: string[];
+    benefitsVi: string[];
+    benefitsEn: string[];
+  }
 import { submitJobApplication } from '../services/api';
 
 const applySchema = z.object({
@@ -33,9 +54,51 @@ type ApplyFormValues = z.infer<typeof applySchema>;
 
 export const CareersPage: React.FC = () => {
   const { i18n } = useTranslation();
+  const [jobsList, setJobsList] = React.useState<JobPosition[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await api.get('/cms/jobs');
+        const mapped = res.data.filter((j: any) => j.status === 'OPEN').map((j: any) => ({
+          id: j.id,
+          departmentVi: j.department,
+          departmentEn: j.department,
+          titleVi: j.title,
+          titleEn: j.title,
+          locationVi: j.location,
+          locationEn: j.location,
+          typeVi: j.type,
+          typeEn: j.type,
+          salaryVi: 'Thỏa thuận',
+          salaryEn: 'Negotiable',
+          deadline: new Date(j.deadline).toLocaleDateString('vi-VN'),
+          responsibilitiesVi: j.description ? j.description.split('
+') : ['Chi tiết trao đổi khi phỏng vấn'],
+          responsibilitiesEn: j.description ? j.description.split('
+') : ['Details discussed during interview'],
+          requirementsVi: j.requirements ? j.requirements.split('
+') : ['Có kinh nghiệm liên quan'],
+          requirementsEn: j.requirements ? j.requirements.split('
+') : ['Relevant experience'],
+          benefitsVi: j.benefits ? j.benefits.split('
+') : ['BHXH đầy đủ', 'Thưởng Lễ Tết'],
+          benefitsEn: j.benefits ? j.benefits.split('
+') : ['Social insurance', 'Holiday bonus']
+        }));
+        setJobsList(mapped);
+      } catch(err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
   const currentLang = i18n.language;
 
-  const [expandedJobId, setExpandedJobId] = useState<string | null>(JOBS_LIST[0]?.id || null);
+  const [expandedJobId, setExpandedJobId] = useState<string | null>(jobsList[0]?.id || null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +113,7 @@ export const CareersPage: React.FC = () => {
   } = useForm<ApplyFormValues>({
     resolver: zodResolver(applySchema),
     defaultValues: {
-      jobId: JOBS_LIST[0]?.id || '',
+      jobId: jobsList[0]?.id || '',
     },
   });
 
@@ -96,7 +159,7 @@ export const CareersPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    const job = JOBS_LIST.find((j) => j.id === values.jobId);
+    const job = jobsList.find((j) => j.id === values.jobId);
 
     try {
       const res = await submitJobApplication({
@@ -154,7 +217,7 @@ export const CareersPage: React.FC = () => {
           />
 
           <div className="space-y-4">
-            {JOBS_LIST.map((job) => {
+            {jobsList.map((job) => {
               const isExpanded = expandedJobId === job.id;
               return (
                 <div
@@ -307,7 +370,7 @@ export const CareersPage: React.FC = () => {
                       {...register('jobId')}
                       className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
                     >
-                      {JOBS_LIST.map((j) => (
+                      {jobsList.map((j) => (
                         <option key={j.id} value={j.id}>
                           {j.titleVi} ({j.departmentVi})
                         </option>
