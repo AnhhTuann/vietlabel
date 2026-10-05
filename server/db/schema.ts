@@ -115,3 +115,24 @@ export interface Setting {
   key: string;
   value: any;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  parentId?: string; // For 2-level hierarchy
+  order: number;
+}
+
+export interface Product {
+  id: string;
+  categoryId: string;
+  name: string;
+  slug: string;
+  description: string;
+  images: string[];
+  specs: Record<string, string>; // e.g. { "Chất liệu": "Giấy Kraft", "Kích thước": "Tùy chỉnh" }
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

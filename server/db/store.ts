@@ -11,6 +11,8 @@ import {
   NotificationLog,
   KbDocument,
   Setting,
+  Category,
+  Product,
 } from './schema';
 
 interface DatabaseSchema {
@@ -22,6 +24,8 @@ interface DatabaseSchema {
   events: LeadEvent[];
   notificationLogs: NotificationLog[];
   kbDocuments: KbDocument[];
+  categories: Category[];
+  products: Product[];
   settings: Record<string, any>;
   nextLeadCounter: number;
 }
@@ -60,6 +64,8 @@ class DatabaseStore {
       events: [],
       notificationLogs: [],
       kbDocuments: [],
+      categories: [],
+      products: [],
       settings: {
         working_hours: '08:00 - 17:30',
         escalation_minutes: 10,
@@ -437,6 +443,66 @@ class DatabaseStore {
         this.data.settings[key] = value;
         this.save();
         return value;
+      },
+    };
+  }
+  public get categories() {
+    return {
+      list: () => [...this.data.categories].sort((a, b) => a.order - b.order),
+      findById: (id: string) => this.data.categories.find(c => c.id === id),
+      create: (cat: Category) => {
+        this.data.categories.push(cat);
+        this.save();
+        return cat;
+      },
+      update: (id: string, updates: Partial<Category>) => {
+        const idx = this.data.categories.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          this.data.categories[idx] = { ...this.data.categories[idx], ...updates };
+          this.save();
+          return this.data.categories[idx];
+        }
+        return null;
+      },
+      delete: (id: string) => {
+        const idx = this.data.categories.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          this.data.categories.splice(idx, 1);
+          this.save();
+          return true;
+        }
+        return false;
+      },
+    };
+  }
+
+  public get products() {
+    return {
+      list: () => [...this.data.products].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+      findById: (id: string) => this.data.products.find(p => p.id === id),
+      findBySlug: (slug: string) => this.data.products.find(p => p.slug === slug),
+      create: (prod: Product) => {
+        this.data.products.unshift(prod);
+        this.save();
+        return prod;
+      },
+      update: (id: string, updates: Partial<Product>) => {
+        const idx = this.data.products.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          this.data.products[idx] = { ...this.data.products[idx], ...updates, updatedAt: new Date().toISOString() };
+          this.save();
+          return this.data.products[idx];
+        }
+        return null;
+      },
+      delete: (id: string) => {
+        const idx = this.data.products.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          this.data.products.splice(idx, 1);
+          this.save();
+          return true;
+        }
+        return false;
       },
     };
   }

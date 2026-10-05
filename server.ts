@@ -9,6 +9,7 @@ import { feedbackRouter } from './server/routes/feedback';
 import { webhookRouter } from './server/routes/webhook';
 import { telegramWebhookRouter } from './server/routes/telegramWebhook';
 import { adminRouter } from './server/routes/admin';
+import { cmsRouter } from './server/routes/cms';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +33,7 @@ async function startServer() {
   app.use('/api/webhook', webhookRouter);
   app.use('/api/telegram/webhook', telegramWebhookRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/cms', cmsRouter);
 
   // Health check
   app.get('/api/health', (_req: Request, res: Response) => {

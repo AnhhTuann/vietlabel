@@ -22,6 +22,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ de
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage').then((m) => ({ default: m.AdminLoginPage })));
 const AdminOverviewPage = lazy(() => import('./pages/admin/AdminOverviewPage').then((m) => ({ default: m.AdminOverviewPage })));
 const AdminLeadsPage = lazy(() => import('./pages/admin/AdminLeadsPage').then((m) => ({ default: m.AdminLeadsPage })));
+const AdminProductsPage = lazy(() => import('./pages/admin/AdminProductsPage').then((m) => ({ default: m.AdminProductsPage })));
 const AdminLeadDetailPage = lazy(() => import('./pages/admin/AdminLeadDetailPage').then((m) => ({ default: m.AdminLeadDetailPage })));
 const AdminInboxPage = lazy(() => import('./pages/admin/AdminInboxPage').then((m) => ({ default: m.AdminInboxPage })));
 const AdminKbPage = lazy(() => import('./pages/admin/AdminKbPage').then((m) => ({ default: m.AdminKbPage })));
@@ -69,6 +70,7 @@ export const AppRoutes: React.FC = () => {
             <Route index element={<AdminOverviewPage />} />
             <Route path="leads" element={<AdminLeadsPage />} />
             <Route path="leads/:id" element={<AdminLeadDetailPage />} />
+            <Route path="products" element={<AdminProductsPage />} />
             <Route path="inbox" element={<AdminInboxPage />} />
             <Route path="kb" element={<AdminKbPage />} />
             <Route path="reports" element={<AdminReportsPage />} />

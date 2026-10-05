@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   UserCheck,
   Flame,
+  Package,
 } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { useAdminRealtime } from '../../hooks/useAdminRealtime';
@@ -50,6 +51,7 @@ export const AdminLayout: React.FC = () => {
     { path: '/admin', label: 'Tổng quan', icon: LayoutDashboard, exact: true },
     { path: '/admin/inbox', label: 'Hộp thư trực tiếp', icon: MessageSquare },
     { path: '/admin/leads', label: 'Quản lý Leads', icon: Users },
+    { path: '/admin/products', label: 'Quản lý Sản phẩm', icon: Package },
     { path: '/admin/kb', label: 'Kiến thức AI (KB)', icon: BookOpen },
     { path: '/admin/reports', label: 'Báo cáo KPI', icon: BarChart3 },
     ...(user?.role === 'ADMIN' || user?.role === 'MANAGER'
