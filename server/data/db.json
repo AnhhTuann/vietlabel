@@ -39,6 +39,26 @@
   ],
   "leads": [
     {
+      "id": "LEAD-MUMKP82F-9859",
+      "code": "#1002",
+      "status": "NEW",
+      "score": "WARM",
+      "source": "web",
+      "customerName": "Khách hàng web",
+      "productType": "Chưa phân loại",
+      "brief": {
+        "productType": "Chưa phân loại",
+        "notes": "Em muốn tư vấn sản xuất thùng carton sóng chống thấm"
+      },
+      "missingFields": [
+        "số lượng",
+        "kích thước",
+        "thông tin liên hệ"
+      ],
+      "createdAt": "2026-09-29T11:08:25.239Z",
+      "updatedAt": "2026-09-29T11:08:30.947Z"
+    },
+    {
       "id": "LEAD-MUM8A-1001",
       "code": "#1001",
       "status": "CLAIMED",
@@ -72,6 +92,15 @@
     }
   ],
   "conversations": [
+    {
+      "id": "conv_mumkp82h_x263",
+      "leadId": "LEAD-MUMKP82F-9859",
+      "sessionId": "vl-sess-mumkp53y-4i1sm",
+      "channel": "web",
+      "mode": "BOT",
+      "lastMessageAt": "2026-09-29T11:08:30.945Z",
+      "createdAt": "2026-09-29T11:08:25.239Z"
+    },
     {
       "id": "conv_demo_01",
       "leadId": "LEAD-MUM8A-1001",
@@ -147,10 +176,49 @@
       "sender": "BOT",
       "text": "Chào anh/chị, em là Trợ lý AI Vietlabel! Em đã quay trở lại để tiếp tục hỗ trợ tư vấn quy cách và vật liệu bao bì. Anh/chị cần hỏi thêm thông tin gì cứ nhắn em nhé!",
       "createdAt": "2026-09-29T05:17:24.302Z"
+    },
+    {
+      "id": "msg_1790680105244_oxmq",
+      "conversationId": "conv_mumkp82h_x263",
+      "sender": "CUSTOMER",
+      "text": "Em muốn tư vấn in túi giấy Kraft thân thiện môi trường",
+      "createdAt": "2026-09-29T11:08:25.244Z"
+    },
+    {
+      "id": "msg_1790680105254_0a0z",
+      "conversationId": "conv_mumkp82h_x263",
+      "sender": "BOT",
+      "text": "Dạ Vietlabel hoàn toàn có dây chuyền in Flexo & Offset chuyên sâu cho **Túi giấy Kraft** đạt chuẩn ISO 9001 và G7 Master ạ!\n\nAnh/chị cho em xin thêm một vài thông tin để dự toán kỹ thuật lên phương án tối ưu chi phí nhé:\n(1) Dự kiến số lượng anh/chị cần in là bao nhiêu (MOQ tem cuộn từ 1.000 - 2.000 nhãn, hộp giấy từ 500 - 1.000 cái)?\n(2) Kích thước ước tính (Dài x Rộng x Cao hoặc đường kính tem)?\n(3) Anh/chị đã có sẵn file thiết kế in ấn (AI, PDF) chưa ạ?",
+      "createdAt": "2026-09-29T11:08:25.254Z"
+    },
+    {
+      "id": "msg_1790680110933_pe21",
+      "conversationId": "conv_mumkp82h_x263",
+      "sender": "CUSTOMER",
+      "text": "Em muốn tư vấn sản xuất thùng carton sóng chống thấm",
+      "createdAt": "2026-09-29T11:08:30.933Z"
+    },
+    {
+      "id": "msg_1790680110945_uqv3",
+      "conversationId": "conv_mumkp82h_x263",
+      "sender": "BOT",
+      "text": "Dạ Vietlabel hoàn toàn có dây chuyền in Flexo & Offset chuyên sâu cho **Thùng carton** đạt chuẩn ISO 9001 và G7 Master ạ!\n\nAnh/chị cho em xin thêm một vài thông tin để dự toán kỹ thuật lên phương án tối ưu chi phí nhé:\n(1) Dự kiến số lượng anh/chị cần in là bao nhiêu (MOQ tem cuộn từ 1.000 - 2.000 nhãn, hộp giấy từ 500 - 1.000 cái)?\n(2) Kích thước ước tính (Dài x Rộng x Cao hoặc đường kính tem)?\n(3) Anh/chị đã có sẵn file thiết kế in ấn (AI, PDF) chưa ạ?",
+      "createdAt": "2026-09-29T11:08:30.945Z"
     }
   ],
   "notes": [],
   "events": [
+    {
+      "id": "ev_1790680105242_0rn9",
+      "leadId": "LEAD-MUMKP82F-9859",
+      "type": "CREATED",
+      "payload": {
+        "score": "COLD",
+        "source": "web",
+        "status": "NEW"
+      },
+      "createdAt": "2026-09-29T11:08:25.239Z"
+    },
     {
       "id": "ev_1790659044302_release",
       "leadId": "LEAD-MUM8A-1001",
@@ -269,5 +337,5 @@
     "zalo_enabled": false,
     "email_enabled": true
   },
-  "nextLeadCounter": 1002
+  "nextLeadCounter": 1003
 }

@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import compression from 'compression';
 import { chatRouter } from './server/routes/chat';
 import { leadRouter } from './server/routes/lead';
 import { uploadRouter } from './server/routes/upload';
@@ -19,6 +20,7 @@ async function startServer() {
   const app = express();
 
   // Basic security and parsing middlewares
+  app.use(compression());
   app.use(express.json({ limit: '15mb' }));
   app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
@@ -56,7 +58,7 @@ async function startServer() {
   } else {
     // Production mode: Serve dist folder
     const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
+    app.use(express.static(distPath, { maxAge: '1y' }));
 
     app.get('*', (_req: Request, res: Response) => {
       res.sendFile(path.resolve(distPath, 'index.html'));

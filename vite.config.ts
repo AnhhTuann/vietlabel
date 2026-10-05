@@ -8,8 +8,22 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router-dom/')) return 'vendor';
+              if (id.includes('lucide') || id.includes('motion') || id.includes('embla')) return 'ui';
+              if (id.includes('zod') || id.includes('react-hook-form') || id.includes('i18next')) return 'utils';
+              return 'deps';
+            }
+          }
+        }
+      }
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
