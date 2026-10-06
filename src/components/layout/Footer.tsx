@@ -1,15 +1,7 @@
+import { ArrowUpRight, Award, Clock, Mail, MapPin, Phone, ShieldCheck } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  ShieldCheck,
-  Award,
-  ArrowUpRight,
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { PRODUCT_CATEGORIES } from '../../data/products';
 
 export const Footer: React.FC = () => {

@@ -1,33 +1,69 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-primary: #1E4384;
-  --color-primary-light: #2a5ca8;
-  --color-primary-dark: #112a55;
-  --color-accent: #BE1E2D;
-  --color-accent-hover: #9a1723;
-  --color-accent-light: #fcedef;
-  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-primary: #1e4384;
+  --color-primary-strong: #122c5f;
+  --color-primary-soft: #e9f0ff;
+  --color-primary-muted: #7ea5db;
+  --color-secondary: #be1e2d;
+  --color-secondary-strong: #8e1525;
+  --color-secondary-soft: #fbe9ec;
+  --color-surface: #f5f7fb;
+  --color-surface-strong: #eef3ff;
+  --color-border: #dfe7f3;
+  --color-text: #10233d;
+  --color-text-soft: #51627a;
+  --font-sans:
+    'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 :root {
-  --brand-navy: #1E4384;
-  --brand-red: #BE1E2D;
+  --brand-navy: #1e4384;
+  --brand-navy-strong: #122c5f;
+  --brand-navy-soft: #e9f0ff;
+  --brand-red: #be1e2d;
+  --brand-red-strong: #8e1525;
+  --brand-red-soft: #fbe9ec;
+  --brand-surface: #f5f7fb;
+  --brand-border: #dfe7f3;
+  --brand-text: #10233d;
+  --brand-text-soft: #51627a;
+  --brand-shadow: rgba(30, 67, 132, 0.12);
 }
 
 html {
   scroll-behavior: smooth;
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  background: var(--brand-surface);
+  color: var(--brand-text);
+}
+
+body {
+  background: linear-gradient(180deg, #f8faff 0%, #f3f6fb 100%);
+  color: var(--brand-text);
+}
+
+::selection {
+  background: rgba(30, 67, 132, 0.18);
+  color: var(--brand-text);
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 .animate-marquee {

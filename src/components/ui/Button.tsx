@@ -22,22 +22,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const baseStyles =
       'inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] select-none';
 
     const variants = {
       primary:
-        'bg-[#BE1E2D] text-white hover:bg-[#D04210] shadow-sm hover:shadow focus-visible:ring-[#BE1E2D] rounded-lg',
+        'bg-[#1E4384] text-white hover:bg-[#122c5f] shadow-[0_10px_24px_rgba(30,67,132,0.18)] hover:shadow-[0_14px_28px_rgba(30,67,132,0.24)] focus-visible:ring-[#1E4384] rounded-lg',
       secondary:
-        'bg-slate-100 text-slate-800 hover:bg-slate-200 focus-visible:ring-slate-400 rounded-lg',
+        'bg-[#BE1E2D] text-white hover:bg-[#8e1525] shadow-[0_10px_24px_rgba(190,30,45,0.18)] hover:shadow-[0_14px_28px_rgba(190,30,45,0.24)] focus-visible:ring-[#BE1E2D] rounded-lg',
       outline:
-        'border border-slate-300 bg-transparent text-slate-800 hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-slate-400 rounded-lg',
+        'border border-[#cfdaf0] bg-transparent text-[#1E4384] hover:bg-[#eef3ff] hover:border-[#1E4384] focus-visible:ring-[#1E4384] rounded-lg',
       ghost:
-        'bg-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 rounded-lg',
-      navy:
-        'bg-[#1E4384] text-white hover:bg-[#164373] shadow-sm hover:shadow focus-visible:ring-[#1E4384] rounded-lg',
+        'bg-transparent text-[#1E4384] hover:bg-[#eef3ff] hover:text-[#122c5f] focus-visible:ring-[#1E4384] rounded-lg',
+      navy: 'bg-[#1E4384] text-white hover:bg-[#122c5f] shadow-[0_10px_24px_rgba(30,67,132,0.18)] hover:shadow-[0_14px_28px_rgba(30,67,132,0.24)] focus-visible:ring-[#1E4384] rounded-lg',
     };
 
     const sizes = {
@@ -79,7 +78,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!isLoading && icon && iconPosition === 'right' && <span className="shrink-0">{icon}</span>}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = 'Button';

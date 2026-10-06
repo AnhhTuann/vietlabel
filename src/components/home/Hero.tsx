@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { ArrowRight, Award, ChevronLeft, ChevronRight, PhoneCall, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, PhoneCall, ChevronLeft, ChevronRight, ShieldCheck, Award } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 
 interface HeroProps {
@@ -112,15 +112,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           {/* Left Column: Proposition and Call to Actions (7 cols) */}
           <div className="lg:col-span-7 space-y-6 text-white text-left">
             {/* Clean unboxed Trust Kicker (no pills) */}
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-amber-400">
-              <span className="uppercase tracking-widest">NHÀ MÁY SẢN XUẤT BAO BÌ B2B TIÊU CHUẨN QUỐC TẾ</span>
-              <span aria-hidden="true">·</span>
-              <span className="text-slate-300 font-normal">EST. 2004</span>
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-[#E9F0FF]">
+              <span className="uppercase tracking-[0.18em] text-[#E9F0FF]">
+                NHÀ MÁY SẢN XUẤT BAO BÌ B2B
+              </span>
+              <span aria-hidden="true" className="text-[#BE1E2D]">
+                ·
+              </span>
+              <span className="text-slate-300 font-normal tracking-[0.12em]">EST. 2004</span>
             </div>
 
             {/* Dominant Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.15] [text-wrap:balance]">
-              {t('hero.title')}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-[-0.04em] text-white leading-[0.96] [text-wrap:balance]">
+              <span className="block text-white">{t('hero.title')}</span>
             </h1>
 
             {/* Sub-paragraph */}
@@ -135,18 +139,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                   variant="primary"
                   size="lg"
                   icon={<ArrowRight className="w-5 h-5" />}
-                  className="shadow-lg shadow-red-950/40"
+                  className="shadow-[0_14px_28px_rgba(30,67,132,0.28)]"
                 >
                   {t('hero.cta_products')}
                 </Button>
               </Link>
 
               <Button
-                variant="outline"
+                variant="secondary"
                 size="lg"
                 onClick={onOpenQuoteModal}
-                className="border-white/30 text-white hover:bg-white/10 hover:border-white"
-                icon={<PhoneCall className="w-4 h-4 text-amber-400" />}
+                className="shadow-[0_14px_28px_rgba(190,30,45,0.18)]"
+                icon={<PhoneCall className="w-4 h-4" />}
                 iconPosition="left"
               >
                 {t('hero.cta_contact')}
@@ -156,15 +160,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             {/* Adjacent Trust Badges & Indicators */}
             <div className="pt-6 border-t border-slate-700/60 flex flex-wrap items-center gap-6 text-xs text-slate-300">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#BE1E2D] shrink-0" />
                 <span>Chứng nhận FSC® & ISO 9001:2015</span>
               </div>
               <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-amber-400 shrink-0" />
+                <Award className="w-4 h-4 text-[#E9F0FF] shrink-0" />
                 <span>Tiêu chuẩn in ấn chuẩn màu G7 Master</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                <span className="w-2 h-2 rounded-full bg-[#BE1E2D] inline-block animate-pulse"></span>
                 <span>Nhà máy 15.000m² tại TP. HCM</span>
               </div>
             </div>
@@ -215,7 +219,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                       key={idx}
                       onClick={() => setActiveSlide(idx)}
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                        idx === activeSlide ? 'w-6 bg-[#BE1E2D]' : 'w-2 bg-slate-700 hover:bg-slate-500'
+                        idx === activeSlide
+                          ? 'w-6 bg-[#BE1E2D]'
+                          : 'w-2 bg-slate-700 hover:bg-slate-500'
                       }`}
                       aria-label={`Chuyển tới mẫu sản phẩm ${idx + 1}`}
                     />
