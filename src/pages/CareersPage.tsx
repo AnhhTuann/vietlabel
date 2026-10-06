@@ -18,7 +18,7 @@ import {
 import { SEO } from '../lib/seo';
 import { SectionTitle } from '../components/ui/SectionTitle';
 import { Button } from '../components/ui/Button';
-import { api } from '../lib/api';
+import { api } from '../services/api';
   
   export interface JobPosition {
     id: string;
@@ -74,18 +74,12 @@ export const CareersPage: React.FC = () => {
           salaryVi: 'Thỏa thuận',
           salaryEn: 'Negotiable',
           deadline: new Date(j.deadline).toLocaleDateString('vi-VN'),
-          responsibilitiesVi: j.description ? j.description.split('
-') : ['Chi tiết trao đổi khi phỏng vấn'],
-          responsibilitiesEn: j.description ? j.description.split('
-') : ['Details discussed during interview'],
-          requirementsVi: j.requirements ? j.requirements.split('
-') : ['Có kinh nghiệm liên quan'],
-          requirementsEn: j.requirements ? j.requirements.split('
-') : ['Relevant experience'],
-          benefitsVi: j.benefits ? j.benefits.split('
-') : ['BHXH đầy đủ', 'Thưởng Lễ Tết'],
-          benefitsEn: j.benefits ? j.benefits.split('
-') : ['Social insurance', 'Holiday bonus']
+          responsibilitiesVi: j.description ? j.description.split('\\n') : ['Chi tiết trao đổi khi phỏng vấn'],
+          responsibilitiesEn: j.description ? j.description.split('\\n') : ['Details discussed during interview'],
+          requirementsVi: j.requirements ? j.requirements.split('\\n') : ['Có kinh nghiệm liên quan'],
+          requirementsEn: j.requirements ? j.requirements.split('\\n') : ['Relevant experience'],
+          benefitsVi: j.benefits ? j.benefits.split('\\n') : ['BHXH đầy đủ', 'Thưởng Lễ Tết'],
+          benefitsEn: j.benefits ? j.benefits.split('\\n') : ['Social insurance', 'Holiday bonus']
         }));
         setJobsList(mapped);
       } catch(err) {
@@ -193,7 +187,7 @@ export const CareersPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#0B2A4A] text-white py-16 text-center">
+      <section className="bg-[#1E4384] text-white py-16 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
             CƠ HỘI NGHỀ NGHIỆP
@@ -224,7 +218,7 @@ export const CareersPage: React.FC = () => {
                   key={job.id}
                   className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                     isExpanded
-                      ? 'border-[#0B2A4A] bg-white shadow-lg'
+                      ? 'border-[#1E4384] bg-white shadow-lg'
                       : 'border-slate-200 bg-[#FAFAFC] hover:border-slate-300'
                   }`}
                 >
@@ -235,7 +229,7 @@ export const CareersPage: React.FC = () => {
                   >
                     <div>
                       <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 mb-1">
-                        <span className="font-semibold text-[#E8531D]">{job.departmentVi}</span>
+                        <span className="font-semibold text-[#BE1E2D]">{job.departmentVi}</span>
                         <span>·</span>
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3.5 h-3.5" />
@@ -247,7 +241,7 @@ export const CareersPage: React.FC = () => {
                           {job.salaryVi}
                         </span>
                       </div>
-                      <h3 className="text-base sm:text-lg font-bold text-[#0B2A4A]">
+                      <h3 className="text-base sm:text-lg font-bold text-[#1E4384]">
                         {job.titleVi}
                       </h3>
                     </div>
@@ -265,7 +259,7 @@ export const CareersPage: React.FC = () => {
                       </Button>
                       <ChevronDown
                         className={`w-5 h-5 text-slate-400 transition-transform ${
-                          isExpanded ? 'rotate-180 text-[#0B2A4A]' : ''
+                          isExpanded ? 'rotate-180 text-[#1E4384]' : ''
                         }`}
                       />
                     </div>
@@ -275,7 +269,7 @@ export const CareersPage: React.FC = () => {
                   {isExpanded && (
                     <div className="px-6 pb-6 pt-2 border-t border-slate-100 space-y-5 text-xs sm:text-sm text-slate-700">
                       <div>
-                        <h4 className="font-bold text-[#0B2A4A] uppercase text-xs tracking-wider mb-2">
+                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
                           Mô tả công việc:
                         </h4>
                         <ul className="space-y-1.5 list-disc pl-5">
@@ -286,7 +280,7 @@ export const CareersPage: React.FC = () => {
                       </div>
 
                       <div>
-                        <h4 className="font-bold text-[#0B2A4A] uppercase text-xs tracking-wider mb-2">
+                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
                           Yêu cầu ứng viên:
                         </h4>
                         <ul className="space-y-1.5 list-disc pl-5">
@@ -297,7 +291,7 @@ export const CareersPage: React.FC = () => {
                       </div>
 
                       <div>
-                        <h4 className="font-bold text-[#0B2A4A] uppercase text-xs tracking-wider mb-2">
+                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
                           Quyền lợi được hưởng:
                         </h4>
                         <ul className="space-y-1.5 list-disc pl-5">
@@ -350,10 +344,10 @@ export const CareersPage: React.FC = () => {
             ) : (
               <div>
                 <div className="mb-6">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#E8531D]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#BE1E2D]">
                     GỬI HỒ SƠ TRỰC TUYẾN
                   </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#0B2A4A] mt-1">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#1E4384] mt-1">
                     Biểu mẫu ứng tuyển nhân sự
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -368,7 +362,7 @@ export const CareersPage: React.FC = () => {
                     </label>
                     <select
                       {...register('jobId')}
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                     >
                       {jobsList.map((j) => (
                         <option key={j.id} value={j.id}>
@@ -390,7 +384,7 @@ export const CareersPage: React.FC = () => {
                         type="text"
                         {...register('fullName')}
                         placeholder="Nguyễn Văn A"
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                       />
                       {errors.fullName && (
                         <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
@@ -405,7 +399,7 @@ export const CareersPage: React.FC = () => {
                         type="tel"
                         {...register('phone')}
                         placeholder="0912 345 678"
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>
@@ -421,7 +415,7 @@ export const CareersPage: React.FC = () => {
                       type="email"
                       {...register('email')}
                       placeholder="ungvien@gmail.com"
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                     />
                     {errors.email && (
                       <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
@@ -434,7 +428,7 @@ export const CareersPage: React.FC = () => {
                       Đính kèm hồ sơ CV <span className="text-red-500">*</span>{' '}
                       <span className="text-slate-400 font-normal">(PDF, DOC, DOCX - Tối đa 5MB)</span>
                     </label>
-                    <div className="relative border-2 border-dashed border-slate-300 hover:border-[#0B2A4A] rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-slate-100">
+                    <div className="relative border-2 border-dashed border-slate-300 hover:border-[#1E4384] rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-slate-100">
                       <input
                         type="file"
                         accept=".pdf,.doc,.docx"
@@ -449,7 +443,7 @@ export const CareersPage: React.FC = () => {
                         </div>
                       ) : (
                         <div className="text-xs text-slate-600">
-                          <span className="font-bold text-[#E8531D]">Bấm để chọn file</span> hoặc kéo thả CV vào đây
+                          <span className="font-bold text-[#BE1E2D]">Bấm để chọn file</span> hoặc kéo thả CV vào đây
                         </div>
                       )}
                     </div>
@@ -469,7 +463,7 @@ export const CareersPage: React.FC = () => {
                       rows={3}
                       {...register('coverLetter')}
                       placeholder="Giới thiệu tóm tắt kinh nghiệm làm việc hoặc lý do bạn mong muốn gia nhập Vietlabel..."
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] resize-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] resize-none"
                     />
                   </div>
 

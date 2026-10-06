@@ -12,10 +12,10 @@ export const Stats: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Enterprise Foundation Intro (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#E8531D]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#BE1E2D]">
               NĂNG LỰC SẢN XUẤT THỰC TẾ
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0B2A4A] tracking-tight leading-tight [text-wrap:balance]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1E4384] tracking-tight leading-tight [text-wrap:balance]">
               {t('stats.title')}
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed [text-wrap:balance]">
@@ -43,10 +43,10 @@ export const Stats: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Stat 1: 200+ Nhân sự */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-white text-[#0B2A4A] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#E8531D] transition-all">
+                <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Users className="w-6 h-6" />
                 </div>
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0B2A4A] tracking-tight">
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
                   <CountUp end={200} suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
@@ -59,10 +59,10 @@ export const Stats: React.FC = () => {
 
               {/* Stat 2: 10 Triệu+ Sản lượng/năm */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-white text-[#0B2A4A] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#E8531D] transition-all">
+                <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Layers className="w-6 h-6" />
                 </div>
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0B2A4A] tracking-tight">
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
                   <CountUp end={10} suffix=" Triệu+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
@@ -75,10 +75,10 @@ export const Stats: React.FC = () => {
 
               {/* Stat 3: 05+ Hệ thống tiêu chuẩn */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-white text-[#0B2A4A] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#E8531D] transition-all">
+                <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Award className="w-6 h-6" />
                 </div>
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0B2A4A] tracking-tight">
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
                   <CountUp end={5} prefix="0" suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
@@ -91,10 +91,10 @@ export const Stats: React.FC = () => {
 
               {/* Stat 4: 20+ Năm phát triển */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-white text-[#0B2A4A] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#E8531D] transition-all">
+                <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Calendar className="w-6 h-6" />
                 </div>
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0B2A4A] tracking-tight">
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
                   <CountUp end={20} suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">

@@ -17,21 +17,21 @@ export const Solutions: React.FC = () => {
   const steps = [
     {
       num: '01',
-      icon: <Truck className="w-6 h-6 text-[#E8531D]" />,
+      icon: <Truck className="w-6 h-6 text-[#BE1E2D]" />,
       titleKey: 'solutions.step1_title',
       descKey: 'solutions.step1_desc',
       details: 'Chủ động nguồn cung giấy FSC, thời gian quay vòng đơn hàng chỉ từ 5 - 7 ngày.',
     },
     {
       num: '02',
-      icon: <DollarSign className="w-6 h-6 text-[#E8531D]" />,
+      icon: <DollarSign className="w-6 h-6 text-[#BE1E2D]" />,
       titleKey: 'solutions.step2_title',
       descKey: 'solutions.step2_desc',
       details: 'Thiết kế bình trang tối ưu, giảm tiêu hao giấy thừa và hạ giá thành mỗi đơn vị sản phẩm.',
     },
     {
       num: '03',
-      icon: <Palette className="w-6 h-6 text-[#E8531D]" />,
+      icon: <Palette className="w-6 h-6 text-[#BE1E2D]" />,
       titleKey: 'solutions.step3_title',
       descKey: 'solutions.step3_desc',
       details: 'Công nghệ ép kim holo, phủ bóng cát, cán màng nhung độc bản nâng tầm nhận diện.',
@@ -56,7 +56,7 @@ export const Solutions: React.FC = () => {
               <div>
                 {/* Step numerical header */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
                     {step.icon}
                   </div>
                   <span className="text-3xl font-black font-mono tracking-tight text-slate-300">
@@ -64,7 +64,7 @@ export const Solutions: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-[#0B2A4A] mb-3 leading-snug">
+                <h3 className="text-lg sm:text-xl font-bold text-[#1E4384] mb-3 leading-snug">
                   {t(step.titleKey)}
                 </h3>
 

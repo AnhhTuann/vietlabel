@@ -24,7 +24,7 @@ export const FloatingContact: React.FC<FloatingContactProps> = ({ onOpenQuoteMod
       {/* Button 1: Quick phone call */}
       <a
         href="tel:0868968089"
-        className="group flex items-center gap-2 bg-[#0B2A4A] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:bg-[#164373] transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8531D]"
+        className="group flex items-center gap-2 bg-[#1E4384] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:bg-[#164373] transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BE1E2D]"
         title="Gọi điện hotline: 086 896 8089"
         aria-label="Gọi điện hotline"
       >
@@ -37,7 +37,7 @@ export const FloatingContact: React.FC<FloatingContactProps> = ({ onOpenQuoteMod
       {/* Button 2: Quick email */}
       <a
         href="mailto:thien@vietlabel.com.vn"
-        className="group flex items-center gap-2 bg-slate-800 text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:bg-slate-700 transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8531D]"
+        className="group flex items-center gap-2 bg-slate-800 text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:bg-slate-700 transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BE1E2D]"
         title="Gửi email nhận báo giá"
         aria-label="Gửi email"
       >
@@ -50,7 +50,7 @@ export const FloatingContact: React.FC<FloatingContactProps> = ({ onOpenQuoteMod
       {/* Button 3: Send message / Open quote form */}
       <button
         onClick={handleScrollToContact}
-        className="group flex items-center gap-2 bg-[#E8531D] text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-xl hover:shadow-2xl hover:bg-[#D04210] transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="group flex items-center gap-2 bg-[#BE1E2D] text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-xl hover:shadow-2xl hover:bg-[#D04210] transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
         title="Gửi tin nhắn hoặc yêu cầu báo giá"
         aria-label="Gửi tin nhắn hoặc yêu cầu báo giá"
       >

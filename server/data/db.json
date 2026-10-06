@@ -39,6 +39,26 @@
   ],
   "leads": [
     {
+      "id": "LEAD-MUV5JXIU-5270",
+      "code": "#1003",
+      "status": "NEW",
+      "score": "WARM",
+      "source": "web",
+      "customerName": "Khách hàng web",
+      "productType": "Chưa phân loại",
+      "brief": {
+        "productType": "Chưa phân loại",
+        "notes": "Em muốn tư vấn in hộp giấy cao cấp (hộp cứng / hộp mềm)"
+      },
+      "missingFields": [
+        "số lượng",
+        "kích thước",
+        "thông tin liên hệ"
+      ],
+      "createdAt": "2026-10-05T11:14:19.638Z",
+      "updatedAt": "2026-10-05T11:14:27.438Z"
+    },
+    {
       "id": "LEAD-MUMKP82F-9859",
       "code": "#1002",
       "status": "NEW",
@@ -92,6 +112,15 @@
     }
   ],
   "conversations": [
+    {
+      "id": "conv_muv5jxiv_9q3q",
+      "leadId": "LEAD-MUV5JXIU-5270",
+      "sessionId": "vl-sess-muv5jw5f-fljrz",
+      "channel": "web",
+      "mode": "BOT",
+      "lastMessageAt": "2026-10-05T11:14:27.437Z",
+      "createdAt": "2026-10-05T11:14:19.638Z"
+    },
     {
       "id": "conv_mumkp82h_x263",
       "leadId": "LEAD-MUMKP82F-9859",
@@ -204,10 +233,49 @@
       "sender": "BOT",
       "text": "Dạ Vietlabel hoàn toàn có dây chuyền in Flexo & Offset chuyên sâu cho **Thùng carton** đạt chuẩn ISO 9001 và G7 Master ạ!\n\nAnh/chị cho em xin thêm một vài thông tin để dự toán kỹ thuật lên phương án tối ưu chi phí nhé:\n(1) Dự kiến số lượng anh/chị cần in là bao nhiêu (MOQ tem cuộn từ 1.000 - 2.000 nhãn, hộp giấy từ 500 - 1.000 cái)?\n(2) Kích thước ước tính (Dài x Rộng x Cao hoặc đường kính tem)?\n(3) Anh/chị đã có sẵn file thiết kế in ấn (AI, PDF) chưa ạ?",
       "createdAt": "2026-09-29T11:08:30.945Z"
+    },
+    {
+      "id": "msg_1791198859640_jlll",
+      "conversationId": "conv_muv5jxiv_9q3q",
+      "sender": "CUSTOMER",
+      "text": "Em muốn tư vấn in tem nhãn decal cuộn dán bao bì sản phẩm",
+      "createdAt": "2026-10-05T11:14:19.640Z"
+    },
+    {
+      "id": "msg_1791198859644_nm9e",
+      "conversationId": "conv_muv5jxiv_9q3q",
+      "sender": "BOT",
+      "text": "Dạ Vietlabel hoàn toàn có dây chuyền in Flexo & Offset chuyên sâu cho **Tem nhãn Decal cuộn** đạt chuẩn ISO 9001 và G7 Master ạ!\n\nAnh/chị cho em xin thêm một vài thông tin để dự toán kỹ thuật lên phương án tối ưu chi phí nhé:\n(1) Dự kiến số lượng anh/chị cần in là bao nhiêu (MOQ tem cuộn từ 1.000 - 2.000 nhãn, hộp giấy từ 500 - 1.000 cái)?\n(2) Kích thước ước tính (Dài x Rộng x Cao hoặc đường kính tem)?\n(3) Anh/chị đã có sẵn file thiết kế in ấn (AI, PDF) chưa ạ?",
+      "createdAt": "2026-10-05T11:14:19.644Z"
+    },
+    {
+      "id": "msg_1791198867425_d82i",
+      "conversationId": "conv_muv5jxiv_9q3q",
+      "sender": "CUSTOMER",
+      "text": "Em muốn tư vấn in hộp giấy cao cấp (hộp cứng / hộp mềm)",
+      "createdAt": "2026-10-05T11:14:27.425Z"
+    },
+    {
+      "id": "msg_1791198867437_v1ly",
+      "conversationId": "conv_muv5jxiv_9q3q",
+      "sender": "BOT",
+      "text": "Dạ Vietlabel hoàn toàn có dây chuyền in Flexo & Offset chuyên sâu cho **Hộp giấy** đạt chuẩn ISO 9001 và G7 Master ạ!\n\nAnh/chị cho em xin thêm một vài thông tin để dự toán kỹ thuật lên phương án tối ưu chi phí nhé:\n(1) Dự kiến số lượng anh/chị cần in là bao nhiêu (MOQ tem cuộn từ 1.000 - 2.000 nhãn, hộp giấy từ 500 - 1.000 cái)?\n(2) Kích thước ước tính (Dài x Rộng x Cao hoặc đường kính tem)?\n(3) Anh/chị đã có sẵn file thiết kế in ấn (AI, PDF) chưa ạ?",
+      "createdAt": "2026-10-05T11:14:27.437Z"
     }
   ],
   "notes": [],
   "events": [
+    {
+      "id": "ev_1791198859640_edhq",
+      "leadId": "LEAD-MUV5JXIU-5270",
+      "type": "CREATED",
+      "payload": {
+        "score": "COLD",
+        "source": "web",
+        "status": "NEW"
+      },
+      "createdAt": "2026-10-05T11:14:19.638Z"
+    },
     {
       "id": "ev_1790680105242_0rn9",
       "leadId": "LEAD-MUMKP82F-9859",
@@ -337,5 +405,5 @@
     "zalo_enabled": false,
     "email_enabled": true
   },
-  "nextLeadCounter": 1003
+  "nextLeadCounter": 1004
 }

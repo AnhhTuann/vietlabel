@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Newspaper, Plus, Edit2, Trash2, Search, X } from 'lucide-react';
-import { api } from '../../lib/api';
+import { api } from '../../services/api';
 
 interface Post {
   id: string;
@@ -67,7 +67,7 @@ export const AdminNewsPage: React.FC = () => {
       <Helmet><title>Quản lý Tin tức - Admin</title></Helmet>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-slate-800">Tin tức & Bài viết</h1>
-        <button onClick={() => { setCurrentPost({ status: 'PUBLISHED' }); setIsModalOpen(true); }} className="flex items-center gap-2 px-4 py-2 bg-[#E8531D] text-white rounded-lg">
+        <button onClick={() => { setCurrentPost({ status: 'PUBLISHED' }); setIsModalOpen(true); }} className="flex items-center gap-2 px-4 py-2 bg-[#BE1E2D] text-white rounded-lg">
           <Plus className="w-5 h-5" /> Thêm bài viết
         </button>
       </div>
@@ -101,7 +101,7 @@ export const AdminNewsPage: React.FC = () => {
               <input required type="text" placeholder="Tiêu đề" className="w-full px-4 py-2 border rounded-lg" value={currentPost?.title || ''} onChange={e => setCurrentPost({...currentPost, title: e.target.value})} />
               <textarea placeholder="Tóm tắt" className="w-full px-4 py-2 border rounded-lg" value={currentPost?.summary || ''} onChange={e => setCurrentPost({...currentPost, summary: e.target.value})} />
               <textarea rows={5} placeholder="Nội dung..." className="w-full px-4 py-2 border rounded-lg" value={currentPost?.content || ''} onChange={e => setCurrentPost({...currentPost, content: e.target.value})} />
-              <button type="submit" className="px-5 py-2 bg-[#0B2A4A] text-white rounded-lg w-full">Lưu bài viết</button>
+              <button type="submit" className="px-5 py-2 bg-[#1E4384] text-white rounded-lg w-full">Lưu bài viết</button>
             </form>
           </div>
         </div>

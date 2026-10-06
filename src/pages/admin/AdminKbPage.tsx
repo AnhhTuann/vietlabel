@@ -133,10 +133,10 @@ export const AdminKbPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
-          <span className="text-[11px] font-bold text-[#E8531D] uppercase tracking-wider block">
+          <span className="text-[11px] font-bold text-[#BE1E2D] uppercase tracking-wider block">
             KNOWLEDGE BASE (RAG) MANAGEMENT
           </span>
-          <h1 className="text-2xl font-black text-[#0B2A4A] mt-0.5">
+          <h1 className="text-2xl font-black text-[#1E4384] mt-0.5">
             Quản Lý Tài Liệu Kiến Thức & Huấn Luyện AI
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -150,7 +150,7 @@ export const AdminKbPage: React.FC = () => {
             disabled={isIngesting}
             variant="outline"
             size="sm"
-            className="text-xs font-bold border-orange-300 text-[#E8531D] hover:bg-orange-50"
+            className="text-xs font-bold border-red-300 text-[#BE1E2D] hover:bg-red-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${isIngesting ? 'animate-spin' : ''}`} />
             <span>{isIngesting ? 'Đang nạp tri thức...' : 'Cập nhật kiến thức (Ingest)'}</span>
@@ -160,7 +160,7 @@ export const AdminKbPage: React.FC = () => {
             onClick={() => handleOpenEditor()}
             variant="primary"
             size="sm"
-            className="bg-[#0B2A4A] hover:bg-[#164373] text-xs font-bold"
+            className="bg-[#1E4384] hover:bg-[#164373] text-xs font-bold"
           >
             <Plus className="w-3.5 h-3.5 mr-1.5" />
             <span>Thêm tài liệu mới</span>
@@ -199,7 +199,7 @@ export const AdminKbPage: React.FC = () => {
                 </span>
               </div>
 
-              <h3 className="font-bold text-base text-[#0B2A4A]">{doc.title}</h3>
+              <h3 className="font-bold text-base text-[#1E4384]">{doc.title}</h3>
 
               <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
                 {doc.content.replace(/^#+.*$/gm, '').trim()}
@@ -214,7 +214,7 @@ export const AdminKbPage: React.FC = () => {
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => handleOpenEditor(doc)}
-                  className="p-1.5 text-slate-600 hover:text-[#E8531D] hover:bg-slate-100 rounded-lg cursor-pointer transition-colors"
+                  className="p-1.5 text-slate-600 hover:text-[#BE1E2D] hover:bg-slate-100 rounded-lg cursor-pointer transition-colors"
                   title="Chỉnh sửa nội dung"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
@@ -266,8 +266,8 @@ export const AdminKbPage: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl p-6 space-y-4 max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="font-bold text-base text-[#0B2A4A] flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#E8531D]" />
+              <h3 className="font-bold text-base text-[#1E4384] flex items-center gap-2">
+                <FileText className="w-4 h-4 text-[#BE1E2D]" />
                 {editingDoc.isNew ? 'Thêm Tài Liệu Mới' : `Chỉnh Sửa: ${editingDoc.title}`}
               </h3>
               <button onClick={() => setEditingDoc(null)} className="p-1 text-slate-400 hover:text-slate-600">
@@ -285,7 +285,7 @@ export const AdminKbPage: React.FC = () => {
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     placeholder="Quy trình sản xuất tem nhãn cuộn Flexo..."
-                    className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                    className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                   />
                 </div>
 
@@ -294,7 +294,7 @@ export const AdminKbPage: React.FC = () => {
                   <select
                     value={editStatus}
                     onChange={(e: any) => setEditStatus(e.target.value)}
-                    className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                    className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                   >
                     <option value="APPROVED">Đã phê duyệt (Cho phép AI học)</option>
                     <option value="DRAFT">Bản nháp (Tạm ẩn)</option>
@@ -308,7 +308,7 @@ export const AdminKbPage: React.FC = () => {
                   required
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="flex-1 font-mono text-xs p-3 border border-slate-300 rounded-xl resize-none focus:border-[#E8531D] focus:outline-none bg-slate-50 overflow-y-auto min-h-[300px]"
+                  className="flex-1 font-mono text-xs p-3 border border-slate-300 rounded-xl resize-none focus:border-[#BE1E2D] focus:outline-none bg-slate-50 overflow-y-auto min-h-[300px]"
                 />
               </div>
 
@@ -321,7 +321,7 @@ export const AdminKbPage: React.FC = () => {
                   disabled={isSaving}
                   variant="primary"
                   size="sm"
-                  className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs"
+                  className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
                 >
                   <Save className="w-3.5 h-3.5 mr-1" />
                   <span>{isSaving ? 'Đang lưu...' : 'Lưu tài liệu'}</span>

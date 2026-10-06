@@ -34,7 +34,7 @@ const AdminSettingsPage = lazy(() => import('./pages/admin/AdminSettingsPage').t
 const LoadingFallback: React.FC = () => (
   <div className="min-h-[70vh] flex items-center justify-center">
     <div className="flex flex-col items-center gap-3">
-      <div className="w-10 h-10 border-4 border-slate-200 border-t-[#E8531D] rounded-full animate-spin" />
+      <div className="w-10 h-10 border-4 border-slate-200 border-t-[#BE1E2D] rounded-full animate-spin" />
       <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
         Đang tải hệ thống...
       </span>

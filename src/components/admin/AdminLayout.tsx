@@ -76,7 +76,7 @@ export const AdminLayout: React.FC = () => {
       </Helmet>
 
       {/* Top Navigation Bar */}
-      <header className="h-16 bg-[#0B2A4A] text-white flex items-center justify-between px-4 sm:px-6 fixed top-0 left-0 right-0 z-40 shadow-md">
+      <header className="h-16 bg-[#1E4384] text-white flex items-center justify-between px-4 sm:px-6 fixed top-0 left-0 right-0 z-40 shadow-md">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -86,7 +86,7 @@ export const AdminLayout: React.FC = () => {
           </button>
 
           <Link to="/admin" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#E8531D] to-orange-400 flex items-center justify-center font-black text-white text-sm shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#BE1E2D] to-red-400 flex items-center justify-center font-black text-white text-sm shadow-xs">
               VL
             </div>
             <div>
@@ -184,7 +184,7 @@ export const AdminLayout: React.FC = () => {
                   to={item.path}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     active
-                      ? 'bg-[#E8531D] text-white shadow-md shadow-orange-900/30'
+                      ? 'bg-[#BE1E2D] text-white shadow-md shadow-red-900/30'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >
@@ -237,7 +237,7 @@ export const AdminLayout: React.FC = () => {
                         onClick={() => setMobileMenuOpen(false)}
                         className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold ${
                           active
-                            ? 'bg-[#E8531D] text-white'
+                            ? 'bg-[#BE1E2D] text-white'
                             : 'text-slate-300 hover:bg-slate-800'
                         }`}
                       >

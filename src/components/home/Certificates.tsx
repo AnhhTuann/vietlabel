@@ -39,11 +39,11 @@ export const Certificates: React.FC = () => {
             <div
               key={cert.id}
               onClick={() => handleOpenCert(idx)}
-              className="group relative flex flex-col justify-between p-6 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:border-[#E8531D]/50 hover:bg-white hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer text-center"
+              className="group relative flex flex-col justify-between p-6 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:border-[#BE1E2D]/50 hover:bg-white hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer text-center"
             >
               <div>
                 {/* Certification Badge / Symbol */}
-                <div className="w-16 h-16 mx-auto rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-center text-[#0B2A4A] group-hover:scale-110 group-hover:border-[#E8531D]/40 transition-all duration-300 mb-4">
+                <div className="w-16 h-16 mx-auto rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-center text-[#1E4384] group-hover:scale-110 group-hover:border-[#BE1E2D]/40 transition-all duration-300 mb-4">
                   {cert.id === 'fsc-coc' ? (
                     <Award className="w-8 h-8 text-emerald-600" />
                   ) : cert.id === 'iso-9001' ? (
@@ -53,16 +53,16 @@ export const Certificates: React.FC = () => {
                   ) : cert.id === 'haccp' ? (
                     <ShieldCheck className="w-8 h-8 text-red-600" />
                   ) : (
-                    <span className="font-black text-xl text-[#0B2A4A]">G7</span>
+                    <span className="font-black text-xl text-[#1E4384]">G7</span>
                   )}
                 </div>
 
                 {/* Badge Micro Tag */}
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#E8531D] mb-1.5">
+                <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#BE1E2D] mb-1.5">
                   {cert.badgeText}
                 </span>
 
-                <h3 className="text-base font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors leading-snug">
+                <h3 className="text-base font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors leading-snug">
                   {cert.name}
                 </h3>
 
@@ -76,7 +76,7 @@ export const Certificates: React.FC = () => {
               </div>
 
               {/* View Original Certificate affordance */}
-              <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-center gap-1.5 text-xs font-semibold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors">
+              <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-center gap-1.5 text-xs font-semibold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors">
                 <Eye className="w-3.5 h-3.5" />
                 <span>{t('certificates.view_cert')}</span>
               </div>

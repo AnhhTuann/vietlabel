@@ -51,10 +51,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenQuoteMod
           className="flex flex-col items-center justify-center -mt-4 group focus-visible:outline-none"
           aria-label="Yêu cầu báo giá nhanh"
         >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#E8531D] to-orange-500 text-white shadow-lg shadow-orange-500/30 flex items-center justify-center group-active:scale-90 transition-transform border-2 border-white">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#BE1E2D] to-red-500 text-white shadow-lg shadow-red-500/30 flex items-center justify-center group-active:scale-90 transition-transform border-2 border-white">
             <FileSpreadsheet className="w-5 h-5" />
           </div>
-          <span className="text-[10px] font-bold text-[#E8531D] mt-0.5">Báo giá</span>
+          <span className="text-[10px] font-bold text-[#BE1E2D] mt-0.5">Báo giá</span>
         </button>
 
         {/* Item 4: Danh mục sản phẩm */}
@@ -62,18 +62,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenQuoteMod
           to="/san-pham"
           className={cn(
             "flex flex-col items-center justify-center text-center py-1 group focus-visible:outline-none transition-colors",
-            isCurrent('/san-pham') ? "text-[#0B2A4A]" : "text-slate-600"
+            isCurrent('/san-pham') ? "text-[#1E4384]" : "text-slate-600"
           )}
         >
           <div className={cn(
             "w-8 h-8 rounded-full flex items-center justify-center group-active:scale-95 transition-transform",
-            isCurrent('/san-pham') ? "bg-slate-100 text-[#0B2A4A]" : "bg-slate-50 text-slate-500"
+            isCurrent('/san-pham') ? "bg-slate-100 text-[#1E4384]" : "bg-slate-50 text-slate-500"
           )}>
             <Package className="w-4 h-4" />
           </div>
           <span className={cn(
             "text-[10px] mt-0.5",
-            isCurrent('/san-pham') ? "font-bold text-[#0B2A4A]" : "font-semibold text-slate-700"
+            isCurrent('/san-pham') ? "font-bold text-[#1E4384]" : "font-semibold text-slate-700"
           )}>
             Sản phẩm
           </span>
@@ -84,18 +84,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenQuoteMod
           to="/lien-he"
           className={cn(
             "flex flex-col items-center justify-center text-center py-1 group focus-visible:outline-none transition-colors",
-            isCurrent('/lien-he') ? "text-[#0B2A4A]" : "text-slate-600"
+            isCurrent('/lien-he') ? "text-[#1E4384]" : "text-slate-600"
           )}
         >
           <div className={cn(
             "w-8 h-8 rounded-full flex items-center justify-center group-active:scale-95 transition-transform",
-            isCurrent('/lien-he') ? "bg-slate-100 text-[#0B2A4A]" : "bg-slate-50 text-slate-500"
+            isCurrent('/lien-he') ? "bg-slate-100 text-[#1E4384]" : "bg-slate-50 text-slate-500"
           )}>
             <MapPin className="w-4 h-4" />
           </div>
           <span className={cn(
             "text-[10px] mt-0.5",
-            isCurrent('/lien-he') ? "font-bold text-[#0B2A4A]" : "font-semibold text-slate-700"
+            isCurrent('/lien-he') ? "font-bold text-[#1E4384]" : "font-semibold text-slate-700"
           )}>
             Liên hệ
           </span>

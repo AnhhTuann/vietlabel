@@ -31,22 +31,22 @@ export const ClientMarquee: React.FC = () => {
             {row1Repeated.map((client, idx) => (
               <div
                 key={`r1-${client.id}-${idx}`}
-                className="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#E8531D]/40 hover:bg-orange-50/30 transition-all duration-200 cursor-pointer shrink-0"
+                className="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#BE1E2D]/40 hover:bg-red-50/30 transition-all duration-200 cursor-pointer shrink-0"
               >
                 {client.image ? (
                   <div className="w-10 h-10 rounded-lg overflow-hidden bg-white border border-slate-200/80 shrink-0 flex items-center justify-center p-0.5 shadow-xs">
                     <img src={client.image} alt={client.name} className="w-full h-full object-cover rounded" />
                   </div>
                 ) : (
-                  <div className="w-9 h-9 rounded-lg bg-slate-200 text-slate-700 font-black text-xs flex items-center justify-center group-hover:bg-[#0B2A4A] group-hover:text-white transition-colors shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-slate-200 text-slate-700 font-black text-xs flex items-center justify-center group-hover:bg-[#1E4384] group-hover:text-white transition-colors shrink-0">
                     {client.name.charAt(0)}
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-[#0B2A4A] transition-colors whitespace-nowrap">
+                  <span className="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-[#1E4384] transition-colors whitespace-nowrap">
                     {client.name}
                   </span>
-                  <span className="text-[10px] text-slate-600 group-hover:text-[#E8531D] transition-colors whitespace-nowrap">
+                  <span className="text-[10px] text-slate-600 group-hover:text-[#BE1E2D] transition-colors whitespace-nowrap">
                     {currentLang === 'vi' ? client.industryVi : client.industryEn}
                   </span>
                 </div>
@@ -65,22 +65,22 @@ export const ClientMarquee: React.FC = () => {
             {row2Repeated.map((client, idx) => (
               <div
                 key={`r2-${client.id}-${idx}`}
-                className="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#E8531D]/40 hover:bg-orange-50/30 transition-all duration-200 cursor-pointer shrink-0"
+                className="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#BE1E2D]/40 hover:bg-red-50/30 transition-all duration-200 cursor-pointer shrink-0"
               >
                 {client.image ? (
                   <div className="w-10 h-10 rounded-lg overflow-hidden bg-white border border-slate-200/80 shrink-0 flex items-center justify-center p-0.5 shadow-xs">
                     <img src={client.image} alt={client.name} className="w-full h-full object-cover rounded" />
                   </div>
                 ) : (
-                  <div className="w-9 h-9 rounded-lg bg-slate-200 text-slate-700 font-black text-xs flex items-center justify-center group-hover:bg-[#0B2A4A] group-hover:text-white transition-colors shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-slate-200 text-slate-700 font-black text-xs flex items-center justify-center group-hover:bg-[#1E4384] group-hover:text-white transition-colors shrink-0">
                     {client.name.charAt(0)}
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-[#0B2A4A] transition-colors whitespace-nowrap">
+                  <span className="text-xs sm:text-sm font-bold text-slate-700 group-hover:text-[#1E4384] transition-colors whitespace-nowrap">
                     {client.name}
                   </span>
-                  <span className="text-[10px] text-slate-600 group-hover:text-[#E8531D] transition-colors whitespace-nowrap">
+                  <span className="text-[10px] text-slate-600 group-hover:text-[#BE1E2D] transition-colors whitespace-nowrap">
                     {currentLang === 'vi' ? client.industryVi : client.industryEn}
                   </span>
                 </div>

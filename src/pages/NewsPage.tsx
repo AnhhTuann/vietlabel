@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar, Clock, ArrowRight, Search, Newspaper } from 'lucide-react';
 import { SEO } from '../lib/seo';
-import { api } from '../lib/api';
+import { api } from '../services/api';
 import { SectionTitle } from '../components/ui/SectionTitle';
 
 export const NewsPage: React.FC = () => {
@@ -75,7 +75,7 @@ export const NewsPage: React.FC = () => {
       />
 
       {/* Header */}
-      <section className="bg-[#0B2A4A] text-white py-16 text-center">
+      <section className="bg-[#1E4384] text-white py-16 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
             TIN TỨC & GÓC NHÌN CHUYÊN GIA
@@ -100,7 +100,7 @@ export const NewsPage: React.FC = () => {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
                   selectedCategory === cat.id
-                    ? 'bg-white text-[#0B2A4A] shadow-xs'
+                    ? 'bg-white text-[#1E4384] shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -116,7 +116,7 @@ export const NewsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm bài viết..."
-              className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-1.5 text-xs focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+              className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-1.5 text-xs focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           </div>
@@ -151,7 +151,7 @@ export const NewsPage: React.FC = () => {
                         referrerPolicy="no-referrer"
                         loading="lazy"
                       />
-                      <div className="absolute top-3 left-3 bg-[#0B2A4A]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider backdrop-blur-xs">
+                      <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider backdrop-blur-xs">
                         {currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}
                       </div>
                     </Link>
@@ -169,7 +169,7 @@ export const NewsPage: React.FC = () => {
                         </span>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors line-clamp-2 leading-snug">
+                      <h3 className="text-base sm:text-lg font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors line-clamp-2 leading-snug">
                         <Link to={`/tin-tuc/${post.slug}`}>
                           {currentLang === 'vi' ? post.titleVi : post.titleEn}
                         </Link>
@@ -184,7 +184,7 @@ export const NewsPage: React.FC = () => {
                   <div className="px-6 pb-6 pt-0">
                     <Link
                       to={`/tin-tuc/${post.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors"
                     >
                       <span>Xem toàn bộ bài viết</span>
                       <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />

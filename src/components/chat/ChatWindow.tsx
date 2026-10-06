@@ -140,14 +140,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
       )}
     >
       {/* 1. Header */}
-      <div className="bg-[#0B2A4A] text-white p-3.5 sm:px-4 flex items-center justify-between shrink-0 shadow-md">
+      <div className="bg-[#1E4384] text-white p-3.5 sm:px-4 flex items-center justify-between shrink-0 shadow-md">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#E8531D] to-orange-400 flex items-center justify-center text-white shadow-sm">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#BE1E2D] to-red-400 flex items-center justify-center text-white shadow-sm">
               <Bot className="w-5 h-5" />
             </div>
             {/* Online pulsing dot */}
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0B2A4A] animate-pulse" />
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#1E4384] animate-pulse" />
           </div>
 
           <div>
@@ -205,10 +205,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
 
       {/* 2.1 Handoff Phone Input Prompt */}
       {showHandoffPrompt && (
-        <form onSubmit={handleConfirmHandoff} className="bg-orange-50 border-b border-orange-200 p-3 text-xs shrink-0 animate-in fade-in">
+        <form onSubmit={handleConfirmHandoff} className="bg-red-50 border-b border-red-200 p-3 text-xs shrink-0 animate-in fade-in">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="font-bold text-[#0B2A4A] flex items-center gap-1.5">
-              <UserCheck className="w-4 h-4 text-[#E8531D]" />
+            <span className="font-bold text-[#1E4384] flex items-center gap-1.5">
+              <UserCheck className="w-4 h-4 text-[#BE1E2D]" />
               Kết nối ngay với chuyên viên phụ trách:
             </span>
             <button type="button" onClick={() => setShowHandoffPrompt(false)} className="text-slate-400 hover:text-slate-600 p-1">
@@ -225,12 +225,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
               value={handoffPhone}
               onChange={(e) => setHandoffPhone(e.target.value)}
               placeholder="Nhập Số điện thoại / Zalo của anh/chị..."
-              className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white focus:border-[#E8531D] focus:outline-none"
+              className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white focus:border-[#BE1E2D] focus:outline-none"
             />
             <button
               type="submit"
               disabled={isSubmittingHandoff}
-              className="px-3 py-1.5 bg-[#E8531D] hover:bg-[#D04210] text-white rounded-lg font-bold text-xs shrink-0 cursor-pointer disabled:opacity-50"
+              className="px-3 py-1.5 bg-[#BE1E2D] hover:bg-[#D04210] text-white rounded-lg font-bold text-xs shrink-0 cursor-pointer disabled:opacity-50"
             >
               {isSubmittingHandoff ? 'Đang gửi...' : 'Gửi yêu cầu'}
             </button>
@@ -240,10 +240,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
 
       {/* 3. Escalate / Human Help Callout if needed */}
       {needHuman && (
-        <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-200 p-2.5 text-xs shrink-0 animate-in fade-in">
+        <div className="bg-gradient-to-r from-red-50 to-amber-50 border-b border-red-200 p-2.5 text-xs shrink-0 animate-in fade-in">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-[#0B2A4A] flex items-center gap-1.5">
-              <PhoneCall className="w-3.5 h-3.5 text-[#E8531D]" />
+            <span className="font-bold text-[#1E4384] flex items-center gap-1.5">
+              <PhoneCall className="w-3.5 h-3.5 text-[#BE1E2D]" />
               Kỹ sư dự toán Vietlabel sẵn sàng:
             </span>
             <span className="text-[10px] text-slate-500">{CONTACT_CONFIG.workingHours}</span>
@@ -252,7 +252,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
           <div className="mt-2 flex gap-2">
             <a
               href={`tel:${CONTACT_CONFIG.hotline}`}
-              className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 bg-[#0B2A4A] hover:bg-[#164373] text-white rounded-lg text-xs font-bold transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 bg-[#1E4384] hover:bg-[#164373] text-white rounded-lg text-xs font-bold transition-colors"
             >
               <PhoneCall className="w-3 h-3 text-amber-400" />
               <span>Gọi {CONTACT_CONFIG.hotlineDisplay}</span>
@@ -296,13 +296,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
         {/* Typing indicator */}
         {isLoading && !streamingText && (
           <div className="flex items-center gap-2 text-xs text-slate-500 py-1 px-2 animate-in fade-in">
-            <div className="w-6 h-6 rounded-full bg-[#E8531D] text-white flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full bg-[#BE1E2D] text-white flex items-center justify-center">
               <Bot className="w-3.5 h-3.5" />
             </div>
             <div className="flex items-center gap-1 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E8531D] animate-bounce" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E8531D] animate-bounce [animation-delay:0.2s]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E8531D] animate-bounce [animation-delay:0.4s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#BE1E2D] animate-bounce" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#BE1E2D] animate-bounce [animation-delay:0.2s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#BE1E2D] animate-bounce [animation-delay:0.4s]" />
               <span className="text-[11px] text-slate-500 ml-1">Đang soạn câu trả lời...</span>
             </div>
           </div>
@@ -351,7 +351,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
             onKeyDown={handleKeyDown}
             disabled={isLoading}
             placeholder="Nhập câu hỏi hoặc yêu cầu (ví dụ: cần 20.000 hộp thực phẩm)..."
-            className="flex-1 resize-none max-h-32 text-xs sm:text-sm p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:ring-1 focus:ring-[#E8531D] focus:outline-none"
+            className="flex-1 resize-none max-h-32 text-xs sm:text-sm p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:ring-1 focus:ring-[#BE1E2D] focus:outline-none"
           />
 
           <button
@@ -359,7 +359,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
             onClick={handleSend}
             disabled={(!inputMessage.trim() && attachedFiles.length === 0) || isLoading}
             aria-label="Gửi tin nhắn"
-            className="p-2.5 bg-[#E8531D] hover:bg-[#D04210] disabled:bg-slate-300 text-white rounded-xl transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none cursor-pointer shrink-0 shadow-md"
+            className="p-2.5 bg-[#BE1E2D] hover:bg-[#D04210] disabled:bg-slate-300 text-white rounded-xl transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none cursor-pointer shrink-0 shadow-md"
           >
             <Send className="w-4 h-4" />
           </button>

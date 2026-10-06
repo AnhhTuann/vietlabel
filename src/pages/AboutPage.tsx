@@ -61,7 +61,7 @@ export const AboutPage: React.FC = () => {
       />
 
       {/* Header Banner */}
-      <section className="bg-[#0B2A4A] text-white py-16 sm:py-20 relative overflow-hidden">
+      <section className="bg-[#1E4384] text-white py-16 sm:py-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
             VỀ CHÚNG TÔI
@@ -99,20 +99,20 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-orange-100 text-[#E8531D] flex items-center justify-center mb-5">
+              <div className="w-12 h-12 rounded-xl bg-red-100 text-[#BE1E2D] flex items-center justify-center mb-5">
                 <Target className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-[#0B2A4A] mb-3">Tầm nhìn chiến lược</h3>
+              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Tầm nhìn chiến lược</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Trở thành tập đoàn sản xuất bao bì giấy công nghiệp hàng đầu khu vực Đông Nam Á, tiên phong chuyển đổi sang giải pháp bao bì sinh thái tuần hoàn đạt chuẩn ESG toàn cầu.
               </p>
             </div>
 
             <div className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#0B2A4A] flex items-center justify-center mb-5">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#1E4384] flex items-center justify-center mb-5">
                 <Compass className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-[#0B2A4A] mb-3">Sứ mệnh doanh nghiệp</h3>
+              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Sứ mệnh doanh nghiệp</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Đồng hành cùng sự phát triển bền vững của khách hàng thông qua công nghệ in ấn vượt trội, quy trình chuẩn mực và tinh thần phụng sự tận tâm trong từng chiếc hộp bao bì.
               </p>
@@ -122,7 +122,7 @@ export const AboutPage: React.FC = () => {
               <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
                 <HeartHandshake className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-[#0B2A4A] mb-3">Giá trị cốt lõi</h3>
+              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Giá trị cốt lõi</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 <strong>Chất lượng (Quality)</strong> - <strong>Trách nhiệm (Sustainability)</strong> - <strong>Sáng tạo (Innovation)</strong> - <strong>Đúng hẹn (Punctuality)</strong>.
               </p>
@@ -144,14 +144,14 @@ export const AboutPage: React.FC = () => {
             {COMPANY_MILESTONES.map((m, idx) => (
               <div key={m.year} className="relative group">
                 {/* Node circle */}
-                <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-5 h-5 rounded-full bg-[#0B2A4A] border-4 border-white shadow-md group-hover:bg-[#E8531D] group-hover:scale-125 transition-all" />
+                <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-5 h-5 rounded-full bg-[#1E4384] border-4 border-white shadow-md group-hover:bg-[#BE1E2D] group-hover:scale-125 transition-all" />
 
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xl font-extrabold font-mono text-[#E8531D] tracking-tight">
+                    <span className="text-xl font-extrabold font-mono text-[#BE1E2D] tracking-tight">
                       {m.year}
                     </span>
-                    <span className="text-sm font-bold text-[#0B2A4A]">
+                    <span className="text-sm font-bold text-[#1E4384]">
                       {currentLang === 'vi' ? m.titleVi : m.titleEn}
                     </span>
                   </div>
@@ -194,10 +194,10 @@ export const AboutPage: React.FC = () => {
                 </div>
 
                 <div className="p-5">
-                  <h4 className="text-base font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors">
+                  <h4 className="text-base font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors">
                     {member.name}
                   </h4>
-                  <p className="text-xs font-semibold text-[#E8531D] mt-0.5">
+                  <p className="text-xs font-semibold text-[#BE1E2D] mt-0.5">
                     {currentLang === 'vi' ? member.roleVi : member.roleEn}
                   </p>
                   <p className="mt-3 text-xs text-slate-600 line-clamp-3 leading-relaxed">
@@ -229,10 +229,10 @@ export const AboutPage: React.FC = () => {
                 }}
                 className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer text-center"
               >
-                <div className="w-12 h-12 mx-auto rounded-xl bg-orange-50 text-[#E8531D] flex items-center justify-center mb-3">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-red-50 text-[#BE1E2D] flex items-center justify-center mb-3">
                   <Award className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-sm text-[#0B2A4A]">{cert.name}</h4>
+                <h4 className="font-bold text-sm text-[#1E4384]">{cert.name}</h4>
                 <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">{cert.code}</p>
                 <p className="text-xs text-slate-600 mt-2 line-clamp-2">{cert.descriptionVi}</p>
               </div>
@@ -240,7 +240,7 @@ export const AboutPage: React.FC = () => {
           </div>
 
           {/* Company Profile Download CTA */}
-          <div id="ho-so-nang-luc" className="mt-16 rounded-3xl bg-[#0B2A4A] text-white p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+          <div id="ho-so-nang-luc" className="mt-16 rounded-3xl bg-[#1E4384] text-white p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div>
               <span className="text-xs uppercase font-bold text-amber-400">TÀI LIỆU NĂNG LỰC DOANH NGHIỆP</span>
               <h3 className="text-xl sm:text-2xl font-bold mt-1 text-white">

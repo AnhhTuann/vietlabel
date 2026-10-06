@@ -17,20 +17,17 @@ export const Footer: React.FC = () => {
   const currentLang = i18n.language;
 
   return (
-    <footer className="bg-[#0B2A4A] text-white pt-16 pb-8 border-t border-slate-800">
+    <footer className="bg-[#1E4384] text-white pt-16 pb-8 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800/80">
           {/* Column 1: Brand & Credentials (4 cols) */}
           <div className="lg:col-span-4 space-y-5">
             <Link to="/" className="inline-block">
-              <div className="bg-white px-3.5 py-1.5 rounded-xl inline-flex items-center shadow-md">
+              <div className="inline-flex items-center">
                 <img
-                  src="/images/vietlabel/logo.webp"
+                  src="/images/vietlabel/logo.png"
                   alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
-                  className="h-9 w-auto object-contain max-w-[170px]"
-                  onError={(e) => {
-                    e.currentTarget.src = "/images/vietlabel/logo-icon.png";
-                  }}
+                  className="h-12 w-auto object-contain max-w-[320px] brightness-0 invert shrink-0"
                 />
               </div>
             </Link>
@@ -60,7 +57,7 @@ export const Footer: React.FC = () => {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#E8531D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#BE1E2D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
                 aria-label="Facebook"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -71,7 +68,7 @@ export const Footer: React.FC = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#E8531D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#BE1E2D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -82,7 +79,7 @@ export const Footer: React.FC = () => {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#E8531D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-[#BE1E2D] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
                 aria-label="YouTube"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -100,7 +97,7 @@ export const Footer: React.FC = () => {
 
             <div className="space-y-3 text-xs text-slate-300">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#E8531D] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#BE1E2D] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block font-medium">Nhà máy sản xuất chính:</strong>
                   <span>{t('footer.factory_address')}</span>
@@ -116,33 +113,33 @@ export const Footer: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2.5 pt-1">
-                <Phone className="w-4 h-4 text-[#E8531D] shrink-0" />
+                <Phone className="w-4 h-4 text-[#BE1E2D] shrink-0" />
                 <div>
                   <span>Hotline B2B: </span>
-                  <a href="tel:0868968089" className="text-white font-bold hover:text-[#E8531D]">
+                  <a href="tel:0868968089" className="text-white font-bold hover:text-[#BE1E2D]">
                     (+84) 086 896 8089
                   </a>
                   <span className="text-slate-400"> - </span>
-                  <a href="tel:02837658888" className="text-white font-bold hover:text-[#E8531D]">
+                  <a href="tel:02837658888" className="text-white font-bold hover:text-[#BE1E2D]">
                     (028) 3765 8888
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#E8531D] shrink-0" />
+                <Mail className="w-4 h-4 text-[#BE1E2D] shrink-0" />
                 <div>
                   <span>Email dự toán: </span>
                   <a
                     href="mailto:thien@vietlabel.com.vn"
-                    className="text-white font-medium hover:text-[#E8531D]"
+                    className="text-white font-medium hover:text-[#BE1E2D]"
                   >
                     thien@vietlabel.com.vn
                   </a>
                   <span className="text-slate-400"> / </span>
                   <a
                     href="mailto:baogia@vietlabel.com.vn"
-                    className="text-white font-medium hover:text-[#E8531D]"
+                    className="text-white font-medium hover:text-[#BE1E2D]"
                   >
                     baogia@vietlabel.com.vn
                   </a>
@@ -177,7 +174,7 @@ export const Footer: React.FC = () => {
               <li className="pt-2">
                 <Link
                   to="/san-pham"
-                  className="text-xs font-semibold text-[#E8531D] hover:underline"
+                  className="text-xs font-semibold text-[#BE1E2D] hover:underline"
                 >
                   {t('products_section.view_all')} →
                 </Link>

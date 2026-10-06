@@ -73,11 +73,11 @@ export const RatingBox: React.FC<RatingBoxProps> = ({ sessionId }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Góp ý thêm để Vietlabel phục vụ tốt hơn..."
-            className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:border-[#E8531D] focus:outline-none"
+            className="flex-1 text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:border-[#BE1E2D] focus:outline-none"
           />
           <button
             type="submit"
-            className="px-3 py-1.5 rounded-lg bg-[#0B2A4A] hover:bg-[#164373] text-white font-medium text-xs cursor-pointer transition-colors"
+            className="px-3 py-1.5 rounded-lg bg-[#1E4384] hover:bg-[#164373] text-white font-medium text-xs cursor-pointer transition-colors"
           >
             Gửi
           </button>

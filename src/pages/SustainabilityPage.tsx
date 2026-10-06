@@ -16,7 +16,7 @@ export const SustainabilityPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#0B2A4A] text-white py-16 relative">
+      <section className="bg-[#1E4384] text-white py-16 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2 inline-block">
             ESG & PHÁT TRIỂN BỀN VỮNG
@@ -36,28 +36,28 @@ export const SustainabilityPage: React.FC = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100">
               <TreePine className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <div className="text-3xl font-extrabold text-[#0B2A4A]">100%</div>
+              <div className="text-3xl font-extrabold text-[#1E4384]">100%</div>
               <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Giấy có nguồn gốc FSC</p>
               <p className="text-[11px] text-slate-500 mt-0.5">Truy xuất nguồn gốc rừng trồng hợp pháp</p>
             </div>
 
             <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100">
               <Recycle className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <div className="text-3xl font-extrabold text-[#0B2A4A]">99.2%</div>
+              <div className="text-3xl font-extrabold text-[#1E4384]">99.2%</div>
               <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Rác thải giấy được thu hồi</p>
               <p className="text-[11px] text-slate-500 mt-0.5">Tuần hoàn tái sinh thành bột giấy</p>
             </div>
 
             <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100">
               <Droplets className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <div className="text-3xl font-extrabold text-[#0B2A4A]">85%</div>
+              <div className="text-3xl font-extrabold text-[#1E4384]">85%</div>
               <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Sử dụng mực in sinh học</p>
               <p className="text-[11px] text-slate-500 mt-0.5">Mực gốc nước & dầu đậu nành an toàn</p>
             </div>
 
             <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100">
               <Sun className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <div className="text-3xl font-extrabold text-[#0B2A4A]">500 kWp</div>
+              <div className="text-3xl font-extrabold text-[#1E4384]">500 kWp</div>
               <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Điện mặt trời áp mái</p>
               <p className="text-[11px] text-slate-500 mt-0.5">Giảm 650 tấn CO2 phát thải mỗi năm</p>
             </div>
@@ -82,7 +82,7 @@ export const SustainabilityPage: React.FC = () => {
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
                 CHỨNG CHỈ QUỐC TẾ FSC® COC
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A4A] tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E4384] tracking-tight leading-snug">
                 Bảo vệ tài nguyên rừng trồng có trách nhiệm
               </h2>
               <p className="text-sm text-slate-600 leading-relaxed">
@@ -107,7 +107,7 @@ export const SustainabilityPage: React.FC = () => {
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
                 THAY THẾ NHỰA DÙNG MỘT LẦN
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A4A] tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E4384] tracking-tight leading-snug">
                 Màng tráng phủ sinh học và keo dán phân hủy
               </h2>
               <p className="text-sm text-slate-600 leading-relaxed">

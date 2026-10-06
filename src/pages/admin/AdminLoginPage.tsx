@@ -43,7 +43,7 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-[#0B2A4A] to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-[#1E4384] to-slate-900 flex items-center justify-center p-4">
       <Helmet>
         <meta name="robots" content="noindex, nofollow" />
         <title>Đăng nhập Quản trị | Vietlabel CRM</title>
@@ -52,10 +52,10 @@ export const AdminLoginPage: React.FC = () => {
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6 border border-slate-200">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#E8531D] to-orange-400 mx-auto flex items-center justify-center text-white shadow-lg shadow-orange-500/30">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#BE1E2D] to-red-400 mx-auto flex items-center justify-center text-white shadow-lg shadow-red-500/30">
             <ShieldCheck className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-black text-[#0B2A4A]">Đăng Nhập Quản Trị</h1>
+          <h1 className="text-2xl font-black text-[#1E4384]">Đăng Nhập Quản Trị</h1>
           <p className="text-xs text-slate-500">
             Hệ thống CRM & Hộp thư trực tiếp B2B Vietlabel Packaging
           </p>
@@ -81,7 +81,7 @@ export const AdminLoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="sales@vietlabel.com.vn"
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-[#E8531D] focus:ring-1 focus:ring-[#E8531D] focus:outline-none"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-[#BE1E2D] focus:ring-1 focus:ring-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -92,7 +92,7 @@ export const AdminLoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowForgotNotice(true)}
-                className="text-[11px] text-[#E8531D] hover:underline cursor-pointer"
+                className="text-[11px] text-[#BE1E2D] hover:underline cursor-pointer"
               >
                 Quên mật khẩu?
               </button>
@@ -105,7 +105,7 @@ export const AdminLoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-[#E8531D] focus:outline-none"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -115,7 +115,7 @@ export const AdminLoginPage: React.FC = () => {
             variant="primary"
             size="lg"
             disabled={isLoading}
-            className="w-full bg-[#E8531D] hover:bg-[#D04210] font-bold text-sm shadow-md"
+            className="w-full bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-sm shadow-md"
           >
             <span>{isLoading ? 'Đang xác thực...' : 'Đăng nhập vào hệ thống'}</span>
             <ArrowRight className="w-4 h-4 ml-1" />

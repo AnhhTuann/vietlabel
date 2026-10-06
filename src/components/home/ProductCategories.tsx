@@ -47,16 +47,16 @@ export const ProductCategories: React.FC = () => {
             <Link
               key={cat.id}
               to={`/san-pham/${cat.slug}`}
-              className="group relative flex flex-col justify-between p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8531D]"
+              className="group relative flex flex-col justify-between p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BE1E2D]"
             >
               <div>
                 {/* Large Icon Container */}
-                <div className="w-14 h-14 rounded-xl bg-slate-50 text-[#0B2A4A] group-hover:bg-[#E8531D] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-xs mb-5">
+                <div className="w-14 h-14 rounded-xl bg-slate-50 text-[#1E4384] group-hover:bg-[#BE1E2D] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-xs mb-5">
                   {ICONS_MAP[cat.iconName] || <Package className="w-8 h-8" />}
                 </div>
 
                 {/* Category Title */}
-                <h3 className="text-lg font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors line-clamp-1">
+                <h3 className="text-lg font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors line-clamp-1">
                   {currentLang === 'vi' ? cat.nameVi : cat.nameEn}
                 </h3>
 
@@ -67,7 +67,7 @@ export const ProductCategories: React.FC = () => {
               </div>
 
               {/* Action affordance line */}
-              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors">
+              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors">
                 <span>{t('products_section.learn_more')}</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" />
               </div>

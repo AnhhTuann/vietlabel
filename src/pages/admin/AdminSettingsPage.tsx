@@ -127,10 +127,10 @@ export const AdminSettingsPage: React.FC = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-        <span className="text-[11px] font-bold text-[#E8531D] uppercase tracking-wider block">
+        <span className="text-[11px] font-bold text-[#BE1E2D] uppercase tracking-wider block">
           SYSTEM CONFIGURATION & ACCESS CONTROL
         </span>
-        <h1 className="text-2xl font-black text-[#0B2A4A] mt-0.5">
+        <h1 className="text-2xl font-black text-[#1E4384] mt-0.5">
           Cài Đặt Hệ Thống & Quản Lý Người Dùng
         </h1>
         <p className="text-xs text-slate-500 mt-1">
@@ -148,8 +148,8 @@ export const AdminSettingsPage: React.FC = () => {
       {/* 1. Core Operating Settings */}
       <form onSubmit={handleSaveSettings} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
         <div className="border-b border-slate-100 pb-3">
-          <h2 className="text-base font-bold text-[#0B2A4A] flex items-center gap-2">
-            <Clock className="w-4 h-4 text-[#E8531D]" />
+          <h2 className="text-base font-bold text-[#1E4384] flex items-center gap-2">
+            <Clock className="w-4 h-4 text-[#BE1E2D]" />
             Khung Giờ Hoạt Động & Quy Tắc Nhắc Việc
           </h2>
         </div>
@@ -162,7 +162,7 @@ export const AdminSettingsPage: React.FC = () => {
               value={settings.working_hours || ''}
               onChange={(e) => setSettings({ ...settings, working_hours: e.target.value })}
               placeholder="08:00 - 17:30"
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
             />
             <span className="text-[11px] text-slate-400">Ngoài giờ này bot sẽ hẹn phản hồi trước 9h00 sáng mai</span>
           </div>
@@ -173,7 +173,7 @@ export const AdminSettingsPage: React.FC = () => {
               type="number"
               value={settings.escalation_minutes || 10}
               onChange={(e) => setSettings({ ...settings, escalation_minutes: Number(e.target.value) })}
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
             />
             <span className="text-[11px] text-slate-400">Nếu lead HOT chưa có ai nhận sau số phút này</span>
           </div>
@@ -184,7 +184,7 @@ export const AdminSettingsPage: React.FC = () => {
               type="number"
               value={settings.hot_threshold_quantity || 5000}
               onChange={(e) => setSettings({ ...settings, hot_threshold_quantity: Number(e.target.value) })}
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
             />
             <span className="text-[11px] text-slate-400">Đơn hàng từ ngưỡng này trở lên sẽ xếp hạng HOT</span>
           </div>
@@ -197,7 +197,7 @@ export const AdminSettingsPage: React.FC = () => {
                   type="checkbox"
                   checked={settings.telegram_enabled}
                   onChange={(e) => setSettings({ ...settings, telegram_enabled: e.target.checked })}
-                  className="rounded text-[#E8531D]"
+                  className="rounded text-[#BE1E2D]"
                 />
                 <span>Telegram Bot</span>
               </label>
@@ -207,7 +207,7 @@ export const AdminSettingsPage: React.FC = () => {
                   type="checkbox"
                   checked={settings.zalo_enabled}
                   onChange={(e) => setSettings({ ...settings, zalo_enabled: e.target.checked })}
-                  className="rounded text-[#E8531D]"
+                  className="rounded text-[#BE1E2D]"
                 />
                 <span>Zalo OA API</span>
               </label>
@@ -217,7 +217,7 @@ export const AdminSettingsPage: React.FC = () => {
                   type="checkbox"
                   checked={settings.email_enabled}
                   onChange={(e) => setSettings({ ...settings, email_enabled: e.target.checked })}
-                  className="rounded text-[#E8531D]"
+                  className="rounded text-[#BE1E2D]"
                 />
                 <span>Email Sales</span>
               </label>
@@ -231,7 +231,7 @@ export const AdminSettingsPage: React.FC = () => {
             disabled={isSaving}
             variant="primary"
             size="md"
-            className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs"
+            className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
           >
             <Save className="w-3.5 h-3.5 mr-1.5" />
             <span>{isSaving ? 'Đang lưu...' : 'Lưu cài đặt'}</span>
@@ -243,8 +243,8 @@ export const AdminSettingsPage: React.FC = () => {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
-            <h2 className="text-base font-bold text-[#0B2A4A] flex items-center gap-2">
-              <Users className="w-4 h-4 text-[#E8531D]" />
+            <h2 className="text-base font-bold text-[#1E4384] flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#BE1E2D]" />
               Danh Sách Nhân Viên & Phân Quyền
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -311,7 +311,7 @@ export const AdminSettingsPage: React.FC = () => {
       {showAddUserModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 space-y-4">
-            <h3 className="font-bold text-base text-[#0B2A4A] border-b border-slate-100 pb-3">
+            <h3 className="font-bold text-base text-[#1E4384] border-b border-slate-100 pb-3">
               Thêm Nhân Viên Mới
             </h3>
 
@@ -331,7 +331,7 @@ export const AdminSettingsPage: React.FC = () => {
                   value={newUserName}
                   onChange={(e) => setNewUserName(e.target.value)}
                   placeholder="Nguyễn Văn B"
-                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                 />
               </div>
 
@@ -343,7 +343,7 @@ export const AdminSettingsPage: React.FC = () => {
                   value={newUserEmail}
                   onChange={(e) => setNewUserEmail(e.target.value)}
                   placeholder="b.nguyen@vietlabel.com.vn"
-                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                 />
               </div>
 
@@ -355,7 +355,7 @@ export const AdminSettingsPage: React.FC = () => {
                   value={newUserPass}
                   onChange={(e) => setNewUserPass(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                  className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                 />
               </div>
 
@@ -365,7 +365,7 @@ export const AdminSettingsPage: React.FC = () => {
                   <select
                     value={newUserRole}
                     onChange={(e: any) => setNewUserRole(e.target.value)}
-                    className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                    className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                   >
                     <option value="SALES">SALES (Kinh doanh)</option>
                     <option value="MANAGER">MANAGER (Quản lý)</option>
@@ -380,7 +380,7 @@ export const AdminSettingsPage: React.FC = () => {
                     value={newUserTele}
                     onChange={(e) => setNewUserTele(e.target.value)}
                     placeholder="@username"
-                    className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                    className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
                   />
                 </div>
               </div>
@@ -394,7 +394,7 @@ export const AdminSettingsPage: React.FC = () => {
                   disabled={isCreatingUser}
                   variant="primary"
                   size="sm"
-                  className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs"
+                  className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
                 >
                   {isCreatingUser ? 'Đang tạo...' : 'Tạo tài khoản'}
                 </Button>

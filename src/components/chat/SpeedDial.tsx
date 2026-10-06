@@ -17,7 +17,7 @@ export const SpeedDial: React.FC<SpeedDialProps> = ({ isOpen, onOpenAiChat, onCl
       label: 'Trợ lý AI tư vấn 24/7',
       sublabel: 'Tư vấn thông số & dự toán',
       icon: Bot,
-      bgColor: 'bg-gradient-to-r from-[#E8531D] to-orange-500 text-white',
+      bgColor: 'bg-gradient-to-r from-[#BE1E2D] to-red-500 text-white',
       badge: 'Trí tuệ nhân tạo',
       badgeColor: 'bg-amber-100 text-amber-900',
       onClick: () => {
@@ -52,7 +52,7 @@ export const SpeedDial: React.FC<SpeedDialProps> = ({ isOpen, onOpenAiChat, onCl
       label: `Gọi ${CONTACT_CONFIG.hotlineDisplay}`,
       sublabel: 'Hotline kỹ sư dự toán',
       icon: Phone,
-      bgColor: 'bg-[#0B2A4A] text-white hover:bg-[#164373]',
+      bgColor: 'bg-[#1E4384] text-white hover:bg-[#164373]',
       badge: '24/7',
       badgeColor: 'bg-emerald-100 text-emerald-800',
       href: `tel:${CONTACT_CONFIG.hotline}`,

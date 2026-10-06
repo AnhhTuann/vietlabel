@@ -30,7 +30,7 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
         <span
           className={cn(
             'inline-block text-xs font-semibold tracking-wider uppercase mb-2.5',
-            dark ? 'text-amber-400' : 'text-[#E8531D]'
+            dark ? 'text-amber-400' : 'text-[#BE1E2D]'
           )}
         >
           {kicker}
@@ -39,7 +39,7 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
       <h2
         className={cn(
           'text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight [text-wrap:balance] leading-[1.25]',
-          dark ? 'text-white' : 'text-[#0B2A4A]'
+          dark ? 'text-white' : 'text-[#1E4384]'
         )}
       >
         {title}

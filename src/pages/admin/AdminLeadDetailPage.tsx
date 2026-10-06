@@ -216,7 +216,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
         <div className="text-center space-y-2">
-          <div className="w-8 h-8 border-4 border-[#E8531D] border-t-transparent rounded-full animate-spin mx-auto" />
+          <div className="w-8 h-8 border-4 border-[#BE1E2D] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs text-slate-500 font-semibold">Đang tải hồ sơ lead #{id}...</p>
         </div>
       </div>
@@ -228,7 +228,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
       <div className="min-h-[70vh] flex flex-col items-center justify-center text-center space-y-3">
         <AlertCircle className="w-12 h-12 text-rose-500" />
         <h2 className="text-lg font-bold text-slate-800">{error}</h2>
-        <Link to="/admin/leads" className="text-xs font-bold text-[#E8531D] hover:underline flex items-center gap-1">
+        <Link to="/admin/leads" className="text-xs font-bold text-[#BE1E2D] hover:underline flex items-center gap-1">
           <ArrowLeft className="w-4 h-4" /> Quay lại danh sách Leads
         </Link>
       </div>
@@ -257,7 +257,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
               <span className="font-mono text-sm font-extrabold text-slate-900 bg-slate-100 px-2.5 py-0.5 rounded-lg">
                 {lead.code || `#${lead.id.slice(-4)}`}
               </span>
-              <h1 className="text-base sm:text-lg font-black text-[#0B2A4A]">
+              <h1 className="text-base sm:text-lg font-black text-[#1E4384]">
                 {lead.customerName || 'Khách hàng web'}
               </h1>
             </div>
@@ -274,7 +274,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
               onClick={handleClaim}
               variant="primary"
               size="sm"
-              className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs shadow-xs"
+              className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs shadow-xs"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
               <span>Nhận xử lý hồ sơ này</span>
@@ -359,7 +359,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
               <span
                 className={`text-xs font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1 ${
                   lead.score === 'HOT'
-                    ? 'bg-orange-100 text-[#E8531D]'
+                    ? 'bg-red-100 text-[#BE1E2D]'
                     : 'bg-amber-100 text-amber-800'
                 }`}
               >
@@ -375,14 +375,14 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
           {/* Customer Brief Form / View */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-              <h3 className="font-bold text-sm text-[#0B2A4A] flex items-center gap-1.5">
-                <Package className="w-4 h-4 text-[#E8531D]" />
+              <h3 className="font-bold text-sm text-[#1E4384] flex items-center gap-1.5">
+                <Package className="w-4 h-4 text-[#BE1E2D]" />
                 Customer Brief
               </h3>
               <button
                 type="button"
                 onClick={() => setIsEditingBrief(!isEditingBrief)}
-                className="text-xs font-bold text-[#E8531D] hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#BE1E2D] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Edit2 className="w-3 h-3" />
                 <span>{isEditingBrief ? 'Hủy' : 'Sửa'}</span>
@@ -436,7 +436,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
                     className="w-full p-2 border border-slate-300 rounded-lg text-xs"
                   />
                 </div>
-                <Button type="submit" variant="primary" size="sm" className="w-full bg-[#E8531D]">
+                <Button type="submit" variant="primary" size="sm" className="w-full bg-[#BE1E2D]">
                   Lưu thay đổi
                 </Button>
               </form>
@@ -486,10 +486,10 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
           {/* Conversation Header */}
           <div className="p-3.5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-[#0B2A4A]">Hội thoại khách hàng</span>
+              <span className="text-xs font-bold text-[#1E4384]">Hội thoại khách hàng</span>
               <span
                 className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                  isHumanMode ? 'bg-orange-100 text-[#E8531D]' : 'bg-slate-200 text-slate-700'
+                  isHumanMode ? 'bg-red-100 text-[#BE1E2D]' : 'bg-slate-200 text-slate-700'
                 }`}
               >
                 {isHumanMode ? '👤 HUMAN TAKEOVER' : '🤖 BOT AI'}
@@ -504,12 +504,12 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
             >
               {isHumanMode ? (
                 <>
-                  <RotateCcw className="w-3.5 h-3.5 mr-1 text-[#E8531D]" />
+                  <RotateCcw className="w-3.5 h-3.5 mr-1 text-[#BE1E2D]" />
                   <span>Trả lại AI</span>
                 </>
               ) : (
                 <>
-                  <UserCheck className="w-3.5 h-3.5 mr-1 text-[#E8531D]" />
+                  <UserCheck className="w-3.5 h-3.5 mr-1 text-[#BE1E2D]" />
                   <span>Tiếp quản</span>
                 </>
               )}
@@ -545,7 +545,7 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
                       {isCustomer ? (
                         <span>Khách</span>
                       ) : isStaff ? (
-                        <span className="text-[#E8531D] font-bold">{m.staffName || 'Nhân viên'}</span>
+                        <span className="text-[#BE1E2D] font-bold">{m.staffName || 'Nhân viên'}</span>
                       ) : (
                         <span className="text-blue-600 font-semibold">Bot</span>
                       )}
@@ -557,8 +557,8 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
                         isCustomer
                           ? 'bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs'
                           : isStaff
-                          ? 'bg-[#E8531D] text-white rounded-tr-xs'
-                          : 'bg-[#0B2A4A] text-white rounded-tr-xs'
+                          ? 'bg-[#BE1E2D] text-white rounded-tr-xs'
+                          : 'bg-[#1E4384] text-white rounded-tr-xs'
                       }`}
                     >
                       {m.text}
@@ -577,14 +577,14 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
               placeholder="Soạn tin nhắn gửi khách..."
-              className="flex-1 text-xs px-3 py-2 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+              className="flex-1 text-xs px-3 py-2 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
             />
             <Button
               type="submit"
               disabled={!replyText.trim() || isSendingReply}
               variant="primary"
               size="sm"
-              className="bg-[#E8531D] hover:bg-[#D04210]"
+              className="bg-[#BE1E2D] hover:bg-[#D04210]"
             >
               <Send className="w-3.5 h-3.5 mr-1" />
               <span>Gửi</span>
@@ -606,10 +606,10 @@ Ghi chú: ${l.brief?.notes || 'Không'}`;
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 placeholder="Ví dụ: Đã gọi điện, khách hẹn gửi mẫu lúc 14h..."
-                className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none resize-none"
+                className="w-full text-xs p-2 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none resize-none"
               />
               <div className="flex justify-end">
-                <Button type="submit" disabled={isAddingNote || !noteText.trim()} variant="primary" size="sm" className="bg-[#0B2A4A] text-xs">
+                <Button type="submit" disabled={isAddingNote || !noteText.trim()} variant="primary" size="sm" className="bg-[#1E4384] text-xs">
                   Thêm ghi chú
                 </Button>
               </div>

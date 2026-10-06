@@ -117,7 +117,7 @@ export const ValueTabs: React.FC = () => {
   const activeValue = VALUES[activeTab];
 
   return (
-    <section className="py-24 bg-[#0B2A4A] text-white relative overflow-hidden">
+    <section className="py-24 bg-[#1E4384] text-white relative overflow-hidden">
       {/* Background industrial overlay */}
       <div className="absolute inset-0 opacity-10">
         <img
@@ -148,14 +148,14 @@ export const ValueTabs: React.FC = () => {
                   onClick={() => setActiveTab(idx)}
                   className={`w-full p-4 rounded-xl text-left transition-all duration-200 flex items-start gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                     isSelected
-                      ? 'bg-white text-[#0B2A4A] shadow-xl translate-x-1'
+                      ? 'bg-white text-[#1E4384] shadow-xl translate-x-1'
                       : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
                   }`}
                 >
                   <div
                     className={`p-2.5 rounded-lg shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-[#E8531D] text-white'
+                        ? 'bg-[#BE1E2D] text-white'
                         : 'bg-white/10 text-slate-300'
                     }`}
                   >
@@ -168,7 +168,7 @@ export const ValueTabs: React.FC = () => {
                         {t(val.titleKey)}
                       </h4>
                       {isSelected && (
-                        <ArrowRight className="w-4 h-4 text-[#E8531D] shrink-0 hidden sm:block" />
+                        <ArrowRight className="w-4 h-4 text-[#BE1E2D] shrink-0 hidden sm:block" />
                       )}
                     </div>
                     {/* On mobile, show short description inside accordion card if selected */}

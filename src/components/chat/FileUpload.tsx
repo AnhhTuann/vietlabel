@@ -79,10 +79,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesChange, files, di
           disabled={disabled || isUploading}
           title="Đính kèm file thiết kế / mẫu in (PDF, AI, PNG, JPG tối đa 10MB)"
           aria-label="Đính kèm file"
-          className="p-2 text-slate-500 hover:text-[#E8531D] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+          className="p-2 text-slate-500 hover:text-[#BE1E2D] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
         >
           {isUploading ? (
-            <Loader2 className="w-4 h-4 animate-spin text-[#E8531D]" />
+            <Loader2 className="w-4 h-4 animate-spin text-[#BE1E2D]" />
           ) : (
             <Paperclip className="w-4 h-4" />
           )}
@@ -109,7 +109,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesChange, files, di
               key={idx}
               className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-700 text-[11px]"
             >
-              <FileText className="w-3 h-3 text-[#E8531D]" />
+              <FileText className="w-3 h-3 text-[#BE1E2D]" />
               <span className="truncate max-w-[100px]">{file.name}</span>
               <button
                 type="button"

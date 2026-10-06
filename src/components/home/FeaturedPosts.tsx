@@ -21,7 +21,7 @@ export const FeaturedPosts: React.FC = () => {
           />
           <Link
             to="/tin-tuc"
-            className="mt-4 sm:mt-0 text-sm font-bold text-[#E8531D] hover:text-[#D04210] flex items-center gap-1.5 whitespace-nowrap group shrink-0"
+            className="mt-4 sm:mt-0 text-sm font-bold text-[#BE1E2D] hover:text-[#D04210] flex items-center gap-1.5 whitespace-nowrap group shrink-0"
           >
             <span>{t('news_section.view_all')}</span>
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
@@ -48,7 +48,7 @@ export const FeaturedPosts: React.FC = () => {
                     referrerPolicy="no-referrer"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3 bg-[#0B2A4A]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-xs">
+                  <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-xs">
                     {currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}
                   </div>
                 </Link>
@@ -69,7 +69,7 @@ export const FeaturedPosts: React.FC = () => {
                   </div>
 
                   {/* Title max 2 lines */}
-                  <h3 className="text-base sm:text-lg font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors line-clamp-2 leading-snug">
+                  <h3 className="text-base sm:text-lg font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors line-clamp-2 leading-snug">
                     <Link to={`/tin-tuc/${post.slug}`}>
                       {currentLang === 'vi' ? post.titleVi : post.titleEn}
                     </Link>
@@ -86,7 +86,7 @@ export const FeaturedPosts: React.FC = () => {
               <div className="px-6 pb-6 pt-0">
                 <Link
                   to={`/tin-tuc/${post.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors"
                 >
                   <span>Chi tiết bài viết</span>
                   <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />

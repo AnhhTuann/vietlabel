@@ -77,7 +77,7 @@ export const ContactSection: React.FC = () => {
         <div className="rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Left Column: Greeting, Factory Info & Imagery (5 cols) */}
-            <div className="lg:col-span-5 bg-[#0B2A4A] text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden">
+            <div className="lg:col-span-5 bg-[#1E4384] text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden">
               <div className="relative z-10 space-y-6">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
@@ -93,7 +93,7 @@ export const ContactSection: React.FC = () => {
 
                 <div className="pt-4 space-y-4 text-xs sm:text-sm text-slate-300">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[#E8531D] shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-white block font-semibold">Trụ sở & Nhà máy Vietlabel:</strong>
                       <span>266/6 Lê Thị Riêng, Phường Thới An, TP. Hồ Chí Minh, Việt Nam</span>
@@ -101,7 +101,7 @@ export const ContactSection: React.FC = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-[#E8531D] shrink-0 mt-0.5" />
+                    <Phone className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-white block font-semibold">{t('contact.hotline')}:</strong>
                       <a href="tel:0868968089" className="hover:text-amber-400 text-white font-bold">
@@ -115,7 +115,7 @@ export const ContactSection: React.FC = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-[#E8531D] shrink-0 mt-0.5" />
+                    <Mail className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-white block font-semibold">Email nhận hồ sơ thầu & báo giá:</strong>
                       <a href="mailto:thien@vietlabel.com.vn" className="hover:text-amber-400 text-white">
@@ -143,9 +143,6 @@ export const ContactSection: React.FC = () => {
                     alt="Nhà máy và quy trình 5S chuẩn quốc tế của Vietlabel"
                     className="w-full h-full object-cover object-center opacity-90"
                     loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = "/images/vietlabel/factory-machine1.jpg";
-                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3">
                     <span className="text-[11px] font-medium text-slate-200 flex items-center gap-1.5">
@@ -172,7 +169,7 @@ export const ContactSection: React.FC = () => {
                   </p>
                   {submitResult.trackingId && (
                     <div className="mt-5 inline-block p-3 bg-slate-100 border border-slate-200 rounded-lg text-xs font-mono text-slate-700">
-                      Mã phiếu yêu cầu: <strong className="text-[#E8531D]">{submitResult.trackingId}</strong>
+                      Mã phiếu yêu cầu: <strong className="text-[#BE1E2D]">{submitResult.trackingId}</strong>
                     </div>
                   )}
                   <div className="mt-8">
@@ -208,7 +205,7 @@ export const ContactSection: React.FC = () => {
                         type="text"
                         {...register('fullName')}
                         placeholder={t('contact.full_name_placeholder')}
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       />
                       {errors.fullName && (
                         <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
@@ -223,7 +220,7 @@ export const ContactSection: React.FC = () => {
                         type="text"
                         {...register('company')}
                         placeholder={t('contact.company_placeholder')}
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       />
                       {errors.company && (
                         <p className="mt-1 text-xs text-red-500">{errors.company.message}</p>
@@ -240,7 +237,7 @@ export const ContactSection: React.FC = () => {
                         type="email"
                         {...register('email')}
                         placeholder={t('contact.email_placeholder')}
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       />
                       {errors.email && (
                         <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
@@ -255,7 +252,7 @@ export const ContactSection: React.FC = () => {
                         type="tel"
                         {...register('phone')}
                         placeholder={t('contact.phone_placeholder')}
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>
@@ -270,7 +267,7 @@ export const ContactSection: React.FC = () => {
                       </label>
                       <select
                         {...register('productInterest')}
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       >
                         <option value="Hộp giấy cao cấp">Hộp giấy cao cấp / Hộp cứng</option>
                         <option value="Túi giấy thời trang">Túi giấy thời trang & Quà tặng</option>
@@ -291,7 +288,7 @@ export const ContactSection: React.FC = () => {
                         type="text"
                         {...register('quantity')}
                         placeholder="VD: 5,000 - 10,000 sản phẩm"
-                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors"
+                        className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors"
                       />
                     </div>
                   </div>
@@ -304,7 +301,7 @@ export const ContactSection: React.FC = () => {
                       rows={4}
                       {...register('message')}
                       placeholder={t('contact.message_placeholder')}
-                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A] transition-colors resize-none"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-colors resize-none"
                     />
                     {errors.message && (
                       <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>

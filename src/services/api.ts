@@ -71,3 +71,40 @@ export async function submitJobApplication(data: JobApplicationData): Promise<{ 
     message: 'Hồ sơ ứng tuyển đã được gửi thành công đến Phòng Nhân sự Vietlabel.',
   };
 }
+
+export const api = {
+  get: async (url: string) => {
+    const res = await fetch(`/api${url}`);
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    return { data };
+  },
+  post: async (url: string, body: any) => {
+    const res = await fetch(`/api${url}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    return { data };
+  },
+  put: async (url: string, body: any) => {
+    const res = await fetch(`/api${url}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    return { data };
+  },
+  delete: async (url: string) => {
+    const res = await fetch(`/api${url}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    return { data };
+  }
+};

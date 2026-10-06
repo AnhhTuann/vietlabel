@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Package, Plus, Edit2, Trash2, Search, X } from 'lucide-react';
-import { api } from '../../lib/api';
+import { api } from '../../services/api';
 
 interface Product {
   id: string;
@@ -81,7 +81,7 @@ export const AdminProductsPage: React.FC = () => {
         </div>
         <button
           onClick={() => { setCurrentProduct({ isActive: true }); setIsModalOpen(true); }}
-          className="flex items-center gap-2 px-4 py-2 bg-[#E8531D] text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#BE1E2D] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Thêm sản phẩm
@@ -95,7 +95,7 @@ export const AdminProductsPage: React.FC = () => {
             <input
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B2A4A]/20 focus:border-[#0B2A4A]"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E4384]/20 focus:border-[#1E4384]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -185,7 +185,7 @@ export const AdminProductsPage: React.FC = () => {
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B2A4A]/20 focus:border-[#0B2A4A]"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E4384]/20 focus:border-[#1E4384]"
                   value={currentProduct?.name || ''}
                   onChange={e => setCurrentProduct({ ...currentProduct, name: e.target.value })}
                 />
@@ -194,7 +194,7 @@ export const AdminProductsPage: React.FC = () => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Mô tả ngắn gọn</label>
                 <textarea
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B2A4A]/20 focus:border-[#0B2A4A]"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E4384]/20 focus:border-[#1E4384]"
                   value={currentProduct?.description || ''}
                   onChange={e => setCurrentProduct({ ...currentProduct, description: e.target.value })}
                 />
@@ -205,7 +205,7 @@ export const AdminProductsPage: React.FC = () => {
                   id="isActive"
                   checked={currentProduct?.isActive !== false}
                   onChange={e => setCurrentProduct({ ...currentProduct, isActive: e.target.checked })}
-                  className="w-4 h-4 text-[#E8531D] focus:ring-[#E8531D] border-slate-300 rounded"
+                  className="w-4 h-4 text-[#BE1E2D] focus:ring-[#BE1E2D] border-slate-300 rounded"
                 />
                 <label htmlFor="isActive" className="text-sm font-medium text-slate-700">Hiển thị trên website</label>
               </div>
@@ -219,7 +219,7 @@ export const AdminProductsPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#0B2A4A] text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
+                  className="px-5 py-2 bg-[#1E4384] text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
                 >
                   Lưu sản phẩm
                 </button>

@@ -61,7 +61,7 @@ export const Machines: React.FC = () => {
                     {MACHINES_LIST[0].name}
                   </h3>
                 </div>
-                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#E8531D] transition-colors">
+                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors">
                   <ZoomIn className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -90,7 +90,7 @@ export const Machines: React.FC = () => {
                     {MACHINES_LIST[1].name}
                   </h3>
                 </div>
-                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#E8531D] transition-colors">
+                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors">
                   <ZoomIn className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -121,7 +121,7 @@ export const Machines: React.FC = () => {
                       {machine.name}
                     </h3>
                   </div>
-                  <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#E8531D] transition-colors shrink-0 ml-2">
+                  <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors shrink-0 ml-2">
                     <ZoomIn className="w-4 h-4 text-white" />
                   </div>
                 </div>

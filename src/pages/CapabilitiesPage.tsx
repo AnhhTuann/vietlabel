@@ -20,25 +20,25 @@ export const CapabilitiesPage: React.FC = () => {
 
   const pillars = [
     {
-      icon: <Layers className="w-6 h-6 text-[#E8531D]" />,
+      icon: <Layers className="w-6 h-6 text-[#BE1E2D]" />,
       title: '1. Chế bản & Dựng mẫu CAD 3D',
       desc: 'Hệ thống phần mềm ArtiosCAD bản quyền kết hợp bàn cắt mẫu kỹ thuật số Kongsberg (Na Uy). Cho phép tạo mẫu thực tế trong 24 giờ để khách hàng thử nghiệm độ khít trước khi ra khuôn.',
       stats: 'Mẫu thử chuẩn xác ±0.1mm',
     },
     {
-      icon: <Cpu className="w-6 h-6 text-[#E8531D]" />,
+      icon: <Cpu className="w-6 h-6 text-[#BE1E2D]" />,
       title: '2. Năng lực In Offset & Flexo Đỉnh Cao',
       desc: 'Sở hữu dàn máy in Heidelberg Speedmaster XL 106 6 màu sấy UV (Đức) và máy in Flexo cuộn tự động. Tốc độ đạt 18.000 tờ/giờ, đáp ứng các đơn hàng triệu bản trong thời gian ngắn nhất.',
       stats: '18.000 tờ/giờ công suất đỉnh',
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-[#E8531D]" />,
+      icon: <ShieldCheck className="w-6 h-6 text-[#BE1E2D]" />,
       title: '3. Dây chuyền Gia công Tự động Khép kín',
       desc: 'Máy bế tự động Bobst Novacut, máy dán hộp Bobst Expertfold tốc độ 45.000 hộp/giờ, máy ép kim Masterwork MK 1060ST, máy bồi carton sóng bán tự động Meiguang 1650.',
       stats: 'Tự động hóa 85% khâu hoàn thiện',
     },
     {
-      icon: <Truck className="w-6 h-6 text-[#E8531D]" />,
+      icon: <Truck className="w-6 h-6 text-[#BE1E2D]" />,
       title: '4. Quản lý Chất lượng KCS & Kho bãi Logistics',
       desc: 'Phòng thí nghiệm đo độ bục (Bursting Test), độ nén cạnh (ECT), độ ẩm giấy và quang phổ màu X-Rite. Đội xe tải chuyên dụng giao hàng tận kho khách hàng đúng hẹn 99.8%.',
       stats: 'Kho lưu trữ 5.000 pallet tiêu chuẩn',
@@ -53,7 +53,7 @@ export const CapabilitiesPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#0B2A4A] text-white py-16 relative">
+      <section className="bg-[#1E4384] text-white py-16 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
             NĂNG LỰC SẢN XUẤT CÔNG NGHIỆP
@@ -94,13 +94,13 @@ export const CapabilitiesPage: React.FC = () => {
                 className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center mb-5">
                     {p.icon}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-[#0B2A4A] mb-3">{p.title}</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-[#1E4384] mb-3">{p.title}</h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">{p.desc}</p>
                 </div>
-                <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-[#E8531D]">
+                <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-[#BE1E2D]">
                   <span>{p.stats}</span>
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 </div>
@@ -121,7 +121,7 @@ export const CapabilitiesPage: React.FC = () => {
 
           <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
             <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-[#0B2A4A] text-white">
+              <thead className="bg-[#1E4384] text-white">
                 <tr>
                   <th className="p-4 font-semibold">Chủng loại bao bì</th>
                   <th className="p-4 font-semibold">Năng suất / Ca (8h)</th>

@@ -55,10 +55,10 @@ export const AdminOverviewPage: React.FC = () => {
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
-          <span className="text-[11px] font-bold text-[#E8531D] uppercase tracking-wider block">
+          <span className="text-[11px] font-bold text-[#BE1E2D] uppercase tracking-wider block">
             TRUNG TÂM ĐIỀU HÀNH B2B REALTIME
           </span>
-          <h1 className="text-2xl font-black text-[#0B2A4A] mt-0.5">
+          <h1 className="text-2xl font-black text-[#1E4384] mt-0.5">
             Tổng Quan Hoạt Động Tư Vấn & Kinh Doanh
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -84,7 +84,7 @@ export const AdminOverviewPage: React.FC = () => {
             <span className="text-xs font-bold uppercase">Tổng hồ sơ lead</span>
             <Users className="w-4 h-4 text-blue-500" />
           </div>
-          <div className="text-3xl font-black text-[#0B2A4A]">
+          <div className="text-3xl font-black text-[#1E4384]">
             {stats?.metrics?.totalLeads || 0}
           </div>
           <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
@@ -94,12 +94,12 @@ export const AdminOverviewPage: React.FC = () => {
         </div>
 
         {/* Metric 2 */}
-        <div className="bg-white p-5 rounded-2xl border border-orange-200 bg-orange-50/20 shadow-xs space-y-1">
+        <div className="bg-white p-5 rounded-2xl border border-red-200 bg-red-50/20 shadow-xs space-y-1">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase text-[#E8531D]">Lead HOT</span>
-            <Flame className="w-4 h-4 text-[#E8531D]" />
+            <span className="text-xs font-bold uppercase text-[#BE1E2D]">Lead HOT</span>
+            <Flame className="w-4 h-4 text-[#BE1E2D]" />
           </div>
-          <div className="text-3xl font-black text-[#E8531D]">
+          <div className="text-3xl font-black text-[#BE1E2D]">
             {stats?.metrics?.hotLeads || 0}
           </div>
           <span className="text-[11px] text-slate-500">
@@ -141,13 +141,13 @@ export const AdminOverviewPage: React.FC = () => {
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
-            <h2 className="text-sm sm:text-base font-bold text-[#0B2A4A]">
+            <h2 className="text-sm sm:text-base font-bold text-[#1E4384]">
               Hồ Sơ Cần Xử Lý Ngay (HOT / Khách Yêu Cầu Hỗ Trợ)
             </h2>
           </div>
           <Link
             to="/admin/leads?status=NEEDS_HUMAN"
-            className="text-xs font-bold text-[#E8531D] hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#BE1E2D] hover:underline flex items-center gap-1"
           >
             <span>Xem tất cả</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -199,7 +199,7 @@ export const AdminOverviewPage: React.FC = () => {
                   )}
                   <Link
                     to={`/admin/leads/${l.id}`}
-                    className="px-3 py-1.5 rounded-lg bg-[#0B2A4A] hover:bg-[#164373] text-white font-bold text-xs"
+                    className="px-3 py-1.5 rounded-lg bg-[#1E4384] hover:bg-[#164373] text-white font-bold text-xs"
                   >
                     Xem chi tiết
                   </Link>
@@ -214,8 +214,8 @@ export const AdminOverviewPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Products Requested */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-          <h3 className="font-bold text-sm text-[#0B2A4A] flex items-center gap-2">
-            <Package className="w-4 h-4 text-[#E8531D]" />
+          <h3 className="font-bold text-sm text-[#1E4384] flex items-center gap-2">
+            <Package className="w-4 h-4 text-[#BE1E2D]" />
             Nhóm Sản Phẩm Được Hỏi Nhiều Nhất
           </h3>
 
@@ -232,7 +232,7 @@ export const AdminOverviewPage: React.FC = () => {
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-[#E8531D] to-orange-400 rounded-full"
+                      className="h-full bg-gradient-to-r from-[#BE1E2D] to-red-400 rounded-full"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
@@ -244,7 +244,7 @@ export const AdminOverviewPage: React.FC = () => {
 
         {/* Agent Performance Leaderboard */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-          <h3 className="font-bold text-sm text-[#0B2A4A] flex items-center gap-2">
+          <h3 className="font-bold text-sm text-[#1E4384] flex items-center gap-2">
             <Award className="w-4 h-4 text-amber-500" />
             Hiệu Suất Chăm Sóc Của Nhân Viên Kinh Doanh
           </h3>

@@ -13,10 +13,10 @@ export const NotFoundPage: React.FC = () => {
       />
 
       <div className="max-w-md w-full text-center p-8 rounded-3xl bg-white border border-slate-200 shadow-xl">
-        <div className="w-16 h-16 rounded-2xl bg-orange-100 text-[#E8531D] flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-2xl bg-red-100 text-[#BE1E2D] flex items-center justify-center mx-auto mb-4">
           <PackageSearch className="w-8 h-8" />
         </div>
-        <span className="text-4xl font-extrabold font-mono text-[#0B2A4A]">404</span>
+        <span className="text-4xl font-extrabold font-mono text-[#1E4384]">404</span>
         <h1 className="text-xl font-bold text-slate-800 mt-2">Trang không tồn tại</h1>
         <p className="text-xs text-slate-500 mt-2 leading-relaxed">
           Địa chỉ trang web bạn truy cập có thể đã thay đổi hoặc không còn khả dụng trên hệ thống Vietlabel.

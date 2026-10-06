@@ -171,8 +171,8 @@ export const AdminInboxPage: React.FC = () => {
       <div className="w-full md:w-80 lg:w-96 border-r border-slate-200 flex flex-col shrink-0 bg-slate-50/50">
         <div className="p-4 border-b border-slate-200 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-extrabold text-base text-[#0B2A4A] flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-[#E8531D]" />
+            <h2 className="font-extrabold text-base text-[#1E4384] flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-[#BE1E2D]" />
               Hộp Thư Trực Tiếp
             </h2>
             <span className="text-xs bg-slate-200 font-bold px-2 py-0.5 rounded-full text-slate-700">
@@ -185,7 +185,7 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('ALL')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'ALL' ? 'bg-[#0B2A4A] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'ALL' ? 'bg-[#1E4384] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Tất cả
@@ -193,7 +193,7 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('MINE')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'MINE' ? 'bg-[#0B2A4A] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'MINE' ? 'bg-[#1E4384] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Của tôi
@@ -201,7 +201,7 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('HUMAN')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'HUMAN' ? 'bg-[#E8531D] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'HUMAN' ? 'bg-[#BE1E2D] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Đang tiếp quản
@@ -225,7 +225,7 @@ export const AdminInboxPage: React.FC = () => {
                   key={c.id}
                   onClick={() => setSelectedConvId(c.id)}
                   className={`p-3.5 hover:bg-slate-100 cursor-pointer transition-colors relative ${
-                    isSelected ? 'bg-orange-50/50 border-l-4 border-[#E8531D]' : ''
+                    isSelected ? 'bg-red-50/50 border-l-4 border-[#BE1E2D]' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between gap-1">
@@ -249,14 +249,14 @@ export const AdminInboxPage: React.FC = () => {
                   <div className="mt-2 flex items-center justify-between">
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        isHuman ? 'bg-orange-100 text-[#E8531D]' : 'bg-slate-100 text-slate-600'
+                        isHuman ? 'bg-red-100 text-[#BE1E2D]' : 'bg-slate-100 text-slate-600'
                       }`}
                     >
                       {isHuman ? '👤 NHÂN VIÊN TIẾP QUẢN' : '🤖 TRỢ LÝ BOT AI'}
                     </span>
 
                     {c.unreadCount > 0 && (
-                      <span className="w-5 h-5 rounded-full bg-[#E8531D] text-white text-[10px] font-bold flex items-center justify-center">
+                      <span className="w-5 h-5 rounded-full bg-[#BE1E2D] text-white text-[10px] font-bold flex items-center justify-center">
                         {c.unreadCount}
                       </span>
                     )}
@@ -275,12 +275,12 @@ export const AdminInboxPage: React.FC = () => {
             {/* Header */}
             <div className="p-4 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0B2A4A] text-white flex items-center justify-center font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-[#1E4384] text-white flex items-center justify-center font-bold text-sm">
                   <User className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-extrabold text-sm text-[#0B2A4A]">
+                    <h3 className="font-extrabold text-sm text-[#1E4384]">
                       {activeConvData.lead?.customerName || 'Khách hàng web'}
                     </h3>
                     <span className="font-mono text-xs bg-slate-100 font-bold px-1.5 py-0.5 rounded text-slate-600">
@@ -301,7 +301,7 @@ export const AdminInboxPage: React.FC = () => {
                     onClick={handleRelease}
                     variant="outline"
                     size="sm"
-                    className="text-xs font-bold border-orange-300 text-[#E8531D] hover:bg-orange-50"
+                    className="text-xs font-bold border-red-300 text-[#BE1E2D] hover:bg-red-50"
                   >
                     <RotateCcw className="w-3.5 h-3.5 mr-1" />
                     <span>Trả lại cho AI</span>
@@ -311,7 +311,7 @@ export const AdminInboxPage: React.FC = () => {
                     onClick={handleTakeover}
                     variant="primary"
                     size="sm"
-                    className="bg-[#E8531D] hover:bg-[#D04210] text-xs font-bold shadow-sm"
+                    className="bg-[#BE1E2D] hover:bg-[#D04210] text-xs font-bold shadow-sm"
                   >
                     <UserCheck className="w-3.5 h-3.5 mr-1" />
                     <span>Tiếp quản cuộc trò chuyện</span>
@@ -346,7 +346,7 @@ export const AdminInboxPage: React.FC = () => {
                       {isCustomer ? (
                         <span>Khách hàng</span>
                       ) : isStaff ? (
-                        <span className="font-bold text-[#E8531D]">Nhân viên: {msg.staffName || user?.name}</span>
+                        <span className="font-bold text-[#BE1E2D]">Nhân viên: {msg.staffName || user?.name}</span>
                       ) : (
                         <span className="font-semibold text-blue-600">Trợ lý AI Vietlabel</span>
                       )}
@@ -358,8 +358,8 @@ export const AdminInboxPage: React.FC = () => {
                         isCustomer
                           ? 'bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs'
                           : isStaff
-                          ? 'bg-[#E8531D] text-white rounded-tr-xs'
-                          : 'bg-[#0B2A4A] text-white rounded-tr-xs'
+                          ? 'bg-[#BE1E2D] text-white rounded-tr-xs'
+                          : 'bg-[#1E4384] text-white rounded-tr-xs'
                       }`}
                     >
                       {msg.text}
@@ -394,7 +394,7 @@ export const AdminInboxPage: React.FC = () => {
                     ? `Nhập tin nhắn với tư cách ${user?.name}...`
                     : 'Gõ tin nhắn để gửi cho khách (hệ thống sẽ tự động chuyển sang chế độ tiếp quản)...'
                 }
-                className="flex-1 text-xs sm:text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-[#E8531D] focus:outline-none"
+                className="flex-1 text-xs sm:text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
               />
 
               <Button
@@ -402,7 +402,7 @@ export const AdminInboxPage: React.FC = () => {
                 disabled={!inputText.trim() || isSending}
                 variant="primary"
                 size="md"
-                className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs"
+                className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
               >
                 <Send className="w-4 h-4 mr-1" />
                 <span>Gửi</span>

@@ -63,11 +63,11 @@ export const ProductDetailPage: React.FC = () => {
       <section className="bg-slate-100 py-4 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 text-xs text-slate-600">
-            <Link to="/" className="hover:text-[#E8531D]">Trang chủ</Link>
+            <Link to="/" className="hover:text-[#BE1E2D]">Trang chủ</Link>
             <span>/</span>
-            <Link to="/san-pham" className="hover:text-[#E8531D]">Sản phẩm</Link>
+            <Link to="/san-pham" className="hover:text-[#BE1E2D]">Sản phẩm</Link>
             <span>/</span>
-            <Link to={`/san-pham/${product.categorySlug}`} className="hover:text-[#E8531D]">
+            <Link to={`/san-pham/${product.categorySlug}`} className="hover:text-[#BE1E2D]">
               {currentLang === 'vi' ? product.categoryNameVi : product.categoryNameEn}
             </Link>
             <span>/</span>
@@ -89,7 +89,7 @@ export const ProductDetailPage: React.FC = () => {
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute top-4 left-4 bg-[#0B2A4A]/90 text-white font-mono text-xs font-bold px-3 py-1 rounded-md backdrop-blur-xs">
+                <div className="absolute top-4 left-4 bg-[#1E4384]/90 text-white font-mono text-xs font-bold px-3 py-1 rounded-md backdrop-blur-xs">
                   Mã: {product.code}
                 </div>
               </div>
@@ -103,7 +103,7 @@ export const ProductDetailPage: React.FC = () => {
                       onClick={() => setSelectedImage(img)}
                       className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
                         selectedImage === img
-                          ? 'border-[#E8531D] shadow-sm'
+                          ? 'border-[#BE1E2D] shadow-sm'
                           : 'border-slate-200 opacity-70 hover:opacity-100'
                       }`}
                     >
@@ -142,10 +142,10 @@ export const ProductDetailPage: React.FC = () => {
             {/* Product Details & Specs Column (6 cols) */}
             <div className="lg:col-span-6 space-y-6">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#E8531D]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#BE1E2D]">
                   {currentLang === 'vi' ? product.categoryNameVi : product.categoryNameEn}
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A4A] mt-1.5 leading-snug">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E4384] mt-1.5 leading-snug">
                   {productName}
                 </h1>
                 <p className="mt-3 text-sm text-slate-600 leading-relaxed">
@@ -155,7 +155,7 @@ export const ProductDetailPage: React.FC = () => {
 
               {/* Technical Specifications Table */}
               <div className="rounded-2xl border border-slate-200 overflow-hidden bg-[#FAFAFC]">
-                <div className="bg-slate-100 px-4 py-2.5 border-b border-slate-200 font-bold text-xs uppercase tracking-wider text-[#0B2A4A]">
+                <div className="bg-slate-100 px-4 py-2.5 border-b border-slate-200 font-bold text-xs uppercase tracking-wider text-[#1E4384]">
                   Thông số kỹ thuật tiêu chuẩn
                 </div>
                 <div className="divide-y divide-slate-200/80 text-xs">
@@ -185,7 +185,7 @@ export const ProductDetailPage: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-3 p-3">
                     <span className="font-semibold text-slate-500">Số lượng tối thiểu (MOQ):</span>
-                    <span className="col-span-2 text-[#E8531D] font-bold font-mono">
+                    <span className="col-span-2 text-[#BE1E2D] font-bold font-mono">
                       {product.specs.moq}
                     </span>
                   </div>
@@ -255,7 +255,7 @@ export const ProductDetailPage: React.FC = () => {
       {relatedProducts.length > 0 && (
         <section className="py-16 bg-[#FAFAFC] border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-xl font-bold text-[#0B2A4A] mb-8">Sản phẩm cùng phân khúc</h2>
+            <h2 className="text-xl font-bold text-[#1E4384] mb-8">Sản phẩm cùng phân khúc</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedProducts.map((rel) => (
                 <Link
@@ -273,10 +273,10 @@ export const ProductDetailPage: React.FC = () => {
                     />
                   </div>
                   <div className="p-4">
-                    <span className="text-[10px] font-bold text-[#E8531D] uppercase">
+                    <span className="text-[10px] font-bold text-[#BE1E2D] uppercase">
                       {rel.code}
                     </span>
-                    <h3 className="text-sm font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors mt-0.5 line-clamp-1">
+                    <h3 className="text-sm font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors mt-0.5 line-clamp-1">
                       {currentLang === 'vi' ? rel.nameVi : rel.nameEn}
                     </h3>
                   </div>

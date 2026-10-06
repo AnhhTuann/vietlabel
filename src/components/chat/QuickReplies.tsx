@@ -25,9 +25,9 @@ export const QuickReplies: React.FC<QuickRepliesProps> = ({ onSelect, disabled }
             key={idx}
             disabled={disabled}
             onClick={() => onSelect(item.query)}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-orange-50 hover:text-[#E8531D] text-slate-700 border border-slate-200/80 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-red-50 hover:text-[#BE1E2D] text-slate-700 border border-slate-200/80 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
           >
-            <Icon className="w-3 h-3 text-[#E8531D]" />
+            <Icon className="w-3 h-3 text-[#BE1E2D]" />
             <span>{item.label}</span>
           </button>
         );

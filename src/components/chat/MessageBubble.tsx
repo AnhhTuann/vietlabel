@@ -40,7 +40,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }
       if (isBullet) {
         return (
           <div key={lIdx} className="flex items-start gap-1.5 ml-1 my-0.5">
-            <span className="text-[#E8531D] font-bold select-none">•</span>
+            <span className="text-[#BE1E2D] font-bold select-none">•</span>
             <span className="flex-1">{renderedParts}</span>
           </div>
         );
@@ -66,10 +66,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }
         className={cn(
           'w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-white shadow-xs select-none',
           isUser
-            ? 'bg-[#0B2A4A]'
+            ? 'bg-[#1E4384]'
             : message.isError
             ? 'bg-rose-500'
-            : 'bg-[#E8531D]'
+            : 'bg-[#BE1E2D]'
         )}
       >
         {isUser ? (
@@ -87,7 +87,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }
           className={cn(
             'px-3.5 py-2.5 rounded-2xl shadow-xs break-words',
             isUser
-              ? 'bg-[#0B2A4A] text-white rounded-tr-xs'
+              ? 'bg-[#1E4384] text-white rounded-tr-xs'
               : message.isError
               ? 'bg-rose-50 text-rose-900 border border-rose-200 rounded-tl-xs'
               : 'bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs'
@@ -123,7 +123,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }
           {message.isError && onRetry && (
             <button
               onClick={onRetry}
-              className="inline-flex items-center gap-1 text-xs text-[#E8531D] hover:underline font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1 text-xs text-[#BE1E2D] hover:underline font-semibold cursor-pointer"
             >
               <RefreshCw className="w-3 h-3" />
               <span>Thử lại</span>

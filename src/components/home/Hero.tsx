@@ -102,9 +102,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           src="/images/vietlabel/hero-banner.webp"
           alt="Vietlabel Manufacturing Facility & Industrial Fleet"
           className="w-full h-full object-cover object-center opacity-30 scale-105 transform motion-safe:transition-transform motion-safe:duration-1000"
-          onError={(e) => {
-            e.currentTarget.src = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=2000&auto=format&fit=crop";
-          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#071C33] via-[#071C33]/90 to-[#071C33]/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#071C33] via-transparent to-black/30" />
@@ -138,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                   variant="primary"
                   size="lg"
                   icon={<ArrowRight className="w-5 h-5" />}
-                  className="shadow-lg shadow-orange-950/40"
+                  className="shadow-lg shadow-red-950/40"
                 >
                   {t('hero.cta_products')}
                 </Button>
@@ -218,7 +215,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                       key={idx}
                       onClick={() => setActiveSlide(idx)}
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                        idx === activeSlide ? 'w-6 bg-[#E8531D]' : 'w-2 bg-slate-700 hover:bg-slate-500'
+                        idx === activeSlide ? 'w-6 bg-[#BE1E2D]' : 'w-2 bg-slate-700 hover:bg-slate-500'
                       }`}
                       aria-label={`Chuyển tới mẫu sản phẩm ${idx + 1}`}
                     />

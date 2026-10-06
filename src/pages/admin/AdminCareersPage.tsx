@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Briefcase, Plus, Edit2, Trash2, X } from 'lucide-react';
-import { api } from '../../lib/api';
+import { api } from '../../services/api';
 
 interface Job {
   id: string;
@@ -42,7 +42,7 @@ export const AdminCareersPage: React.FC = () => {
       <Helmet><title>Tuyển dụng - Admin</title></Helmet>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-slate-800">Quản lý Tuyển dụng</h1>
-        <button onClick={() => { setCurrentJob({ status: 'OPEN' }); setIsModalOpen(true); }} className="flex items-center gap-2 px-4 py-2 bg-[#E8531D] text-white rounded-lg">
+        <button onClick={() => { setCurrentJob({ status: 'OPEN' }); setIsModalOpen(true); }} className="flex items-center gap-2 px-4 py-2 bg-[#BE1E2D] text-white rounded-lg">
           <Plus className="w-5 h-5" /> Thêm vị trí
         </button>
       </div>
@@ -71,7 +71,7 @@ export const AdminCareersPage: React.FC = () => {
             <form onSubmit={handleSave} className="space-y-4">
               <input required type="text" placeholder="Chức danh" className="w-full px-4 py-2 border rounded-lg" value={currentJob?.title || ''} onChange={e => setCurrentJob({...currentJob, title: e.target.value})} />
               <input type="text" placeholder="Phòng ban" className="w-full px-4 py-2 border rounded-lg" value={currentJob?.department || ''} onChange={e => setCurrentJob({...currentJob, department: e.target.value})} />
-              <button type="submit" className="px-5 py-2 bg-[#0B2A4A] text-white rounded-lg w-full">Lưu</button>
+              <button type="submit" className="px-5 py-2 bg-[#1E4384] text-white rounded-lg w-full">Lưu</button>
             </form>
           </div>
         </div>

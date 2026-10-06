@@ -56,11 +56,11 @@ export const BriefCard: React.FC<BriefCardProps> = ({
   }
 
   return (
-    <div className="my-3 rounded-2xl bg-gradient-to-br from-amber-50/50 via-white to-orange-50/40 border-2 border-[#E8531D]/30 p-4 shadow-sm text-xs sm:text-sm">
+    <div className="my-3 rounded-2xl bg-gradient-to-br from-amber-50/50 via-white to-red-50/40 border-2 border-[#BE1E2D]/30 p-4 shadow-sm text-xs sm:text-sm">
       {/* Header */}
       <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-amber-200/60">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-[#E8531D] text-white flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-[#BE1E2D] text-white flex items-center justify-center">
             <Sparkles className="w-3.5 h-3.5" />
           </div>
           <div>
@@ -76,7 +76,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
         <button
           type="button"
           onClick={() => setIsEditing(!isEditing)}
-          className="text-[#0B2A4A] hover:text-[#E8531D] text-[11px] font-semibold flex items-center gap-1 cursor-pointer"
+          className="text-[#1E4384] hover:text-[#BE1E2D] text-[11px] font-semibold flex items-center gap-1 cursor-pointer"
         >
           <Edit2 className="w-3 h-3" />
           <span>{isEditing ? 'Thu gọn' : 'Chỉnh sửa'}</span>
@@ -101,7 +101,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.fullName || ''}
                 onChange={e => setBrief({ ...brief, fullName: e.target.value })}
                 placeholder="Nguyễn Văn A"
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
             <div>
@@ -111,7 +111,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.company || ''}
                 onChange={e => setBrief({ ...brief, company: e.target.value })}
                 placeholder="Công ty TNHH..."
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -124,7 +124,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.contact || ''}
                 onChange={e => setBrief({ ...brief, contact: e.target.value })}
                 placeholder="0987 654 321"
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
                 required
               />
             </div>
@@ -135,7 +135,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.email || ''}
                 onChange={e => setBrief({ ...brief, email: e.target.value })}
                 placeholder="email@congty.com"
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -148,7 +148,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.productType || ''}
                 onChange={e => setBrief({ ...brief, productType: e.target.value })}
                 placeholder="Tem nhãn cuộn decal, hộp cứng..."
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
                 required
               />
             </div>
@@ -159,7 +159,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.quantity || ''}
                 onChange={e => setBrief({ ...brief, quantity: e.target.value })}
                 placeholder="Ví dụ: 10,000 tem / 1,000 hộp"
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -172,7 +172,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.dimensions || ''}
                 onChange={e => setBrief({ ...brief, dimensions: e.target.value })}
                 placeholder="Dài x Rộng x Cao (cm/mm)"
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
             <div>
@@ -182,7 +182,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.material || ''}
                 onChange={e => setBrief({ ...brief, material: e.target.value })}
                 placeholder="Decal nhựa PP, giấy Ivory, cán màng..."
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
               value={brief.innerProductOrSurface || ''}
               onChange={e => setBrief({ ...brief, innerProductOrSurface: e.target.value })}
               placeholder="Can nhớt HDPE, chai thủy tinh, đồ đông lạnh, chịu nhiệt..."
-              className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+              className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
             />
           </div>
 
@@ -206,7 +206,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.deadline || ''}
                 onChange={e => setBrief({ ...brief, deadline: e.target.value })}
                 placeholder="Trong 5 ngày, tuần tới..."
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
             <div>
@@ -216,7 +216,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
                 value={brief.deliveryLocation || ''}
                 onChange={e => setBrief({ ...brief, deliveryLocation: e.target.value })}
                 placeholder="TP. HCM, Bình Dương, Đồng Nai..."
-                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#E8531D] focus:outline-none"
+                className="w-full text-xs p-1.5 border border-slate-300 rounded-md focus:border-[#BE1E2D] focus:outline-none"
               />
             </div>
           </div>
@@ -235,7 +235,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
               variant="primary"
               size="sm"
               disabled={isSubmitting}
-              className="bg-[#E8531D] hover:bg-[#D04210]"
+              className="bg-[#BE1E2D] hover:bg-[#D04210]"
             >
               <Send className="w-3.5 h-3.5 mr-1" />
               <span>{isSubmitting ? 'Đang gửi...' : 'Gửi cho nhân viên'}</span>
@@ -318,7 +318,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({
               size="sm"
               disabled={isSubmitting}
               onClick={handleSubmit}
-              className="bg-[#E8531D] hover:bg-[#D04210] font-bold text-xs"
+              className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
             >
               <Send className="w-3.5 h-3.5 mr-1" />
               <span>{isSubmitting ? 'Đang gửi...' : 'Gửi cho nhân viên'}</span>

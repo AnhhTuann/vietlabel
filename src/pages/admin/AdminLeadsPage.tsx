@@ -102,12 +102,12 @@ export const AdminLeadsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-[#E8531D] uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#BE1E2D] uppercase tracking-wider">
             <span>HỆ THỐNG QUẢN TRỊ B2B VIETLABEL</span>
             <span>•</span>
             <span className="text-slate-500 font-normal">REALTIME LEAD NOTIFIER</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B2A4A] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E4384] mt-1">
             Trung Tâm Quản Lý Yêu Cầu & Báo Giá (CRM)
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -121,7 +121,7 @@ export const AdminLeadsPage: React.FC = () => {
             <button
               onClick={() => setViewMode('TABLE')}
               className={`p-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                viewMode === 'TABLE' ? 'bg-white shadow-xs text-[#0B2A4A]' : 'text-slate-500'
+                viewMode === 'TABLE' ? 'bg-white shadow-xs text-[#1E4384]' : 'text-slate-500'
               }`}
             >
               <TableIcon className="w-3.5 h-3.5" />
@@ -130,7 +130,7 @@ export const AdminLeadsPage: React.FC = () => {
             <button
               onClick={() => setViewMode('KANBAN')}
               className={`p-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                viewMode === 'KANBAN' ? 'bg-white shadow-xs text-[#0B2A4A]' : 'text-slate-500'
+                viewMode === 'KANBAN' ? 'bg-white shadow-xs text-[#1E4384]' : 'text-slate-500'
               }`}
             >
               <Kanban className="w-3.5 h-3.5" />
@@ -164,12 +164,12 @@ export const AdminLeadsPage: React.FC = () => {
           <div className="text-2xl font-black text-slate-800 mt-1">{stats.total}</div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-orange-200 bg-orange-50/30 shadow-xs">
+        <div className="bg-white p-4 rounded-xl border border-red-200 bg-red-50/30 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#E8531D] uppercase">Lead HOT</span>
-            <Flame className="w-4 h-4 text-[#E8531D]" />
+            <span className="text-[11px] font-semibold text-[#BE1E2D] uppercase">Lead HOT</span>
+            <Flame className="w-4 h-4 text-[#BE1E2D]" />
           </div>
-          <div className="text-2xl font-black text-[#E8531D] mt-1">{stats.hot}</div>
+          <div className="text-2xl font-black text-[#BE1E2D] mt-1">{stats.hot}</div>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/30 shadow-xs">
@@ -215,7 +215,7 @@ export const AdminLeadsPage: React.FC = () => {
               onClick={() => setFilterStatus(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 filterStatus === tab.id
-                  ? 'bg-[#0B2A4A] text-white shadow-xs'
+                  ? 'bg-[#1E4384] text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -233,12 +233,12 @@ export const AdminLeadsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm tên, SĐT, mã lead..."
-              className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:border-[#E8531D] focus:outline-none"
+              className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:border-[#BE1E2D] focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="px-3 py-1.5 rounded-lg bg-[#E8531D] hover:bg-[#D04210] text-white text-xs font-semibold cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-[#BE1E2D] hover:bg-[#D04210] text-white text-xs font-semibold cursor-pointer"
           >
             Tìm
           </button>
@@ -250,7 +250,7 @@ export const AdminLeadsPage: React.FC = () => {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           {isLoading ? (
             <div className="p-12 text-center text-slate-500 text-sm">
-              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#E8531D] mb-2" />
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#BE1E2D] mb-2" />
               Đang tải danh sách yêu cầu...
             </div>
           ) : leads.length === 0 ? (
@@ -285,7 +285,7 @@ export const AdminLeadsPage: React.FC = () => {
                         <span
                           className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full ${
                             isHot
-                              ? 'bg-orange-100 text-[#E8531D]'
+                              ? 'bg-red-100 text-[#BE1E2D]'
                               : lead.score === 'WARM'
                               ? 'bg-amber-100 text-amber-800'
                               : 'bg-slate-100 text-slate-700'
@@ -364,7 +364,7 @@ export const AdminLeadsPage: React.FC = () => {
 
                       <Link
                         to={`/admin/leads/${lead.id}`}
-                        className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-[#0B2A4A] hover:bg-[#164373] text-white text-xs font-bold transition-all shadow-xs"
+                        className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-[#1E4384] hover:bg-[#164373] text-white text-xs font-bold transition-all shadow-xs"
                       >
                         <span>Xem chi tiết</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -409,7 +409,7 @@ export const AdminLeadsPage: React.FC = () => {
                         <span
                           className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                             l.score === 'HOT'
-                              ? 'bg-orange-100 text-[#E8531D]'
+                              ? 'bg-red-100 text-[#BE1E2D]'
                               : 'bg-amber-100 text-amber-800'
                           }`}
                         >
@@ -438,7 +438,7 @@ export const AdminLeadsPage: React.FC = () => {
                       <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
                         <Link
                           to={`/admin/leads/${l.id}`}
-                          className="text-[11px] font-bold text-[#0B2A4A] hover:text-[#E8531D] flex items-center gap-0.5"
+                          className="text-[11px] font-bold text-[#1E4384] hover:text-[#BE1E2D] flex items-center gap-0.5"
                         >
                           <span>Hồ sơ</span>
                           <ArrowRight className="w-3 h-3" />

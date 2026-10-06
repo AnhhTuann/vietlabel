@@ -72,7 +72,7 @@ export const TechnologyPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#0B2A4A] text-white py-16 text-center">
+      <section className="bg-[#1E4384] text-white py-16 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
             HẠ TẦNG KỸ THUẬT & CÔNG NGHỆ
@@ -102,12 +102,12 @@ export const TechnologyPage: React.FC = () => {
                 className="relative p-6 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-all"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl font-black font-mono text-[#E8531D] tracking-tight">
+                  <span className="text-3xl font-black font-mono text-[#BE1E2D] tracking-tight">
                     {st.step}
                   </span>
-                  <div className="w-2 h-2 rounded-full bg-[#0B2A4A]" />
+                  <div className="w-2 h-2 rounded-full bg-[#1E4384]" />
                 </div>
-                <h3 className="text-base font-bold text-[#0B2A4A] mb-2">{st.title}</h3>
+                <h3 className="text-base font-bold text-[#1E4384] mb-2">{st.title}</h3>
                 <p className="text-xs text-slate-600 leading-relaxed">{st.desc}</p>
               </div>
             ))}
@@ -145,20 +145,20 @@ export const TechnologyPage: React.FC = () => {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm text-white group-hover:bg-[#E8531D] transition-colors">
+                    <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm text-white group-hover:bg-[#BE1E2D] transition-colors">
                       <ZoomIn className="w-6 h-6" />
                     </div>
                   </div>
-                  <div className="absolute top-3 left-3 bg-[#0B2A4A] text-white text-[10px] font-bold px-2.5 py-1 rounded">
+                  <div className="absolute top-3 left-3 bg-[#1E4384] text-white text-[10px] font-bold px-2.5 py-1 rounded">
                     {m.origin}
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <div className="text-xs font-bold text-[#E8531D] uppercase tracking-wider">
+                  <div className="text-xs font-bold text-[#BE1E2D] uppercase tracking-wider">
                     {currentLang === 'vi' ? m.categoryVi : m.categoryEn}
                   </div>
-                  <h3 className="text-lg font-bold text-[#0B2A4A] mt-1">{m.name}</h3>
+                  <h3 className="text-lg font-bold text-[#1E4384] mt-1">{m.name}</h3>
                   <div className="mt-2 text-xs font-mono font-semibold text-slate-500">
                     Model: {m.model} | Công suất: {m.capacityVi}
                   </div>

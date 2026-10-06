@@ -55,11 +55,11 @@ export const ChatLauncher: React.FC<ChatLauncherProps> = ({ onOpenAiChat, isChat
           </button>
 
           <div className="flex items-start gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#E8531D] text-white flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#BE1E2D] text-white flex items-center justify-center shrink-0">
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[#0B2A4A] block">Trợ lý AI Vietlabel</span>
+              <span className="font-bold text-[#1E4384] block">Trợ lý AI Vietlabel</span>
               <p className="mt-0.5 text-slate-600 leading-snug">
                 Anh/chị đang cần in/làm bao bì gì ạ? Em tư vấn nhanh 24/7!
               </p>
@@ -69,7 +69,7 @@ export const ChatLauncher: React.FC<ChatLauncherProps> = ({ onOpenAiChat, isChat
                   setShowGreetingBubble(false);
                   onOpenAiChat();
                 }}
-                className="mt-2 text-[11px] font-bold text-[#E8531D] hover:underline cursor-pointer"
+                className="mt-2 text-[11px] font-bold text-[#BE1E2D] hover:underline cursor-pointer"
               >
                 Bắt đầu trò chuyện →
               </button>
@@ -94,10 +94,10 @@ export const ChatLauncher: React.FC<ChatLauncherProps> = ({ onOpenAiChat, isChat
         onClick={toggleDial}
         aria-label={isDialOpen ? 'Đóng menu liên hệ' : 'Mở kênh tư vấn đa kênh'}
         aria-expanded={isDialOpen}
-        className="relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#E8531D] to-orange-500 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center border-2 border-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-300 cursor-pointer group"
+        className="relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#BE1E2D] to-red-500 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center border-2 border-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300 cursor-pointer group"
       >
         {/* Soft pulse glow behind */}
-        <span className="absolute inset-0 rounded-full bg-[#E8531D] opacity-40 animate-ping -z-10 [animation-duration:3s]" />
+        <span className="absolute inset-0 rounded-full bg-[#BE1E2D] opacity-40 animate-ping -z-10 [animation-duration:3s]" />
 
         {isDialOpen ? (
           <X className="w-6 h-6 transition-transform duration-300 rotate-90" />

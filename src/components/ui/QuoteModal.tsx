@@ -100,7 +100,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             </p>
             {trackingId && (
               <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-700">
-                Mã theo dõi: <span className="font-bold text-[#E8531D]">{trackingId}</span>
+                Mã theo dõi: <span className="font-bold text-[#BE1E2D]">{trackingId}</span>
               </div>
             )}
             <div className="mt-6 flex justify-center gap-3">
@@ -112,10 +112,10 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
         ) : (
           <div>
             <div className="mb-6">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#E8531D]">
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#BE1E2D]">
                 BÁO GIÁ NHÀ MÁY B2B
               </span>
-              <h3 className="text-xl font-bold text-[#0B2A4A] mt-1">Yêu cầu báo giá & Tư vấn mẫu</h3>
+              <h3 className="text-xl font-bold text-[#1E4384] mt-1">Yêu cầu báo giá & Tư vấn mẫu</h3>
               <p className="text-xs text-slate-500 mt-1">
                 Nhận dự toán chi phí sản xuất và tư vấn cấu trúc bao bì tối ưu chi phí hoàn toàn miễn phí.
               </p>
@@ -140,7 +140,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     type="text"
                     {...register('fullName')}
                     placeholder="Nguyễn Văn A"
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                   {errors.fullName && (
                     <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
@@ -155,7 +155,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     type="text"
                     {...register('company')}
                     placeholder="Công ty TNHH Thực phẩm"
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                   {errors.company && (
                     <p className="mt-1 text-xs text-red-500">{errors.company.message}</p>
@@ -172,7 +172,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     type="email"
                     {...register('email')}
                     placeholder="contact@doanhnghiep.vn"
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                   {errors.email && (
                     <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
@@ -187,7 +187,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     type="tel"
                     {...register('phone')}
                     placeholder="0912 345 678"
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                   {errors.phone && (
                     <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>
@@ -202,7 +202,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                   </label>
                   <select
                     {...register('productInterest')}
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   >
                     <option value="Hộp giấy cao cấp">Hộp giấy cao cấp / Hộp cứng</option>
                     <option value="Túi giấy thời trang">Túi giấy thời trang / Túi Kraft</option>
@@ -223,7 +223,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     type="text"
                     {...register('quantity')}
                     placeholder="VD: 1,000 - 5,000 chiếc"
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                 </div>
               </div>
@@ -236,7 +236,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                   rows={3}
                   {...register('message')}
                   placeholder="Ví dụ: Kích thước 22x16x8cm, carton lạnh bồi giấy Couche 150gsm, in 4 màu cán mờ, ép kim logo..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                 />
                 {errors.message && (
                   <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>
@@ -245,7 +245,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-xs text-slate-500">
-                  <PhoneCall className="w-4 h-4 text-[#E8531D]" />
+                  <PhoneCall className="w-4 h-4 text-[#BE1E2D]" />
                   <span>Hotline hỗ trợ: <strong>(028) 3765 8888</strong></span>
                 </div>
 

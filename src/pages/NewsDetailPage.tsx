@@ -56,9 +56,9 @@ export const NewsDetailPage: React.FC = () => {
       <section className="bg-slate-100 py-4 border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 text-xs text-slate-600">
-            <Link to="/" className="hover:text-[#E8531D]">Trang chủ</Link>
+            <Link to="/" className="hover:text-[#BE1E2D]">Trang chủ</Link>
             <span>/</span>
-            <Link to="/tin-tuc" className="hover:text-[#E8531D]">Tin tức</Link>
+            <Link to="/tin-tuc" className="hover:text-[#BE1E2D]">Tin tức</Link>
             <span>/</span>
             <span className="text-slate-900 font-semibold truncate max-w-sm">{title}</span>
           </div>
@@ -69,18 +69,18 @@ export const NewsDetailPage: React.FC = () => {
       <article className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Metadata */}
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#E8531D] uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#BE1E2D] uppercase tracking-wider mb-2">
             <span>{currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0B2A4A] tracking-tight leading-tight [text-wrap:balance]">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1E4384] tracking-tight leading-tight [text-wrap:balance]">
             {title}
           </h1>
 
           <div className="mt-4 pb-6 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5 font-medium text-slate-700">
-                <User className="w-3.5 h-3.5 text-[#E8531D]" />
+                <User className="w-3.5 h-3.5 text-[#BE1E2D]" />
                 {post.author}
               </span>
               <span>·</span>
@@ -121,7 +121,7 @@ export const NewsDetailPage: React.FC = () => {
           </div>
 
           {/* Lead Summary */}
-          <div className="p-5 rounded-2xl bg-[#FAFAFC] border-l-4 border-[#E8531D] text-sm font-medium text-slate-700 leading-relaxed mb-8">
+          <div className="p-5 rounded-2xl bg-[#FAFAFC] border-l-4 border-[#BE1E2D] text-sm font-medium text-slate-700 leading-relaxed mb-8">
             {currentLang === 'vi' ? post.summaryVi : post.summaryEn}
           </div>
 
@@ -131,7 +131,7 @@ export const NewsDetailPage: React.FC = () => {
               <p key={idx}>{p}</p>
             ))}
 
-            <div className="p-6 rounded-2xl bg-[#0B2A4A] text-white my-8 space-y-3">
+            <div className="p-6 rounded-2xl bg-[#1E4384] text-white my-8 space-y-3">
               <h3 className="text-lg font-bold text-white">Bạn đang tìm kiếm giải pháp bao bì & tem nhãn tương tự?</h3>
               <p className="text-xs sm:text-sm text-slate-300">
                 Hãy liên hệ ngay với đội ngũ R&D và kỹ thuật của Vietlabel để nhận tư vấn cấu trúc, dựng mẫu thử 3D và báo giá chi tiết trong 2 giờ.
@@ -161,7 +161,7 @@ export const NewsDetailPage: React.FC = () => {
       {relatedPosts.length > 0 && (
         <section className="py-12 bg-[#FAFAFC] border-t border-slate-200">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-lg font-bold text-[#0B2A4A] mb-6">Bài viết liên quan</h2>
+            <h2 className="text-lg font-bold text-[#1E4384] mb-6">Bài viết liên quan</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {relatedPosts.map((rel) => (
                 <Link
@@ -170,16 +170,16 @@ export const NewsDetailPage: React.FC = () => {
                   className="group rounded-2xl bg-white border border-slate-200 p-5 hover:shadow-md transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <span className="text-[10px] font-bold text-[#E8531D] uppercase">
+                    <span className="text-[10px] font-bold text-[#BE1E2D] uppercase">
                       {rel.categoryNameVi}
                     </span>
-                    <h3 className="text-sm font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors mt-1 line-clamp-2">
+                    <h3 className="text-sm font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors mt-1 line-clamp-2">
                       {currentLang === 'vi' ? rel.titleVi : rel.titleEn}
                     </h3>
                   </div>
                   <div className="mt-4 flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-100">
                     <span>{rel.date}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#E8531D]" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#BE1E2D]" />
                   </div>
                 </Link>
               ))}

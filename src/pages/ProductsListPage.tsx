@@ -73,7 +73,7 @@ export const ProductsListPage: React.FC = () => {
       />
 
       {/* Hero Header */}
-      <section className="bg-[#0B2A4A] text-white py-14 relative">
+      <section className="bg-[#1E4384] text-white py-14 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
@@ -137,7 +137,7 @@ export const ProductsListPage: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     placeholder="Tên, mã sản phẩm hoặc chất liệu..."
-                    className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-2 text-xs focus:border-[#0B2A4A] focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
+                    className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-2 text-xs focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                   />
                   <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                 </div>
@@ -146,12 +146,12 @@ export const ProductsListPage: React.FC = () => {
               {/* 2-Level Tree Category Navigation */}
               <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#0B2A4A] flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-[#E8531D]" />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#1E4384] flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-[#BE1E2D]" />
                     Danh mục bao bì
                   </h3>
                   {danhMuc && (
-                    <Link to="/san-pham" className="text-[11px] text-[#E8531D] hover:underline font-semibold">
+                    <Link to="/san-pham" className="text-[11px] text-[#BE1E2D] hover:underline font-semibold">
                       Tất cả
                     </Link>
                   )}
@@ -166,8 +166,8 @@ export const ProductsListPage: React.FC = () => {
                           to={`/san-pham/${cat.slug}`}
                           className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
                             isActiveCat
-                              ? 'bg-[#0B2A4A] text-white shadow-sm'
-                              : 'text-slate-700 hover:bg-slate-100 hover:text-[#0B2A4A]'
+                              ? 'bg-[#1E4384] text-white shadow-sm'
+                              : 'text-slate-700 hover:bg-slate-100 hover:text-[#1E4384]'
                           }`}
                           onClick={() => {
                             setSelectedSubcategory('all');
@@ -188,8 +188,8 @@ export const ProductsListPage: React.FC = () => {
                               }}
                               className={`w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${
                                 selectedSubcategory === 'all'
-                                  ? 'bg-orange-50 text-[#E8531D] font-bold'
-                                  : 'text-slate-600 hover:text-[#0B2A4A]'
+                                  ? 'bg-red-50 text-[#BE1E2D] font-bold'
+                                  : 'text-slate-600 hover:text-[#1E4384]'
                               }`}
                             >
                               Tất cả phân loại con
@@ -203,8 +203,8 @@ export const ProductsListPage: React.FC = () => {
                                 }}
                                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-colors truncate ${
                                   selectedSubcategory === sub.id
-                                    ? 'bg-orange-50 text-[#E8531D] font-bold'
-                                    : 'text-slate-600 hover:text-[#0B2A4A]'
+                                    ? 'bg-red-50 text-[#BE1E2D] font-bold'
+                                    : 'text-slate-600 hover:text-[#1E4384]'
                                 }`}
                               >
                                 {currentLang === 'vi' ? sub.nameVi : sub.nameEn}
@@ -283,11 +283,11 @@ export const ProductsListPage: React.FC = () => {
                             referrerPolicy="no-referrer"
                             loading="lazy"
                           />
-                          <div className="absolute top-3 left-3 bg-[#0B2A4A]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs font-mono">
+                          <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs font-mono">
                             {prod.code}
                           </div>
                           {prod.isFeatured && (
-                            <div className="absolute top-3 right-3 bg-[#E8531D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                            <div className="absolute top-3 right-3 bg-[#BE1E2D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                               Nổi bật
                             </div>
                           )}
@@ -295,11 +295,11 @@ export const ProductsListPage: React.FC = () => {
 
                         {/* Info */}
                         <div className="p-5">
-                          <span className="text-[11px] font-semibold text-[#E8531D] uppercase tracking-wider">
+                          <span className="text-[11px] font-semibold text-[#BE1E2D] uppercase tracking-wider">
                             {currentLang === 'vi' ? prod.categoryNameVi : prod.categoryNameEn}
                           </span>
 
-                          <h3 className="text-sm sm:text-base font-bold text-[#0B2A4A] group-hover:text-[#E8531D] transition-colors line-clamp-2 mt-1 leading-snug">
+                          <h3 className="text-sm sm:text-base font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors line-clamp-2 mt-1 leading-snug">
                             <Link to={`/san-pham/${prod.categorySlug}/${prod.slug}`}>
                               {currentLang === 'vi' ? prod.nameVi : prod.nameEn}
                             </Link>
@@ -326,7 +326,7 @@ export const ProductsListPage: React.FC = () => {
                       <div className="p-5 pt-0 flex items-center justify-between gap-2">
                         <Link
                           to={`/san-pham/${prod.categorySlug}/${prod.slug}`}
-                          className="text-xs font-bold text-[#0B2A4A] hover:text-[#E8531D] flex items-center gap-1 transition-colors"
+                          className="text-xs font-bold text-[#1E4384] hover:text-[#BE1E2D] flex items-center gap-1 transition-colors"
                         >
                           <span>Chi tiết</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -356,7 +356,7 @@ export const ProductsListPage: React.FC = () => {
                         onClick={() => setCurrentPage(pageNum)}
                         className={`w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                           currentPage === pageNum
-                            ? 'bg-[#0B2A4A] text-white shadow-sm'
+                            ? 'bg-[#1E4384] text-white shadow-sm'
                             : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >

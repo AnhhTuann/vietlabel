@@ -47,10 +47,10 @@ export const AdminReportsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
-          <span className="text-[11px] font-bold text-[#E8531D] uppercase tracking-wider block">
+          <span className="text-[11px] font-bold text-[#BE1E2D] uppercase tracking-wider block">
             ANALYTICS & KPI PERFORMANCE
           </span>
-          <h1 className="text-2xl font-black text-[#0B2A4A] mt-0.5">
+          <h1 className="text-2xl font-black text-[#1E4384] mt-0.5">
             Báo Cáo Hiệu Suất Tư Vấn & Chuyển Đổi Lead
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -76,7 +76,7 @@ export const AdminReportsPage: React.FC = () => {
             <span className="text-xs font-bold uppercase">First Response Time</span>
             <Clock className="w-4 h-4 text-blue-500" />
           </div>
-          <div className="text-3xl font-black text-[#0B2A4A]">
+          <div className="text-3xl font-black text-[#1E4384]">
             {stats?.metrics?.avgFrtMinutes || 18} <span className="text-sm font-semibold text-slate-500">phút</span>
           </div>
           <span className="text-[11px] text-emerald-600 font-semibold">Đạt chuẩn SLA 30 phút</span>
@@ -85,9 +85,9 @@ export const AdminReportsPage: React.FC = () => {
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase">Đủ thông tin (Brief)</span>
-            <Percent className="w-4 h-4 text-[#E8531D]" />
+            <Percent className="w-4 h-4 text-[#BE1E2D]" />
           </div>
-          <div className="text-3xl font-black text-[#E8531D]">
+          <div className="text-3xl font-black text-[#BE1E2D]">
             {stats?.metrics?.informationCompletionRate || 88}%
           </div>
           <span className="text-[11px] text-slate-500">AI thu thập đủ quy cách</span>
@@ -118,7 +118,7 @@ export const AdminReportsPage: React.FC = () => {
 
       {/* Staff Leaderboard */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
-        <h3 className="font-bold text-base text-[#0B2A4A] flex items-center gap-2">
+        <h3 className="font-bold text-base text-[#1E4384] flex items-center gap-2">
           <Award className="w-5 h-5 text-amber-500" />
           Bảng Xếp Hạng & Hiệu Suất Xử Lý Theo Nhân Viên
         </h3>
@@ -141,7 +141,7 @@ export const AdminReportsPage: React.FC = () => {
                   <td className="py-3.5 px-4 text-slate-700">{agent.claimed} hồ sơ</td>
                   <td className="py-3.5 px-4 text-slate-700">{agent.contacted} khách</td>
                   <td className="py-3.5 px-4 font-bold text-emerald-700">{agent.won} đơn</td>
-                  <td className="py-3.5 px-4 text-right font-extrabold text-[#0B2A4A]">
+                  <td className="py-3.5 px-4 text-right font-extrabold text-[#1E4384]">
                     {agent.conversionRate}%
                   </td>
                 </tr>
