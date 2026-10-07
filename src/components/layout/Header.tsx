@@ -336,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                           setOpenDropdown(null);
                         }}
                         className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors',
+                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap',
                           currentLang === 'vi'
                             ? 'bg-white/10 text-[#E11D2E]'
                             : 'text-white/80 hover:bg-white/5 hover:text-white',
@@ -350,7 +350,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                           setOpenDropdown(null);
                         }}
                         className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors',
+                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap',
                           currentLang === 'en'
                             ? 'bg-white/10 text-[#E11D2E]'
                             : 'text-white/80 hover:bg-white/5 hover:text-white',

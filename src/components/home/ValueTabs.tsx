@@ -27,16 +27,8 @@ const VALUES: ValueItem[] = [
     icon: <Sparkles className="w-5 h-5" />,
     titleKey: 'values.tab1_title',
     descKey: 'values.tab1_desc',
-    bulletsVi: [
-      'Tư vấn chọn định lượng và loại giấy tối ưu chi phí nguyên liệu',
-      'Thiết kế kết cấu chống sốc và cắt mẫu mockup thực tế trong 24 giờ',
-      'Đồng hành từ giai đoạn khởi tạo thương hiệu đến đại trà triệu sản phẩm',
-    ],
-    bulletsEn: [
-      'Advisory on paper calipers and grades minimizing material costs',
-      'Drop-shock structural engineering and tangible mockup sampling in 24 hours',
-      'Scaling from pilot brand validation to multi-million production volumes',
-    ],
+    
+    
     image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1000&auto=format&fit=crop',
   },
   {
@@ -44,16 +36,8 @@ const VALUES: ValueItem[] = [
     icon: <ShieldCheck className="w-5 h-5" />,
     titleKey: 'values.tab2_title',
     descKey: 'values.tab2_desc',
-    bulletsVi: [
-      'Chứng nhận chuỗi hành trình FSC bảo vệ rừng trồng có trách nhiệm',
-      'Tiêu chuẩn ISO 9001:2015 kiểm định KCS tỉ mỉ từng công đoạn',
-      'Chứng chỉ HACCP và FDA đảm bảo an toàn tuyệt đối khi tiếp xúc thực phẩm',
-    ],
-    bulletsEn: [
-      'FSC Chain-of-Custody assuring responsible forestry origins',
-      'ISO 9001:2015 rigorous stage-gate KCS auditing protocols',
-      'HACCP and US FDA food contact migration compliance',
-    ],
+    
+    
     image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop',
   },
   {
@@ -61,16 +45,8 @@ const VALUES: ValueItem[] = [
     icon: <Grid className="w-5 h-5" />,
     titleKey: 'values.tab3_title',
     descKey: 'values.tab3_desc',
-    bulletsVi: [
-      'Hệ thống sản phẩm từ hộp giấy, túi quà, thùng carton đến khay định hình',
-      'Khả năng xử lý hơn 30 chủng loại giấy từ phổ thông đến mỹ thuật nhập khẩu Ý, Nhật',
-      'Giải pháp đồng bộ nhận diện thương hiệu trên mọi điểm chạm bao bì',
-    ],
-    bulletsEn: [
-      'Integrated catalog spanning folding cartons, bags, shippers, and molded pulp',
-      'Capacity to process 30+ paperboard substrates including luxury Italian & Japanese papers',
-      'Unified brand identity consistency across all consumer touchpoints',
-    ],
+    
+    
     image: 'https://images.unsplash.com/photo-1574634534894-89d7576c8259?q=80&w=1000&auto=format&fit=crop',
   },
   {
@@ -78,16 +54,8 @@ const VALUES: ValueItem[] = [
     icon: <Cpu className="w-5 h-5" />,
     titleKey: 'values.tab4_title',
     descKey: 'values.tab4_desc',
-    bulletsVi: [
-      'Máy in Offset Heidelberg Speedmaster XL 6 màu sấy UV tốc độ 18.000 tờ/giờ',
-      'Máy bế tự động Bobst Novacut Thụy Sĩ sai số dưới 0.1mm',
-      'Chuẩn hóa màu in G7 Master đảm bảo sự đồng đều màu sắc 99.5%',
-    ],
-    bulletsEn: [
-      'Heidelberg Speedmaster XL 6-color UV press running 18,000 sheets/hour',
-      'Swiss Bobst Novacut automatic die-cutter with sub-0.1mm tolerances',
-      'Idealliance G7 Master gray balance ensuring 99.5% repeat color accuracy',
-    ],
+    
+    
     image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1000&auto=format&fit=crop',
   },
   {
@@ -95,16 +63,8 @@ const VALUES: ValueItem[] = [
     icon: <UserCheck className="w-5 h-5" />,
     titleKey: 'values.tab5_title',
     descKey: 'values.tab5_desc',
-    bulletsVi: [
-      'Hơn 200 nhân sự được đào tạo bài bản theo quy trình 5S và Kaizen Nhật Bản',
-      'Đội ngũ kỹ sư in ấn tốt nghiệp các trường đại học kỹ thuật chuyên ngành',
-      'Bộ phận tư vấn khách hàng phản hồi báo giá trong 2 giờ và cập nhật tiến độ real-time',
-    ],
-    bulletsEn: [
-      'Over 200 craftsmen disciplined in Japanese 5S and continuous Kaizen operations',
-      'Certified printing engineers with deep technical graphic arts backgrounds',
-      'Client support teams guaranteeing formal quote turnaround within 2 business hours',
-    ],
+    
+    
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop',
   },
 ];
@@ -205,14 +165,7 @@ export const ValueTabs: React.FC = () => {
 
                 {/* Key bullets */}
                 <div className="space-y-3 mb-6">
-                  {(currentLang === 'vi' ? activeValue.bulletsVi : activeValue.bulletsEn).map(
-                    (bullet, i) => (
-                      <div key={i} className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>{bullet}</span>
-                      </div>
-                    )
-                  )}
+                  
                 </div>
               </div>
 

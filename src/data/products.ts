@@ -55,9 +55,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'hop-giay',
     slug: 'hop-giay',
-    nameVi: 'Hộp giấy cao cấp',
+    nameVi: 'HỘP GIẤY',
     nameEn: 'Premium Paper Boxes',
-    shortDescVi: 'Hộp cứng quà tặng, hộp mỹ phẩm, hộp mềm gấp, hộp dược phẩm với kỹ thuật ép kim, dập nổi tinh tế.',
+    shortDescVi: 'Sản xuất hộp 1 lớp, hộp carton, hộp cao cấp trên dây chuyền hiện đại và khép kín, đảm bảo sản phẩm đạt chất lượng cao, đồng nhất.',
     shortDescEn: 'Rigid gift boxes, cosmetic cartons, folding paperboard boxes with hot foil stamping and embossing.',
     iconName: 'Package',
     subcategories: [
@@ -90,9 +90,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'tui-giay',
     slug: 'tui-giay',
-    nameVi: 'Túi giấy thời trang & quà tặng',
+    nameVi: 'TÚI GIẤY',
     nameEn: 'Paper Shopping Bags',
-    shortDescVi: 'Túi giấy Kraft nâu thân thiện môi trường, túi giấy Ivory sang trọng có quai ruy băng, quai xoắn bền chắc.',
+    shortDescVi: 'Túi giấy sản xuất 100% dây chuyền tự động, tối ưu chi phí và thời gian, đảm bảo chất lượng đồng đều từ mẫu mã, kích thước đến màu sắc cho đơn hàng sản lượng lớn.',
     shortDescEn: 'Eco-friendly natural kraft bags, luxury laminated shopping bags with grosgrain or twisted handles.',
     iconName: 'ShoppingBag',
     subcategories: [
@@ -117,9 +117,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'tui-banh-mi',
     slug: 'tui-banh-mi',
-    nameVi: 'Túi giấy thực phẩm & Bánh mì',
+    nameVi: 'TÚI BÁNH MÌ',
     nameEn: 'Food & Bakery Paper Bags',
-    shortDescVi: 'Giấy thấm dầu mỡ, đạt chuẩn an toàn vệ sinh thực phẩm HACCP, giấy MG trắng và Kraft nâu chuyên dụng.',
+    shortDescVi: 'Chất liệu giấy đạt tiêu chuẩn quốc tế, an toàn thực phẩm. Đáp ứng đa dạng kích thước, kiểu dáng, phù hợp với nhiều loại bánh mì khác nhau.',
     shortDescEn: 'Greaseproof and food-safe paper bags compliant with HACCP standards for bakeries and fast food.',
     iconName: 'UtensilsCrossed',
     subcategories: [
@@ -144,9 +144,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'tem-nhan',
     slug: 'tem-nhan',
-    nameVi: 'Tem nhãn Decal cuộn & tờ',
+    nameVi: 'TEM NHÃN',
     nameEn: 'Decal & Adhesive Labels',
-    shortDescVi: 'Decal giấy, decal nhựa trong, decal vỡ bảo hành, nhãn cuộn tự động dán tốc độ cao, mạ kim nhũ.',
+    shortDescVi: 'Tem dán sản phẩm, tem bảo hành, tem chống hàng giả... chất lượng cao, bền đẹp, bám dính tốt, phù hợp với các môi trường sử dụng khác nhau.',
     shortDescEn: 'Paper decals, transparent film labels, security warranty stickers, high-speed automated roll labels.',
     iconName: 'Tag',
     subcategories: [
@@ -171,9 +171,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'khay-giay',
     slug: 'khay-giay',
-    nameVi: 'Khay giấy định hình & Chống sốc',
+    nameVi: 'KHAY GIẤY',
     nameEn: 'Molded Pulp & Paper Trays',
-    shortDescVi: 'Giải pháp thay thế xốp nhựa EPS, khay đựng nông sản, trái cây xuất khẩu, linh kiện điện tử sinh thái.',
+    shortDescVi: 'Khay giấy định hình theo sản phẩm, độ bền cao và khả năng chịu lực tốt. Giải pháp trưng bày, vận chuyển hiệu quả cho thực phẩm, nông sản, FMCG, tăng thẩm mỹ và bảo quản trong chuỗi cung ứng.',
     shortDescEn: 'Sustainable EPS foam alternatives: molded pulp trays for agricultural export and electronics cushioning.',
     iconName: 'Layers',
     subcategories: [
@@ -198,9 +198,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'thung-carton',
     slug: 'thung-carton',
-    nameVi: 'Thùng carton sóng 3 - 5 - 7 lớp',
+    nameVi: 'THÙNG CARTON',
     nameEn: 'Corrugated Shipping Cartons',
-    shortDescVi: 'Thùng carton bế định hình, in Flexo hoặc Offset bồi Duplex, tiêu chuẩn chịu bục xuất khẩu đường biển.',
+    shortDescVi: 'Cấu trúc chắc chắn, chịu lực cao, bảo vệ tối ưu hàng hóa trong vận chuyển và lưu kho. Thiết kế đa dạng kích thước, tùy chỉnh theo nhu cầu, phù hợp cho nhiều ngành hàng khác nhau.',
     shortDescEn: '3, 5, 7-ply corrugated boxes, Flexo or Offset laminated Duplex, certified burst strength for sea freight.',
     iconName: 'Box',
     subcategories: [
@@ -225,9 +225,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'the-cao',
     slug: 'the-cao',
-    nameVi: 'Thẻ cào & Thẻ giấy thông minh',
+    nameVi: 'THẺ CÀO/ THẺ GIẤY',
     nameEn: 'Scratch Cards & Paper Cards',
-    shortDescVi: 'Thẻ cào trúng thưởng, voucher giấy ép nhũ bảo mật, thẻ bài may mặc treo quần áo, QR code biến đổi.',
+    shortDescVi: 'Ứng dụng công nghệ in dữ liệu biến đổi, tạo thẻ cào bảo mật cao, chống trầy, chống soi, đảm bảo tính an toàn và minh bạch cho doanh nghiệp và khách hàng.',
     shortDescEn: 'Promotional scratch cards, tamper-proof security vouchers, apparel hangtags, and dynamic variable QR cards.',
     iconName: 'CreditCard',
     subcategories: [
@@ -252,9 +252,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'posm',
     slug: 'posm',
-    nameVi: 'POSM & Kệ giấy trưng bày',
+    nameVi: 'POSM',
     nameEn: 'POSM & Paper Display Stands',
-    shortDescVi: 'Kệ giấy trưng bày siêu thị (Floor Display), khay để bàn (Counter Display), hanger treo, standee giấy carton.',
+    shortDescVi: 'Đa dạng các sản phẩm POSM: Hanger, Wobbler, Tin-tag, Poster, Standee, Voucher, Bao lì xì...và nhiều vật phẩm quảng cáo khác, giúp doanh nghiệp tăng cường nhận diện thương hiệu.',
     shortDescEn: 'Retail floor displays, countertop display units (CDU), cardboard hangars, and promotional standees.',
     iconName: 'LayoutGrid',
     subcategories: [

@@ -6,6 +6,7 @@ import { Stats } from '../components/home/Stats';
 import { ProductCategories } from '../components/home/ProductCategories';
 import { ValueTabs } from '../components/home/ValueTabs';
 import { ClientMarquee } from '../components/home/ClientMarquee';
+import { LabelSolutionsMarquee } from '../components/home/LabelSolutionsMarquee';
 import { Solutions } from '../components/home/Solutions';
 import { Certificates } from '../components/home/Certificates';
 import { Machines } from '../components/home/Machines';
@@ -27,6 +28,7 @@ export const HomePage: React.FC = () => {
       <ProductCategories />
       <ValueTabs />
       <ClientMarquee />
+      <LabelSolutionsMarquee />
       <Solutions />
       <Certificates />
       <Machines />
