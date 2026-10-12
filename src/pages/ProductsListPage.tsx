@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { SEO } from '../lib/seo';
 import { PRODUCT_CATEGORIES, PRODUCTS_LIST, type ProductItem } from '../data/products';
+import { LABEL_SOLUTIONS } from '../data/labelSolutions';
 import { Button } from '../components/ui/Button';
 
 export const ProductsListPage: React.FC = () => {

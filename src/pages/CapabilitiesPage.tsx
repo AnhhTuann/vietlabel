@@ -14,6 +14,7 @@ import {
 import { SEO } from '../lib/seo';
 import { SectionTitle } from '../components/ui/SectionTitle';
 import { Button } from '../components/ui/Button';
+import { LABEL_SOLUTIONS } from '../data/labelSolutions';
 
 export const CapabilitiesPage: React.FC = () => {
   const { onOpenQuoteModal } = useOutletContext<{ onOpenQuoteModal: (prod?: string) => void }>();
@@ -162,6 +163,51 @@ export const CapabilitiesPage: React.FC = () => {
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+      {/* 12 Label Solutions Grid */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionTitle
+            kicker="NGÀNH HÀNG PHỤC VỤ"
+            title="Giải pháp Tem nhãn cho 12+ Ngành Công Nghiệp"
+            subtitle="Chúng tôi làm chủ công nghệ sản xuất đa dạng, đáp ứng mọi yêu cầu khắt khe nhất của từng ngành hàng chuyên biệt."
+          />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
+            {LABEL_SOLUTIONS.map((sol) => (
+              <div key={sol.id} className="bg-[#FAFAFC] p-6 rounded-2xl border border-slate-200 hover:shadow-xl hover:-translate-y-1 hover:border-[#BE1E2D]/50 transition-all duration-300 flex flex-col items-center text-center group">
+                <div className="w-14 h-14 rounded-full bg-slate-100 text-[#1E4384] group-hover:bg-[#BE1E2D] group-hover:text-white transition-colors flex items-center justify-center mb-4">
+                  <sol.icon className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-slate-800 text-[13px] uppercase mb-2 line-clamp-2">{sol.titleVi}</h4>
+                <p className="text-[11px] text-slate-500 line-clamp-3">{sol.descVi}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-[#1E4384] text-white text-center">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FileSpreadsheet className="w-10 h-10 text-amber-400 mx-auto mb-4" />
+          <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">Tải hồ sơ năng lực đầy đủ</h2>
+          <p className="text-slate-300 text-sm leading-relaxed mb-8 max-w-xl mx-auto">
+            Tài liệu chi tiết về nhà máy, thiết bị, tiêu chuẩn chất lượng và danh mục sản phẩm dành cho đội mua hàng và đơn vị kiểm toán nhà cung cấp.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button variant="primary" size="lg" onClick={() => onOpenQuoteModal()} icon={<ArrowRight className="w-4 h-4" />}>
+              Yêu cầu báo giá ngay
+            </Button>
+            <a
+              href="/company-profile.pdf"
+              download
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/30 text-white hover:bg-white/10 transition-colors text-sm font-semibold"
+            >
+              <Factory className="w-4 h-4" />
+              Tải Company Profile (PDF)
+            </a>
           </div>
         </div>
       </section>
