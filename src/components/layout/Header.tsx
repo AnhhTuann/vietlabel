@@ -38,6 +38,36 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
   };
 
   const isHome = location.pathname === '/';
+  const isLightHeader = scrolledPast || !isHome;
+
+  const getNavLinkClass = (active: boolean, hasDropdown = false) =>
+    cn(
+      'relative px-[clamp(7px,0.6vw,12px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold transition-colors duration-200 whitespace-nowrap tracking-[-0.01em]',
+      hasDropdown && 'flex items-center gap-1',
+      active
+        ? isLightHeader
+          ? 'text-[#1E4384] font-bold before:absolute before:bottom-0 before:left-2 before:right-2 before:h-[2.5px] before:rounded-full before:bg-[#BE1E2D]'
+          : 'text-white font-bold before:absolute before:bottom-0 before:left-2 before:right-2 before:h-[2.5px] before:rounded-full before:bg-[#BE1E2D]'
+        : isLightHeader
+          ? 'text-slate-600 hover:text-[#1E4384]'
+          : 'text-slate-200 hover:text-white',
+    );
+
+  const getMobileNavLinkClass = (active: boolean) =>
+    cn(
+      'block px-3.5 py-2.5 text-sm font-medium rounded-lg transition-colors',
+      active
+        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
+        : 'text-slate-800 hover:text-[#1E4384] hover:bg-slate-50',
+    );
+
+  const getMobileSubNavLinkClass = (active: boolean) =>
+    cn(
+      'block px-3 py-1.5 text-xs rounded transition-colors',
+      active
+        ? 'text-[#BE1E2D] font-bold bg-red-50/70'
+        : 'text-slate-600 hover:text-[#1E4384] hover:bg-slate-50',
+    );
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === 'vi' ? 'en' : 'vi';
@@ -82,16 +112,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
             <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-center gap-0.5 xl:gap-1 2xl:gap-1.5 px-1">
               <Link
                 to="/"
-                className={cn(
-                  'relative px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/'
-                    ? scrolledPast || !isHome
-                      ? 'text-[#1E4384] bg-[#EEF3FF] before:absolute before:-bottom-[4px] before:left-2 before:right-2 before:h-[2px] before:rounded-full before:bg-[#E11D2E]'
-                      : 'text-white bg-white/12 before:absolute before:-bottom-[4px] before:left-2 before:right-2 before:h-[2px] before:rounded-full before:bg-[#E11D2E]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname === '/')}
               >
                 {t('nav.home')}
               </Link>
@@ -103,14 +124,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 onMouseLeave={handleMouseLeave}
               >
                 <button
-                  className={cn(
-                    'flex items-center gap-1 px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                    location.pathname.startsWith('/gioi-thieu')
-                      ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                      : scrolledPast || !isHome
-                        ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                        : 'text-slate-200 hover:text-white hover:bg-white/8',
-                  )}
+                  className={getNavLinkClass(location.pathname.startsWith('/gioi-thieu'), true)}
                 >
                   <span>{t('nav.about')}</span>
                   <ChevronDown className="w-3.5 h-3.5 opacity-70" />
@@ -121,7 +135,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                     <div className="bg-white rounded-xl shadow-lg border border-slate-200 py-2 text-slate-800">
                       <Link
                         to="/gioi-thieu"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#EEF3FF] hover:text-[#1E4384] transition-colors"
+                        className={cn(
+                          'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                          location.pathname === '/gioi-thieu'
+                            ? 'bg-[#EEF3FF] text-[#1E4384] font-semibold'
+                            : 'hover:bg-[#EEF3FF] hover:text-[#1E4384] text-slate-700',
+                        )}
                         onClick={() => setOpenDropdown(null)}
                       >
                         <Building className="w-4 h-4 text-[#1E4384]" />
@@ -164,14 +183,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               >
                 <Link
                   to="/san-pham"
-                  className={cn(
-                    'flex items-center gap-1 px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                    location.pathname.startsWith('/san-pham')
-                      ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                      : scrolledPast || !isHome
-                        ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                        : 'text-slate-200 hover:text-white hover:bg-white/8',
-                  )}
+                  className={getNavLinkClass(location.pathname.startsWith('/san-pham'), true)}
                 >
                   <span>{t('nav.products')}</span>
                   <ChevronDown className="w-3.5 h-3.5 opacity-70" />
@@ -201,7 +213,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                           <Link
                             key={cat.id}
                             to={`/san-pham/${cat.slug}`}
-                            className="group p-3 rounded-xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-200"
+                            className={cn(
+                              'group p-3 rounded-xl transition-all border',
+                              location.pathname === `/san-pham/${cat.slug}`
+                                ? 'bg-[#EEF3FF] border-[#1E4384]/30'
+                                : 'hover:bg-slate-50 border-transparent hover:border-slate-200',
+                            )}
                             onClick={() => setOpenDropdown(null)}
                           >
                             <div className="font-semibold text-xs text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors flex items-center justify-between">
@@ -221,84 +238,42 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
               <Link
                 to="/nang-luc"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/nang-luc'
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/nang-luc'))}
               >
                 {t('nav.capabilities')}
               </Link>
 
               <Link
                 to="/phat-trien-ben-vung"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/phat-trien-ben-vung'
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/phat-trien-ben-vung'))}
               >
                 {t('nav.sustainability')}
               </Link>
 
               <Link
                 to="/cong-nghe"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/cong-nghe'
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/cong-nghe'))}
               >
                 {t('nav.technology')}
               </Link>
 
               <Link
                 to="/tin-tuc"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname.startsWith('/tin-tuc')
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/tin-tuc'))}
               >
                 {t('nav.news')}
               </Link>
 
               <Link
                 to="/tuyen-dung"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/tuyen-dung'
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/tuyen-dung'))}
               >
                 {t('nav.careers')}
               </Link>
 
               <Link
                 to="/lien-he"
-                className={cn(
-                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
-                  location.pathname === '/lien-he'
-                    ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
-                    : scrolledPast || !isHome
-                      ? 'text-slate-700 hover:text-[#1E4384] hover:bg-[#EEF3FF]'
-                      : 'text-slate-200 hover:text-white hover:bg-white/8',
-                )}
+                className={getNavLinkClass(location.pathname.startsWith('/lien-he'))}
               >
                 {t('nav.contact')}
               </Link>
@@ -446,43 +421,50 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <nav className="mt-4 space-y-1">
                 <Link
                   to="/"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname === '/')}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.home')}
                 </Link>
 
                 {/* About group */}
-                <details className="group">
-                  <summary className="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-800 hover:bg-white/5 rounded-lg cursor-pointer list-none">
+                <details className="group" open={location.pathname.startsWith('/gioi-thieu')}>
+                  <summary
+                    className={cn(
+                      'flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
+                      location.pathname.startsWith('/gioi-thieu')
+                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
+                        : 'text-slate-800 hover:bg-slate-50',
+                    )}
+                  >
                     <span>{t('nav.about')}</span>
                     <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="pl-4 pr-2 py-1 space-y-1">
                     <Link
                       to="/gioi-thieu"
-                      className="block px-3 py-1.5 text-xs text-slate-600 hover:text-[#1E4384]"
+                      className={getMobileSubNavLinkClass(location.pathname === '/gioi-thieu')}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_overview')}
                     </Link>
                     <Link
                       to="/gioi-thieu#doi-ngu"
-                      className="block px-3 py-1.5 text-xs text-slate-600 hover:text-[#1E4384]"
+                      className={getMobileSubNavLinkClass(false)}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_team')}
                     </Link>
                     <Link
                       to="/gioi-thieu#chung-nhan"
-                      className="block px-3 py-1.5 text-xs text-slate-600 hover:text-[#1E4384]"
+                      className={getMobileSubNavLinkClass(false)}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_certifications')}
                     </Link>
                     <Link
                       to="/gioi-thieu#ho-so-nang-luc"
-                      className="block px-3 py-1.5 text-xs text-slate-600 hover:text-[#1E4384]"
+                      className={getMobileSubNavLinkClass(false)}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_profile')}
@@ -491,15 +473,22 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 </details>
 
                 {/* Products group */}
-                <details className="group">
-                  <summary className="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-800 hover:bg-white/5 rounded-lg cursor-pointer list-none">
+                <details className="group" open={location.pathname.startsWith('/san-pham')}>
+                  <summary
+                    className={cn(
+                      'flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
+                      location.pathname.startsWith('/san-pham')
+                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
+                        : 'text-slate-800 hover:bg-slate-50',
+                    )}
+                  >
                     <span>{t('nav.products')}</span>
                     <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="pl-4 pr-2 py-1 space-y-1">
                     <Link
                       to="/san-pham"
-                      className="block px-3 py-1.5 text-xs font-semibold text-[#1E4384]"
+                      className={getMobileSubNavLinkClass(location.pathname === '/san-pham')}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Tất cả sản phẩm
@@ -508,7 +497,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                       <Link
                         key={cat.id}
                         to={`/san-pham/${cat.slug}`}
-                        className="block px-3 py-1.5 text-xs text-slate-600 hover:text-[#1E4384]"
+                        className={getMobileSubNavLinkClass(location.pathname === `/san-pham/${cat.slug}`)}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {currentLang === 'vi' ? cat.nameVi : cat.nameEn}
@@ -519,7 +508,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/nang-luc"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/nang-luc'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.capabilities')}
@@ -527,7 +516,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/phat-trien-ben-vung"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/phat-trien-ben-vung'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.sustainability')}
@@ -535,7 +524,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/cong-nghe"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/cong-nghe'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.technology')}
@@ -543,7 +532,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/tin-tuc"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/tin-tuc'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.news')}
@@ -551,7 +540,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/tuyen-dung"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/tuyen-dung'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.careers')}
@@ -559,7 +548,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/lien-he"
-                  className="block px-3 py-2 text-sm font-medium text-slate-800 hover:text-[#1E4384] hover:bg-[#EEF3FF] rounded-lg"
+                  className={getMobileNavLinkClass(location.pathname.startsWith('/lien-he'))}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.contact')}

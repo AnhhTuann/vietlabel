@@ -17,7 +17,7 @@ export const SEO: React.FC<SEOProps> = ({
   keywords = 'sản xuất bao bì giấy, tem nhãn decal, in hộp giấy, túi giấy kraft, thùng carton, bao bì B2B, FSC, Vietlabel',
   canonical,
   ogType = 'website',
-  ogImage = '/og-image.jpg',
+  ogImage = '/images/vietlabel/logo.png',
   structuredData,
 }) => {
   const fullTitle = title.includes('Vietlabel') ? title : `${title} | Vietlabel`;
@@ -28,7 +28,7 @@ export const SEO: React.FC<SEOProps> = ({
     name: 'Công ty Cổ phần Bao bì & Tem nhãn Vietlabel',
     alternateName: 'Vietlabel Packaging Corp',
     url: 'https://vietlabel.vn',
-    logo: 'https://vietlabel.vn/logo.png',
+    logo: 'https://vietlabel.vn/images/vietlabel/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+84-28-3765-8888',

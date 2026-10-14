@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
+import { api } from '../../services/api';
 
 interface HeroProps {
   onOpenQuoteModal: () => void;
@@ -17,6 +18,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Lubricant Labels',
     image: '/images/vietlabel/label-dau-nhot.webp',
     tag: 'Chống dầu mỡ & Hóa chất',
+    link: '/san-pham/tem-nhan/in-tem-nhan-decal-cuon-nganh-dau-nhot',
   },
   {
     id: 2,
@@ -26,6 +28,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Pop-Up Labels',
     image: '/images/vietlabel/label-popup.webp',
     tag: 'Đột phá cấu trúc',
+    link: '/san-pham/tem-nhan/in-tem-nhan-pop-up-gap-mo-thong-minh',
   },
   {
     id: 3,
@@ -35,6 +38,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Pharma Labels',
     image: '/images/vietlabel/label-duoc-pham.webp',
     tag: 'Chuẩn y tế & GMP',
+    link: '/san-pham/tem-nhan',
   },
   {
     id: 4,
@@ -44,6 +48,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Cosmetic Labels',
     image: '/images/vietlabel/label-my-pham.webp',
     tag: 'Ép kim & Cán màng cát',
+    link: '/san-pham/hop-giay/hop-my-pham-ivory-can-mang-metallized',
   },
   {
     id: 5,
@@ -53,6 +58,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Food & OCOP Labels',
     image: '/images/vietlabel/label-cafe-ocop.webp',
     tag: 'Tiêu chuẩn OCOP 4-5 sao',
+    link: '/tin-tuc/tem-nhan-nong-san-ca-phe-ocop-kraft-sinh-hoc',
   },
   {
     id: 6,
@@ -62,6 +68,7 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Advanced Machinery',
     image: '/images/vietlabel/factory-machine1.jpg',
     tag: 'Độ chuẩn màu G7 Master',
+    link: '/cong-nghe',
   },
   {
     id: 7,
@@ -71,27 +78,56 @@ const CAROUSEL_SLIDES = [
     categoryEn: 'Packaging & Cartons',
     image: '/images/vietlabel/factory-machine2.jpg',
     tag: 'ISO 9001 & FSC',
+    link: '/san-pham/thung-carton/thung-carton-song-5-lop-in-offset',
   },
 ];
 
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const [slides, setSlides] = useState<any[]>(CAROUSEL_SLIDES);
   const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
-    }, 4500);
-    return () => clearInterval(timer);
+    let isMounted = true;
+    api.get('/cms/posts').then((res) => {
+      if (isMounted && res.data && Array.isArray(res.data) && res.data.length > 0) {
+        const published = res.data.filter((p: any) => p.status === 'PUBLISHED');
+        if (published.length > 0) {
+          const cmsSlides = published.map((p: any, idx: number) => ({
+            id: p.id || `cms-${idx}`,
+            titleVi: p.title,
+            titleEn: p.title,
+            categoryVi: p.category === 'du-an-noi-bat' ? 'Dự án & OCOP' : p.category === 'nganh-bao-bi' ? 'Tin tức ngành' : (p.category || 'Dự án nổi bật'),
+            categoryEn: p.category || 'Featured Post',
+            image: p.imageUrl || '/images/vietlabel/label-cafe-ocop.webp',
+            tag: p.summary ? (p.summary.length > 32 ? p.summary.slice(0, 32) + '...' : p.summary) : 'Dự án tiêu biểu',
+            link: `/tin-tuc/${p.slug}`,
+          }));
+          // Put the newest CMS articles first, followed by default slides
+          setSlides([...cmsSlides, ...CAROUSEL_SLIDES]);
+        }
+      }
+    }).catch(() => {});
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % slides.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
   const handlePrev = () => {
-    setActiveSlide((prev) => (prev - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length);
+    setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleNext = () => {
-    setActiveSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
+    setActiveSlide((prev) => (prev + 1) % slides.length);
   };
 
   return (
@@ -123,7 +159,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             </div>
 
             {/* Dominant Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-[-0.04em] text-white leading-[0.96] [text-wrap:balance]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.18] sm:leading-[1.15] lg:leading-[1.12] [text-wrap:balance]">
               <span className="block text-white">{t('hero.title')}</span>
             </h1>
 
@@ -179,46 +215,55 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             <div className="relative rounded-2xl overflow-hidden bg-slate-900/80 border border-slate-700/80 shadow-2xl p-3 backdrop-blur-md">
               {/* Carousel Image viewport */}
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-950">
-                {CAROUSEL_SLIDES.map((slide, idx) => (
+                {slides.map((slide, idx) => (
                   <div
                     key={slide.id}
                     className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
                       idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                     }`}
                   >
-                    <img
-                      src={slide.image}
-                      alt={slide.titleVi}
-                      className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                      loading="eager"
-                    />
-                    {/* Gradient overlay for text */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <Link
+                      to={slide.link || '/san-pham'}
+                      className="block w-full h-full relative group cursor-pointer"
+                    >
+                      <img
+                        src={slide.image}
+                        alt={slide.titleVi}
+                        className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                        loading="eager"
+                      />
+                      {/* Gradient overlay for text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent group-hover:from-black transition-colors" />
 
-                    {/* Badge & Info Overlay */}
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <div className="flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase text-amber-400 mb-1">
-                        <span>{currentLang === 'vi' ? slide.categoryVi : slide.categoryEn}</span>
-                        <span>·</span>
-                        <span className="text-slate-300 font-normal">{slide.tag}</span>
+                      {/* Badge & Info Overlay */}
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <div className="flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase text-amber-400 mb-1">
+                          <span>{currentLang === 'vi' ? slide.categoryVi : slide.categoryEn}</span>
+                          <span>·</span>
+                          <span className="text-slate-300 font-normal">{slide.tag}</span>
+                        </div>
+                        <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2 leading-snug">
+                          {currentLang === 'vi' ? slide.titleVi : slide.titleEn}
+                        </h3>
+                        <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-300 group-hover:text-white transition-colors">
+                          <span>Xem chi tiết giải pháp</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#BE1E2D]" />
+                        </div>
                       </div>
-                      <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug">
-                        {currentLang === 'vi' ? slide.titleVi : slide.titleEn}
-                      </h3>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </div>
 
               {/* Navigation Bar below image */}
               <div className="mt-3 px-2 flex items-center justify-between text-xs text-slate-400">
-                <div className="flex items-center gap-1.5">
-                  {CAROUSEL_SLIDES.map((_, idx) => (
+                <div className="flex items-center gap-1.5 max-w-[160px] overflow-x-auto py-1">
+                  {slides.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                      className={`h-1.5 rounded-full transition-all cursor-pointer shrink-0 ${
                         idx === activeSlide
                           ? 'w-6 bg-[#BE1E2D]'
                           : 'w-2 bg-slate-700 hover:bg-slate-500'
@@ -230,7 +275,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-mono tabular-nums text-slate-400">
-                    0{activeSlide + 1} / 0{CAROUSEL_SLIDES.length}
+                    {String(activeSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
                   </span>
                   <div className="flex gap-1">
                     <button

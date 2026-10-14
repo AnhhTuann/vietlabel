@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { LeadRecord } from '../notifiers/types';
 import { notifyStaff, telegramNotifier, isWithinWorkingHours } from '../notifiers';
 import { computeLeadScore } from '../lib/scoring';
+import { leadService } from '../services/leadService';
 
 export const leadRouter = Router();
 
@@ -62,6 +63,27 @@ leadRouter.post('/', async (req: Request, res: Response) => {
 
     leadsDatabase.unshift(leadRecord);
     console.log(`[LEAD CREATED] ${leadRecord.id} | Score: ${leadRecord.leadScore} (${scoreResult.points} pts) | Contact: ${leadRecord.contact}`);
+
+    // Persist to central CRM DB store so Admin dashboard can manage it
+    try {
+      await leadService.createOrUpdateFromChat({
+        sessionId: validatedData.sessionId || leadRecord.id,
+        source: (validatedData.source as any) || 'web',
+        fullName: validatedData.fullName,
+        company: validatedData.company,
+        contact: validatedData.contact,
+        email: validatedData.email,
+        productType: validatedData.productType,
+        quantity: validatedData.quantity,
+        deadline: validatedData.deadline,
+        hasDesignFile: validatedData.hasDesignFile,
+        needHuman: scoreResult.isHot,
+        brief: validatedData,
+        notes: validatedData.notes,
+      });
+    } catch (dbErr) {
+      console.warn('DB lead persistence warning:', dbErr);
+    }
 
     // Trigger notification to staff via Telegram (primary) + Zalo (secondary)
     // Only notify when brief is completed or lead is HOT (Requirement 1)
@@ -126,6 +148,21 @@ leadRouter.post('/handoff', async (req: Request, res: Response) => {
 
     leadsDatabase.unshift(leadRecord);
     console.log(`[HANDOFF REQUEST] #${leadRecord.id} from customer ${leadRecord.fullName} (${leadRecord.contact})`);
+
+    // Persist to central CRM DB store
+    try {
+      await leadService.createOrUpdateFromChat({
+        sessionId: sessionId || leadRecord.id,
+        source: 'web',
+        fullName: fullName || 'Khách yêu cầu gặp nhân viên',
+        contact: contact,
+        productType: productType || 'Tư vấn trực tiếp theo yêu cầu',
+        needHuman: true,
+        notes: notes || 'Khách bấm nút [Gặp nhân viên tư vấn] trên khung chat.',
+      });
+    } catch (dbErr) {
+      console.warn('DB handoff persistence warning:', dbErr);
+    }
 
     // Immediate dispatch to Telegram + Zalo
     await notifyStaff(leadRecord, getLeadById);

@@ -327,6 +327,15 @@ class DatabaseStore {
         }
         return null;
       },
+      delete: (id: string) => {
+        const idx = this.data.leads.findIndex(l => l.id === id);
+        if (idx !== -1) {
+          this.data.leads.splice(idx, 1);
+          this.save();
+          return true;
+        }
+        return false;
+      },
     };
   }
 

@@ -88,6 +88,9 @@ export const ProductDetailPage: React.FC = () => {
                   alt={productName}
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
+                  }}
                 />
                 <div className="absolute top-4 left-4 bg-[#1E4384]/90 text-white font-mono text-xs font-bold px-3 py-1 rounded-md backdrop-blur-xs">
                   Mã: {product.code}
@@ -112,6 +115,9 @@ export const ProductDetailPage: React.FC = () => {
                         alt="Thumbnail"
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
+                        }}
                       />
                     </button>
                   ))}

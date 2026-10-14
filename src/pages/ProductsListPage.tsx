@@ -308,6 +308,9 @@ export const ProductsListPage: React.FC = () => {
                             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                             referrerPolicy="no-referrer"
                             loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
+                            }}
                           />
                           <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs font-mono">
                             {prod.code}

@@ -37,72 +37,13 @@ export const Machines: React.FC = () => {
           subtitle={t('machines.subtitle')}
         />
 
-        {/* Gallery of 5 high-tech machinery items (Masonry / Bento Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Item 1: Large Featured Offset Press (7 cols) */}
-          <div
-            onClick={() => handleOpenMachine(0)}
-            className="md:col-span-7 group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer aspect-[16/10]"
-          >
-            <img
-              src={MACHINES_LIST[0].image}
-              alt={MACHINES_LIST[0].name}
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-              referrerPolicy="no-referrer"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-6 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-                    {MACHINES_LIST[0].origin} · {MACHINES_LIST[0].capacityVi}
-                  </span>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
-                    {MACHINES_LIST[0].name}
-                  </h3>
-                </div>
-                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors">
-                  <ZoomIn className="w-5 h-5 text-white" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Item 2: Bobst Die-cutter (5 cols) */}
-          <div
-            onClick={() => handleOpenMachine(1)}
-            className="md:col-span-5 group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer aspect-[16/10]"
-          >
-            <img
-              src={MACHINES_LIST[1].image}
-              alt={MACHINES_LIST[1].name}
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-              referrerPolicy="no-referrer"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-6 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-                    {MACHINES_LIST[1].origin} · {MACHINES_LIST[1].capacityVi}
-                  </span>
-                  <h3 className="text-base sm:text-lg font-bold text-white mt-1 line-clamp-1">
-                    {MACHINES_LIST[1].name}
-                  </h3>
-                </div>
-                <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors">
-                  <ZoomIn className="w-5 h-5 text-white" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Items 3, 4, 5 (4 cols each) */}
-          {MACHINES_LIST.slice(2, 5).map((machine, i) => (
+        {/* Gallery of 6 high-tech machinery items (Symmetrical 3x2 Grid) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {MACHINES_LIST.map((machine, i) => (
             <div
               key={machine.id}
-              onClick={() => handleOpenMachine(i + 2)}
-              className="md:col-span-4 group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer aspect-[4/3]"
+              onClick={() => handleOpenMachine(i)}
+              className="group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer aspect-[4/3]"
             >
               <img
                 src={machine.image}
@@ -111,18 +52,18 @@ export const Machines: React.FC = () => {
                 referrerPolicy="no-referrer"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-5 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400">
-                      {machine.origin}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex flex-col justify-end p-5 sm:p-6 text-white">
+                <div className="flex items-end justify-between gap-3">
+                  <div className="min-w-0">
+                    <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-amber-400 block mb-1">
+                      {machine.origin} · {machine.capacityVi}
                     </span>
-                    <h3 className="text-sm sm:text-base font-bold text-white mt-0.5 line-clamp-1">
+                    <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug">
                       {machine.name}
                     </h3>
                   </div>
-                  <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors shrink-0 ml-2">
-                    <ZoomIn className="w-4 h-4 text-white" />
+                  <div className="p-2 rounded-full bg-white/20 backdrop-blur-md group-hover:bg-[#BE1E2D] transition-colors shrink-0">
+                    <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                 </div>
               </div>

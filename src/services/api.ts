@@ -27,10 +27,32 @@ export async function submitContact(data: ContactFormData): Promise<{ success: b
     return { success: true, message: 'Yêu cầu đã được gửi thành công.', trackingId: 'AP-SPAM-000' };
   }
 
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 800));
+  let trackingId = `VL-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-  const trackingId = `VL-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: data.fullName,
+        company: data.company,
+        email: data.email,
+        phone: data.phone,
+        type: data.productInterest || 'Hộp giấy & Tem nhãn',
+        quantity: data.quantity,
+        description: data.message,
+      }),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json.trackingId) {
+        trackingId = json.trackingId;
+      }
+    }
+  } catch (e) {
+    console.warn('Backend API connection warning, using local fallback:', e);
+  }
 
   // Store in localStorage for audit / demo preview if in browser
   try {

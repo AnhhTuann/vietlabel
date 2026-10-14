@@ -74,14 +74,17 @@ export const CareersPage: React.FC = () => {
           salaryVi: 'Thỏa thuận',
           salaryEn: 'Negotiable',
           deadline: new Date(j.deadline).toLocaleDateString('vi-VN'),
-          responsibilitiesVi: j.description ? j.description.split('\\n') : ['Chi tiết trao đổi khi phỏng vấn'],
-          responsibilitiesEn: j.description ? j.description.split('\\n') : ['Details discussed during interview'],
-          requirementsVi: j.requirements ? j.requirements.split('\\n') : ['Có kinh nghiệm liên quan'],
-          requirementsEn: j.requirements ? j.requirements.split('\\n') : ['Relevant experience'],
-          benefitsVi: j.benefits ? j.benefits.split('\\n') : ['BHXH đầy đủ', 'Thưởng Lễ Tết'],
-          benefitsEn: j.benefits ? j.benefits.split('\\n') : ['Social insurance', 'Holiday bonus']
+          responsibilitiesVi: j.description ? j.description.split(/\r?\n|\\n/) : ['Chi tiết trao đổi khi phỏng vấn'],
+          responsibilitiesEn: j.description ? j.description.split(/\r?\n|\\n/) : ['Details discussed during interview'],
+          requirementsVi: j.requirements ? j.requirements.split(/\r?\n|\\n/) : ['Có kinh nghiệm liên quan'],
+          requirementsEn: j.requirements ? j.requirements.split(/\r?\n|\\n/) : ['Relevant experience'],
+          benefitsVi: j.benefits ? j.benefits.split(/\r?\n|\\n/) : ['BHXH đầy đủ', 'Thưởng Lễ Tết'],
+          benefitsEn: j.benefits ? j.benefits.split(/\r?\n|\\n/) : ['Social insurance', 'Holiday bonus']
         }));
         setJobsList(mapped);
+        if (mapped.length > 0) {
+          setExpandedJobId(mapped[0].id);
+        }
       } catch(err) {
         console.error(err);
       } finally {

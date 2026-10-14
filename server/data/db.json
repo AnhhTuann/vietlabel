@@ -133,6 +133,15 @@
   ],
   "conversations": [
     {
+      "id": "conv_mv7nuxbr_l0zc",
+      "leadId": "LEAD-MV7NUXBQ-7433",
+      "sessionId": "test_sess_1791955199770",
+      "channel": "web",
+      "mode": "BOT",
+      "lastMessageAt": "2026-10-14T05:19:59.798Z",
+      "createdAt": "2026-10-14T05:19:59.798Z"
+    },
+    {
       "id": "conv_mv5c52mu_ttdx",
       "leadId": "LEAD-MV5C52MS-7442",
       "sessionId": "vl-sess-mv5c4yz1-9yx6c",
@@ -309,6 +318,17 @@
   "notes": [],
   "events": [
     {
+      "id": "ev_1791955199799_3tla",
+      "leadId": "LEAD-MV7NUXBQ-7433",
+      "type": "CREATED",
+      "payload": {
+        "score": "HOT",
+        "source": "web",
+        "status": "NEEDS_HUMAN"
+      },
+      "createdAt": "2026-10-14T05:19:59.798Z"
+    },
+    {
       "id": "ev_1791814585494_e6an",
       "leadId": "LEAD-MV5C52MS-7442",
       "type": "CREATED",
@@ -392,6 +412,20 @@
   ],
   "notificationLogs": [
     {
+      "id": "notif_em_1791955199811",
+      "leadId": "LEAD-MV7NUXBQ-7433",
+      "channel": "email",
+      "status": "SENT",
+      "sentAt": "2026-10-14T05:19:59.811Z"
+    },
+    {
+      "id": "notif_tg_1791955199810",
+      "leadId": "LEAD-MV7NUXBQ-7433",
+      "channel": "telegram",
+      "status": "SENT",
+      "sentAt": "2026-10-14T05:19:59.810Z"
+    },
+    {
       "id": "notif_em_1790659033906",
       "leadId": "LEAD-MUM8A-1001",
       "channel": "email",
@@ -459,5 +493,99 @@
     "zalo_enabled": false,
     "email_enabled": true
   },
-  "nextLeadCounter": 1005
+  "nextLeadCounter": 1006,
+  "posts": [
+    {
+      "id": "post-1",
+      "title": "Xu hướng bao bì xanh 2026: Doanh nghiệp xuất khẩu trước rào cản ESG châu Âu",
+      "slug": "xu-huong-bao-bi-xanh-2026-tieu-chuan-fsc-va-esg",
+      "summary": "Chỉ thị mới PPWR của Liên minh Châu Âu yêu cầu 100% bao bì phải tái chế hoặc phân hủy sinh học trước năm 2030. Doanh nghiệp Việt cần chuẩn bị những gì?",
+      "content": "Trong bối cảnh Quy định về Bao bì và Rác thải Bao bì (PPWR) của Liên minh Châu Âu chính thức bước vào giai đoạn thực thi nghiêm ngặt, các nhà sản xuất xuất khẩu vào thị trường EU và Bắc Mỹ đang đối mặt với những yêu cầu khắt khe chưa từng có.\n\nKhông còn đơn thuần là chọn loại giấy có màu nâu mộc mạc, chứng nhận chuỗi hành trình FSC (Forest Stewardship Council) cùng việc hạn chế tối đa các màng nhựa khó bóc tách (non-separable laminates) là điều kiện tiên quyết để hàng hóa được thông quan.\n\nTại Vietlabel, chúng tôi đã tiên phong đầu tư hệ sinh thái keo dán gốc nước (Water-based adhesive) và lớp phủ phân hủy sinh học thay thế màng nhựa truyền thống, giúp đối tác xuất khẩu tiết kiệm thuế carbon và tăng năng lực cạnh tranh.",
+      "imageUrl": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop",
+      "category": "nganh-bao-bi",
+      "status": "PUBLISHED",
+      "createdAt": "2026-03-24T08:00:00.000Z",
+      "updatedAt": "2026-03-24T08:00:00.000Z"
+    },
+    {
+      "id": "post-2",
+      "title": "Case Study: Tái định vị thương hiệu Yến Sào Hoàng Gia qua cấu trúc hộp nam châm đa tầng",
+      "slug": "du-an-thay-doi-dien-mao-bao-bi-hop-yen-sao-hoang-gia",
+      "summary": "Giải pháp cấu trúc hộp mở cánh bướm kết hợp ép kim hologram 3D đã giúp doanh số mùa Tết của khách hàng tăng trưởng 145% và giảm tỷ lệ móp méo trong chuyển phát nhanh xuống dưới 0.1%.",
+      "content": "Khách hàng Yến Sào Hoàng Gia tìm đến Vietlabel khi sản phẩm của họ gặp tình trạng bao bì cũ dễ bị làm giả, và khi chuyển phát nhanh các hũ thủy tinh thường xuyên bị xô lệch, nứt vỡ.\n\nGiải pháp từ Vietlabel: Thiết kế lại cấu trúc hộp cánh bướm với cốt carton đặc 3mm chịu lực 50kg, khay mút EVA định hình ôm khít 100% cổ hũ yến, đồng thời tích hợp tem chống giả vi mô.\n\nKết quả đạt được: Doanh số quà tặng doanh nghiệp dịp Tết tăng vọt 145%, phản hồi khách hàng về độ sang trọng đạt điểm tuyệt đối 9.8/10.",
+      "imageUrl": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1000&auto=format&fit=crop",
+      "category": "du-an-noi-bat",
+      "status": "PUBLISHED",
+      "createdAt": "2026-03-15T08:00:00.000Z",
+      "updatedAt": "2026-03-15T08:00:00.000Z"
+    },
+    {
+      "id": "post-3",
+      "title": "Vietlabel khánh thành phân xưởng tự động hóa số 2 và đón nhận chứng chỉ G7 Master",
+      "slug": "vietlabel-khanh-thanh-nha-may-so-2-cong-nghe-heidelberg-uv",
+      "summary": "Nâng tổng diện tích sản xuất lên quy mô hiện đại và đưa vào vận hành hệ thống in Flexo & Offset thế hệ mới nhất, sẵn sàng đáp ứng 10 triệu tem nhãn & bao bì mỗi năm.",
+      "content": "Ngày 02/03/2026, Công ty Cổ phần Sản xuất Thương mại Vietlabel long trọng tổ chức lễ khánh thành phân xưởng sản xuất số 2, đánh dấu bước phát triển vượt bậc sau hơn 20 năm phục vụ ngành tem nhãn & bao bì.\n\nTại buổi lễ, đại diện Tổ chức Idealliance (Hoa Kỳ) đã chính thức trao chứng nhận G7 Master Facility, khẳng định năng lực quản lý chuẩn màu sắc in ấn đạt độ chính xác tương đương các nhà in hàng đầu thế giới.",
+      "imageUrl": "/images/vietlabel/team-vietlabel.webp",
+      "category": "hoat-dong-cong-ty",
+      "status": "PUBLISHED",
+      "createdAt": "2026-03-02T08:00:00.000Z",
+      "updatedAt": "2026-03-02T08:00:00.000Z"
+    },
+    {
+      "id": "post-4",
+      "title": "Tem nhãn Nông sản & Cà phê OCOP chất liệu Kraft sinh học tự nhiên đạt chuẩn 4-5 sao",
+      "slug": "tem-nhan-nong-san-ca-phe-ocop-kraft-sinh-hoc",
+      "summary": "Giải pháp tem nhãn cuộn decal giấy Kraft mộc chống thấm kết hợp màng bio tự hủy giúp cà phê OCOP xuất khẩu khẳng định giá trị thương hiệu.",
+      "content": "Chương trình Mỗi Xã Một Sản Phẩm (OCOP) đang tạo động lực mạnh mẽ cho các đặc sản nông sản Việt Nam vươn ra thị trường quốc tế. Tuy nhiên, rào cản lớn nhất của nhiều HTX và doanh nghiệp là bao bì và tem nhãn chưa đạt chuẩn xuất khẩu.\n\nVietlabel cung cấp giải pháp tem cuộn giấy Kraft nguyên sinh kết hợp công nghệ in Flexo 6 màu kháng ẩm, bảo đảm độ bám dính trên túi giấy đựng cà phê rang xay và hộp quà tặng nông sản.\n\nTem nhãn đạt chứng nhận an toàn tiếp xúc thực phẩm HACCP và chứng chỉ chuỗi hành trình rừng FSC CoC.",
+      "imageUrl": "/images/vietlabel/label-cafe-ocop.webp",
+      "category": "du-an-noi-bat",
+      "status": "PUBLISHED",
+      "createdAt": "2026-04-01T08:00:00.000Z",
+      "updatedAt": "2026-04-01T08:00:00.000Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job-1",
+      "title": "Kỹ Sư Vận Hành Máy In Offset UV Speedmaster XL 106",
+      "department": "Khối Sản Xuất & Vận Hành",
+      "location": "Bình Tân, TP. Hồ Chí Minh",
+      "type": "Toàn thời gian (Full-time)",
+      "description": "Vận hành hệ thống máy in Offset công nghiệp Heidelberg Speedmaster 6 màu + trạm phủ UV.\nKiểm soát chất lượng màu in theo tiêu chuẩn G7 Master và chuẩn màu mẫu đã duyệt.\nBảo trì, bảo dưỡng thiết bị theo quy trình 5S của nhà máy.",
+      "requirements": "Tối thiểu 2 năm kinh nghiệm đứng máy in Offset công nghiệp.\nHiểu biết về độ phủ mực, cân bằng pH nước máng và mực in UV.\nTinh thần trách nhiệm cao, tỉ mỉ, có khả năng làm việc theo ca.",
+      "benefits": "Thu nhập 18.000.000 - 25.000.000 VNĐ / tháng + thưởng sản lượng.\nĐóng BHXH, BHYT, BHTN đầy đủ theo luật lao động.\nPhụ cấp cơm trưa, đồng phục và khám sức khỏe định kỳ hàng năm.",
+      "status": "OPEN",
+      "deadline": "2026-11-30",
+      "createdAt": "2026-04-01T08:00:00.000Z",
+      "updatedAt": "2026-04-01T08:00:00.000Z"
+    },
+    {
+      "id": "job-2",
+      "title": "Chuyên Viên Kinh Doanh B2B - Bao Bì & Tem Nhãn Xuất Khẩu",
+      "department": "Phòng Kinh Doanh & Tiếp Thị",
+      "location": "Bình Tân, TP. Hồ Chí Minh",
+      "type": "Toàn thời gian (Full-time)",
+      "description": "Tìm kiếm, tiếp cận và tư vấn giải pháp bao bì, tem nhãn cuộn cho các doanh nghiệp FMCG, dược phẩm, mỹ phẩm.\nPhối hợp cùng bộ phận dự toán kỹ thuật lên báo giá và theo dõi tiến độ đơn hàng.\nChăm sóc và phát triển mối quan hệ hợp tác dài hạn với các đối tác chiến lược.",
+      "requirements": "Tốt nghiệp Cao đẳng/Đại học chuyên ngành QTKD, Marketing hoặc khối ngành kinh tế.\nCó từ 1 năm kinh nghiệm sales B2B (ưu tiên ngành in ấn, bao bì, giấy, vật tư).\nKỹ năng đàm phán, thuyết trình tốt; ưu tiên giao tiếp tiếng Anh cơ bản.",
+      "benefits": "Lương cứng 12.000.000 - 15.000.000 VNĐ + hoa hồng hấp dẫn (thu nhập 25 - 40 triệu).\nThưởng nóng theo từng dự án lớn và thưởng KPI quý/năm.\nCơ hội thăng tiến lên Trưởng nhóm kinh doanh sau 6 tháng.",
+      "status": "OPEN",
+      "deadline": "2026-11-15",
+      "createdAt": "2026-04-01T08:00:00.000Z",
+      "updatedAt": "2026-04-01T08:00:00.000Z"
+    },
+    {
+      "id": "job-3",
+      "title": "Chuyên Viên Thiết Kế Kết Cấu Bao Bì & Chế Bản Prepress",
+      "department": "Phòng Kỹ Thuật & Nghiên Cứu",
+      "location": "Bình Tân, TP. Hồ Chí Minh",
+      "type": "Toàn thời gian (Full-time)",
+      "description": "Thiết kế kết cấu hộp giấy, thùng carton, khay định hình bằng phần mềm ArtiosCAD.\nCắt mẫu thực tế (mockup prototype) trên máy Kongsberg cho khách hàng duyệt.\nBình trang kẽm CTP, kiểm tra bẫy màu (trapping) và xuất kẽm chuẩn xác.",
+      "requirements": "Thành thạo Adobe Illustrator, Photoshop và phần mềm kết cấu (ArtiosCAD / PackLib).\nAm hiểu về dung sai bế gập hộp, nếp gấp, sóng carton.\nSáng tạo, cẩn thận và có tư duy thẩm mỹ cao.",
+      "benefits": "Thu nhập 14.000.000 - 20.000.000 VNĐ / tháng.\nĐược đào tạo nâng cao về chuẩn G7 và công nghệ chế bản hiện đại.\nMôi trường làm việc trẻ trung, trang bị máy Mac / Workstation đời mới.",
+      "status": "OPEN",
+      "deadline": "2026-11-20",
+      "createdAt": "2026-04-01T08:00:00.000Z",
+      "updatedAt": "2026-04-01T08:00:00.000Z"
+    }
+  ]
 }
