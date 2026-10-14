@@ -1,19 +1,19 @@
 {
   "nav": {
     "home": "Trang chủ",
-    "about": "Về chúng tôi",
+    "about": "Giới thiệu",
     "about_overview": "Giới thiệu chung",
     "about_team": "Đội ngũ lãnh đạo",
     "about_certifications": "Chứng nhận & Tiêu chuẩn",
     "about_profile": "Hồ sơ năng lực",
     "products": "Sản phẩm",
     "capabilities": "Năng lực",
-    "sustainability": "Phát triển bền vững",
-    "technology": "Công nghệ & Máy móc",
+    "sustainability": "Bền vững",
+    "technology": "Công nghệ",
     "news": "Tin tức",
     "careers": "Tuyển dụng",
     "contact": "Liên hệ",
-    "quote": "Báo giá nhanh"
+    "quote": "Báo giá"
   },
   "hero": {
     "title": "Đối tác chiến lược cung cấp giải pháp bao bì tối ưu, nâng tầm giá trị thương hiệu",

@@ -17,9 +17,9 @@ export const Footer: React.FC = () => {
             <Link to="/" className="inline-block">
               <div className="inline-flex items-center">
                 <img
-                  src="/images/vietlabel/logo.png"
+                  src="/images/vietlabel/logo-white.png"
                   alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
-                  className="h-12 w-auto object-contain max-w-[320px] brightness-0 invert shrink-0"
+                  className="h-11 w-auto object-contain max-w-[280px] shrink-0"
                 />
               </div>
             </Link>

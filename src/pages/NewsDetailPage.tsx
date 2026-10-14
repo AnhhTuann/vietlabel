@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -14,16 +14,49 @@ import {
 import { SEO } from '../lib/seo';
 import { POSTS_LIST } from '../data/posts';
 import { Button } from '../components/ui/Button';
+import { api } from '../services/api';
 
 export const NewsDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
   const currentLang = i18n.language;
   const navigate = useNavigate();
+  const [cmsPost, setCmsPost] = useState<any | null>(null);
+
+  useEffect(() => {
+    const localPost = POSTS_LIST.find((p) => p.slug === slug);
+    if (!localPost && slug) {
+      api.get('/cms/posts').then((res) => {
+        if (res.data && Array.isArray(res.data)) {
+          const found = res.data.find((p: any) => p.slug === slug && p.status === 'PUBLISHED');
+          if (found) {
+            setCmsPost({
+              id: found.id,
+              slug: found.slug,
+              category: found.category || 'nganh-bao-bi',
+              categoryNameVi: found.category || 'Tin tức',
+              categoryNameEn: found.category || 'News',
+              titleVi: found.title,
+              titleEn: found.title,
+              summaryVi: found.summary,
+              summaryEn: found.summary,
+              image: found.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+              date: new Date(found.createdAt).toLocaleDateString('vi-VN'),
+              readTimeVi: '5 phút đọc',
+              readTimeEn: '5 min read',
+              author: found.author || 'Ban biên tập Vietlabel',
+              contentVi: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
+              contentEn: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
+            });
+          }
+        }
+      }).catch(console.error);
+    }
+  }, [slug]);
 
   const post = useMemo(() => {
-    return POSTS_LIST.find((p) => p.slug === slug) || POSTS_LIST[0];
-  }, [slug]);
+    return POSTS_LIST.find((p) => p.slug === slug) || cmsPost || POSTS_LIST[0];
+  }, [slug, cmsPost]);
 
   const relatedPosts = useMemo(() => {
     return POSTS_LIST.filter((p) => p.id !== post?.id).slice(0, 2);
@@ -41,7 +74,12 @@ export const NewsDetailPage: React.FC = () => {
   }
 
   const title = currentLang === 'vi' ? post.titleVi : post.titleEn;
-  const paragraphs = currentLang === 'vi' ? post.contentVi : post.contentEn;
+  const rawParagraphs = currentLang === 'vi' ? post.contentVi : post.contentEn;
+  const paragraphs: string[] = Array.isArray(rawParagraphs)
+    ? rawParagraphs
+    : typeof rawParagraphs === 'string'
+    ? [rawParagraphs]
+    : [];
 
   return (
     <div className="pt-24 pb-20">

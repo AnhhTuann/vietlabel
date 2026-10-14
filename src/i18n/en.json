@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About Us",
+    "about": "About",
     "about_overview": "Company Overview",
     "about_team": "Leadership Team",
     "about_certifications": "Certifications & Standards",
@@ -9,11 +9,11 @@
     "products": "Products",
     "capabilities": "Capabilities",
     "sustainability": "Sustainability",
-    "technology": "Technology & Equipment",
+    "technology": "Technology",
     "news": "News",
     "careers": "Careers",
     "contact": "Contact",
-    "quote": "Get a Quote"
+    "quote": "Get Quote"
   },
   "hero": {
     "title": "Strategic Partner Delivering Optimal Packaging Solutions to Elevate Brand Value",

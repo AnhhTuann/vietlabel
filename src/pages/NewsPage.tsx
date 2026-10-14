@@ -1,45 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar, Clock, ArrowRight, Search, Newspaper } from 'lucide-react';
 import { SEO } from '../lib/seo';
 import { api } from '../services/api';
+import { POSTS_LIST } from '../data/posts';
 import { SectionTitle } from '../components/ui/SectionTitle';
 
 export const NewsPage: React.FC = () => {
   const { i18n } = useTranslation();
-  const [postsList, setPostsList] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [postsList, setPostsList] = useState<any[]>(POSTS_LIST);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchPosts = async () => {
       try {
         const res = await api.get('/cms/posts');
-        // Map CMS post format to frontend format, or fallback
-        const mapped = res.data.map((p: any) => ({
-          id: p.id,
-          slug: p.slug,
-          category: p.category,
-          titleVi: p.title,
-          titleEn: p.title,
-          summaryVi: p.summary,
-          summaryEn: p.summary,
-          image: p.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-          categoryNameVi: p.category,
-          categoryNameEn: p.category,
-          date: new Date(p.createdAt).toLocaleDateString('vi-VN'),
-          readTimeVi: '5 phút đọc',
-          readTimeEn: '5 min read',
-          status: p.status
-        })).filter((p: any) => p.status === 'PUBLISHED');
-        setPostsList(mapped);
+        if (isMounted && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          const mapped = res.data
+            .filter((p: any) => p.status === 'PUBLISHED')
+            .map((p: any) => ({
+              id: p.id,
+              slug: p.slug,
+              category: p.category || 'nganh-bao-bi',
+              titleVi: p.title,
+              titleEn: p.title,
+              summaryVi: p.summary,
+              summaryEn: p.summary,
+              image: p.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+              categoryNameVi: p.category || 'Tin tức',
+              categoryNameEn: p.category || 'News',
+              date: new Date(p.createdAt).toLocaleDateString('vi-VN'),
+              readTimeVi: '5 phút đọc',
+              readTimeEn: '5 min read',
+              status: p.status
+            }));
+          if (mapped.length > 0) {
+            setPostsList(mapped);
+          }
+        }
       } catch(err) {
-        console.error(err);
+        console.warn('CMS posts fetch failed, falling back to static posts:', err);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
     fetchPosts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
   const currentLang = i18n.language;
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

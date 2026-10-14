@@ -59,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
         <div className="mx-auto w-[min(calc(100%-48px),1440px)] max-w-[1440px] px-0">
           <div
             className={cn(
-              'flex items-center justify-between gap-3 rounded-[20px] border px-[6px] py-[6px] transition-all duration-300',
+              'flex items-center justify-between gap-2 xl:gap-3 rounded-[20px] border px-2 sm:px-3 py-1.5 transition-all duration-300',
               scrolledPast || !isHome
                 ? 'border-slate-200/80 bg-white/90 shadow-[0_12px_30px_rgba(15,23,42,0.08)]'
                 : 'border-white/10 bg-[#0b2343]/95 shadow-[0_18px_35px_rgba(2,6,23,0.35)]',
@@ -67,25 +67,23 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
           >
             <Link
               to="/"
-              className="flex flex-shrink-0 items-center justify-center self-stretch rounded-[14px] ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4384]"
+              className="flex flex-shrink-0 items-center justify-center py-1 px-2 ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4384] rounded-xl transition-transform hover:scale-[1.02]"
             >
-              <div className="flex h-full items-center justify-center border border-[#e8edf7] bg-gradient-to-r from-white via-white to-[#eef2fb] px-3 shadow-[0_4px_12px_rgba(30,67,132,0.08)] sm:px-4 lg:px-5 rounded-[14px]">
-                <img
-                  src="/images/vietlabel/logo.png"
-                  alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
-                  className="h-[46px] w-auto object-contain max-w-[170px] sm:max-w-[200px] lg:max-w-[210px]"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/vietlabel/logo.png';
-                  }}
-                />
-              </div>
+              <img
+                src={scrolledPast || !isHome ? '/images/vietlabel/logo.png' : '/images/vietlabel/logo-white.png'}
+                alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
+                className="h-[38px] sm:h-[42px] w-auto object-contain max-w-[160px] sm:max-w-[190px] lg:max-w-[210px] transition-all duration-300"
+                onError={(e) => {
+                  e.currentTarget.src = '/images/vietlabel/logo.png';
+                }}
+              />
             </Link>
 
-            <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-between gap-1 xl:gap-2">
+            <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-center gap-0.5 xl:gap-1 2xl:gap-1.5 px-1">
               <Link
                 to="/"
                 className={cn(
-                  'relative px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'relative px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/'
                     ? scrolledPast || !isHome
                       ? 'text-[#1E4384] bg-[#EEF3FF] before:absolute before:-bottom-[4px] before:left-2 before:right-2 before:h-[2px] before:rounded-full before:bg-[#E11D2E]'
@@ -106,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               >
                 <button
                   className={cn(
-                    'flex items-center gap-1 px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                    'flex items-center gap-1 px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                     location.pathname.startsWith('/gioi-thieu')
                       ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                       : scrolledPast || !isHome
@@ -167,7 +165,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 <Link
                   to="/san-pham"
                   className={cn(
-                    'flex items-center gap-1 px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                    'flex items-center gap-1 px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                     location.pathname.startsWith('/san-pham')
                       ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                       : scrolledPast || !isHome
@@ -224,7 +222,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/nang-luc"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/nang-luc'
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -238,7 +236,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/phat-trien-ben-vung"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/phat-trien-ben-vung'
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -252,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/cong-nghe"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/cong-nghe'
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -266,7 +264,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/tin-tuc"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname.startsWith('/tin-tuc')
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -280,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/tuyen-dung"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/tuyen-dung'
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -294,7 +292,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <Link
                 to="/lien-he"
                 className={cn(
-                  'px-[clamp(8px,0.7vw,14px)] py-2 text-[clamp(11px,0.8vw,14px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
+                  'px-[clamp(6px,0.55vw,11px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold rounded-full transition-all duration-200 whitespace-nowrap tracking-[-0.01em]',
                   location.pathname === '/lien-he'
                     ? 'text-[#102447] bg-white shadow-[0_8px_18px_rgba(255,255,255,0.14)]'
                     : scrolledPast || !isHome
@@ -307,7 +305,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
             </nav>
 
             {/* Zone 3: Actions (Language toggle + Quote Request button) */}
-            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5 pr-1">
+            <div
+              className={cn(
+                'flex shrink-0 items-center gap-2 sm:gap-3 pl-2.5 sm:pl-3.5 border-l transition-colors duration-200 pr-1',
+                scrolledPast || !isHome ? 'border-slate-200' : 'border-white/15',
+              )}
+            >
               {/* Language toggle button */}
               <div
                 className="relative hidden sm:block"
@@ -316,9 +319,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               >
                 <button
                   className={cn(
-                    'flex shrink-0 items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-semibold rounded-full border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E11D2E] leading-none',
+                    'flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold rounded-full border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E11D2E] leading-none cursor-pointer',
                     scrolledPast || !isHome
-                      ? 'border-slate-200 text-slate-700 hover:border-[#E11D2E] hover:text-[#E11D2E] bg-white/80 shadow-sm'
+                      ? 'border-slate-200 text-slate-700 hover:border-[#E11D2E] hover:text-[#E11D2E] bg-white/80 shadow-xs'
                       : 'border-white/20 text-slate-100 hover:border-white/40 hover:bg-white/10 bg-white/5 backdrop-blur-sm',
                   )}
                   aria-label="Chọn ngôn ngữ"
@@ -329,14 +332,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 {openDropdown === 'lang' && (
                   <div className="absolute top-full right-0 pt-3 z-50">
-                    <div className="bg-[#0B1B3A] rounded-xl shadow-lg border border-white/10 p-1.5 animate-in fade-in slide-in-from-bottom-1 duration-200 min-w-[100px]">
+                    <div className="bg-[#0B1B3A] rounded-xl shadow-lg border border-white/10 p-1.5 animate-in fade-in slide-in-from-bottom-1 duration-200 min-w-[110px]">
                       <button
                         onClick={() => {
                           i18n.changeLanguage('vi');
                           setOpenDropdown(null);
                         }}
                         className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap',
+                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer',
                           currentLang === 'vi'
                             ? 'bg-white/10 text-[#E11D2E]'
                             : 'text-white/80 hover:bg-white/5 hover:text-white',
@@ -350,7 +353,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                           setOpenDropdown(null);
                         }}
                         className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap',
+                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer',
                           currentLang === 'en'
                             ? 'bg-white/10 text-[#E11D2E]'
                             : 'text-white/80 hover:bg-white/5 hover:text-white',
@@ -368,7 +371,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 variant="primary"
                 size="sm"
                 onClick={() => onOpenQuoteModal()}
-                className="hidden sm:inline-flex shrink-0 whitespace-nowrap rounded-full hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(225,29,46,0.4)] transition-all duration-200 bg-[#BE1E2D] hover:bg-[#d92b3c] border-none px-3 py-1.5 text-[12px] font-semibold leading-none"
+                className="hidden sm:inline-flex shrink-0 whitespace-nowrap rounded-full hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(225,29,46,0.4)] transition-all duration-200 bg-[#BE1E2D] hover:bg-[#d92b3c] border-none px-3.5 sm:px-4 py-2 text-[12px] sm:text-[13px] font-semibold leading-none shadow-xs cursor-pointer"
               >
                 {t('nav.quote')}
               </Button>
@@ -377,7 +380,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <button
                 onClick={() => setMobileMenuOpen(true)}
                 className={cn(
-                  'xl:hidden p-2 rounded-lg transition-colors',
+                  'xl:hidden p-2 rounded-lg transition-colors cursor-pointer',
                   scrolledPast || !isHome
                     ? 'text-slate-700 hover:bg-slate-100'
                     : 'text-white hover:bg-white/10',

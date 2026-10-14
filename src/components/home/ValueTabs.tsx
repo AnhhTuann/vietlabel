@@ -16,8 +16,8 @@ interface ValueItem {
   icon: React.ReactNode;
   titleKey: string;
   descKey: string;
-  bulletsVi: string[];
-  bulletsEn: string[];
+  bulletsVi?: string[];
+  bulletsEn?: string[];
   image: string;
 }
 

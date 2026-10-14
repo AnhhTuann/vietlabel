@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 import { AdminLayout } from './components/admin/AdminLayout';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
 // Public pages
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
@@ -45,43 +46,45 @@ const LoadingFallback: React.FC = () => (
 export const AppRoutes: React.FC = () => {
   return (
     <AdminAuthProvider>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {/* Public Website Routes */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/gioi-thieu" element={<AboutPage />} />
-            <Route path="/san-pham" element={<ProductsListPage />} />
-            <Route path="/san-pham/:danhMuc" element={<ProductsListPage />} />
-            <Route path="/san-pham/:danhMuc/:slug" element={<ProductDetailPage />} />
-            <Route path="/nang-luc" element={<CapabilitiesPage />} />
-            <Route path="/phat-trien-ben-vung" element={<SustainabilityPage />} />
-            <Route path="/cong-nghe" element={<TechnologyPage />} />
-            <Route path="/tin-tuc" element={<NewsPage />} />
-            <Route path="/tin-tuc/:slug" element={<NewsDetailPage />} />
-            <Route path="/tuyen-dung" element={<CareersPage />} />
-            <Route path="/lien-he" element={<ContactPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {/* Public Website Routes */}
+            <Route element={<Layout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/gioi-thieu" element={<AboutPage />} />
+              <Route path="/san-pham" element={<ProductsListPage />} />
+              <Route path="/san-pham/:danhMuc" element={<ProductsListPage />} />
+              <Route path="/san-pham/:danhMuc/:slug" element={<ProductDetailPage />} />
+              <Route path="/nang-luc" element={<CapabilitiesPage />} />
+              <Route path="/phat-trien-ben-vung" element={<SustainabilityPage />} />
+              <Route path="/cong-nghe" element={<TechnologyPage />} />
+              <Route path="/tin-tuc" element={<NewsPage />} />
+              <Route path="/tin-tuc/:slug" element={<NewsDetailPage />} />
+              <Route path="/tuyen-dung" element={<CareersPage />} />
+              <Route path="/lien-he" element={<ContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
 
-          {/* Admin Authentication */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
+            {/* Admin Authentication */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
 
-          {/* Admin CRM & Live Inbox Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminOverviewPage />} />
-            <Route path="leads" element={<AdminLeadsPage />} />
-            <Route path="leads/:id" element={<AdminLeadDetailPage />} />
-            <Route path="products" element={<AdminProductsPage />} />
-            <Route path="news" element={<AdminNewsPage />} />
-            <Route path="careers" element={<AdminCareersPage />} />
-            <Route path="inbox" element={<AdminInboxPage />} />
-            <Route path="kb" element={<AdminKbPage />} />
-            <Route path="reports" element={<AdminReportsPage />} />
-            <Route path="settings" element={<AdminSettingsPage />} />
-          </Route>
-        </Routes>
-      </Suspense>
+            {/* Admin CRM & Live Inbox Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminOverviewPage />} />
+              <Route path="leads" element={<AdminLeadsPage />} />
+              <Route path="leads/:id" element={<AdminLeadDetailPage />} />
+              <Route path="products" element={<AdminProductsPage />} />
+              <Route path="news" element={<AdminNewsPage />} />
+              <Route path="careers" element={<AdminCareersPage />} />
+              <Route path="inbox" element={<AdminInboxPage />} />
+              <Route path="kb" element={<AdminKbPage />} />
+              <Route path="reports" element={<AdminReportsPage />} />
+              <Route path="settings" element={<AdminSettingsPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </AdminAuthProvider>
   );
 };
