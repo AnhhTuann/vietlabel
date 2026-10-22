@@ -98,6 +98,30 @@ body {
   }
 }
 
+@keyframes scrollUp {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes scrollUp2 {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+
+.animate-scroll-up {
+  animation: scrollUp 18s linear infinite;
+}
+
+.animate-scroll-up-2 {
+  animation: scrollUp2 22s linear infinite;
+}
+
+/* Hero gallery pause on hover */
+.hero-gallery:hover .animate-scroll-up,
+.hero-gallery:hover .animate-scroll-up-2 {
+  animation-play-state: paused;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

@@ -210,88 +210,63 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             </div>
           </div>
 
-          {/* Right Column: Dynamic 7-Slide Sample Product Carousel (5 cols) */}
-          <div className="lg:col-span-5">
-            <div className="relative rounded-2xl overflow-hidden bg-slate-900/80 border border-slate-700/80 shadow-2xl p-3 backdrop-blur-md">
-              {/* Carousel Image viewport */}
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-950">
-                {slides.map((slide, idx) => (
-                  <div
-                    key={slide.id}
-                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                      idx === activeSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                    }`}
-                  >
-                    <Link
-                      to={slide.link || '/san-pham'}
-                      className="block w-full h-full relative group cursor-pointer"
-                    >
-                      <img
-                        src={slide.image}
-                        alt={slide.titleVi}
-                        className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
-                        referrerPolicy="no-referrer"
-                        loading="eager"
-                      />
-                      {/* Gradient overlay for text */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent group-hover:from-black transition-colors" />
+          {/* Right Column: Infinite 2-column vertical scroll gallery */}
+          <div className="lg:col-span-5 hidden lg:block">
+            {/* Outer rounded card */}
+            <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl backdrop-blur-md p-3 h-[420px] xl:h-[480px]">
+              {/* Fade top & bottom masks */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-12 z-10 bg-gradient-to-b from-[#0d1832] to-transparent rounded-t-xl" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-[#0d1832] to-transparent rounded-b-xl" />
 
-                      {/* Badge & Info Overlay */}
-                      <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <div className="flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase text-amber-400 mb-1">
-                          <span>{currentLang === 'vi' ? slide.categoryVi : slide.categoryEn}</span>
-                          <span>·</span>
-                          <span className="text-slate-300 font-normal">{slide.tag}</span>
-                        </div>
-                        <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2 leading-snug">
-                          {currentLang === 'vi' ? slide.titleVi : slide.titleEn}
-                        </h3>
-                        <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-300 group-hover:text-white transition-colors">
-                          <span>{t('hero.view_solution')}</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#BE1E2D]" />
-                        </div>
+              {/* Two-column gallery */}
+              <div className="hero-gallery flex gap-2.5 h-full overflow-hidden rounded-xl">
+                {/* Column 1 — scrolls up (18s) */}
+                <div className="flex-1 overflow-hidden">
+                  <div className="animate-scroll-up flex flex-col gap-2.5">
+                    {[
+                      '/images/vietlabel/hero-gallery/product-oil.webp',
+                      '/images/vietlabel/hero-gallery/product-kimchi.webp',
+                      '/images/vietlabel/hero-gallery/product-yogurt.webp',
+                      '/images/vietlabel/solutions/solution-rfid.webp',
+                      '/images/vietlabel/solutions/solution-cosmetics.webp',
+                      '/images/vietlabel/solutions/solution-food-beverage.webp',
+                      /* duplicate for seamless loop */
+                      '/images/vietlabel/hero-gallery/product-oil.webp',
+                      '/images/vietlabel/hero-gallery/product-kimchi.webp',
+                      '/images/vietlabel/hero-gallery/product-yogurt.webp',
+                      '/images/vietlabel/solutions/solution-rfid.webp',
+                      '/images/vietlabel/solutions/solution-cosmetics.webp',
+                      '/images/vietlabel/solutions/solution-food-beverage.webp',
+                    ].map((src, i) => (
+                      <div key={i} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
+                        <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </div>
-                    </Link>
+                    ))}
                   </div>
-                ))}
-              </div>
-
-              {/* Navigation Bar below image */}
-              <div className="mt-3 px-2 flex items-center justify-between text-xs text-slate-400">
-                <div className="flex items-center gap-1.5 max-w-[220px] overflow-x-auto py-1 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                  {slides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all cursor-pointer shrink-0 ${
-                        idx === activeSlide
-                          ? 'w-5 bg-[#BE1E2D]'
-                          : 'w-1.5 bg-slate-700 hover:bg-slate-500'
-                      }`}
-                      aria-label={`Chuyển tới mẫu sản phẩm ${idx + 1}`}
-                    />
-                  ))}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono tabular-nums text-slate-400">
-                    {String(activeSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-                  </span>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={handlePrev}
-                      className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer"
-                      aria-label="Hình trước"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={handleNext}
-                      className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer"
-                      aria-label="Hình sau"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                {/* Column 2 — scrolls up offset (22s), starts halfway through */}
+                <div className="flex-1 overflow-hidden">
+                  <div className="animate-scroll-up-2 flex flex-col gap-2.5">
+                    {[
+                      '/images/vietlabel/hero-gallery/product-calcium.webp',
+                      '/images/vietlabel/hero-gallery/product-pvoil.webp',
+                      '/images/vietlabel/hero-gallery/product-sauce.webp',
+                      '/images/vietlabel/solutions/solution-pharmaceutical.webp',
+                      '/images/vietlabel/solutions/solution-apparel.webp',
+                      '/images/vietlabel/solutions/solution-eco.webp',
+                      /* duplicate for seamless loop */
+                      '/images/vietlabel/hero-gallery/product-calcium.webp',
+                      '/images/vietlabel/hero-gallery/product-pvoil.webp',
+                      '/images/vietlabel/hero-gallery/product-sauce.webp',
+                      '/images/vietlabel/solutions/solution-pharmaceutical.webp',
+                      '/images/vietlabel/solutions/solution-apparel.webp',
+                      '/images/vietlabel/solutions/solution-eco.webp',
+                    ].map((src, i) => (
+                      <div key={i} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
+                        <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
