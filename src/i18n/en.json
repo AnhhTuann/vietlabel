@@ -16,22 +16,32 @@
     "quote": "Get Quote"
   },
   "hero": {
-    "title": "Strategic Partner Delivering Optimal Packaging Solutions to Elevate Brand Value",
+    "kicker": "B2B PACKAGING & LABELING MANUFACTURER",
+    "title": "VIETLABEL - STRATEGIC PARTNER FOR SPECIALIZED LABEL SOLUTIONS, ELEVATING BRAND VALUE",
     "subtitle": "Over 20 years of excellence in precision paper packaging manufacturing, meeting global export standards: FSC, ISO 9001, HACCP, and G7.",
     "cta_products": "Explore Products",
-    "cta_contact": "Contact Our Experts"
+    "cta_contact": "Contact Our Experts",
+    "cert_fsc_iso": "FSC® & ISO 9001:2015 Certified",
+    "cert_g7": "G7 Master Color Printing Standard",
+    "factory_area": "10,000m² Plant in Ho Chi Minh City",
+    "view_solution": "View solution details"
   },
   "stats": {
+    "badge": "PROVEN MANUFACTURING CAPACITY",
     "title": "Solid Enterprise Foundation",
     "desc": "Vietlabel is a pioneer in modern offset printing, labeling and integrated quality control, providing standard packaging solutions to more than 500+ leading brands across Vietnam and overseas.",
-    "stat1_value": "200+",
+    "bullet1": "Closed-loop quality control from CTP prepress to finished products",
+    "bullet2": "State-of-the-art machinery imported directly from Germany, Japan & Switzerland",
+    "bullet3": "99.8% on-time delivery commitment nationwide",
     "stat1_label": "Skilled Workforce",
-    "stat2_value": "10M+",
+    "stat1_desc": "Expert press technicians, precision die-cutting specialists & packaging R&D engineers.",
+    "stat2_suffix": "M+",
     "stat2_label": "Annual Packaging Units",
-    "stat3_value": "05+",
-    "stat3_label": "Global Standard Systems",
-    "stat4_value": "20+",
-    "stat4_label": "Years in Industry"
+    "stat2_desc": "Consistent high capacity serving major FMCG, food and retail corporations.",
+    "stat3_label": "International Accreditations",
+    "stat3_desc": "ISO 9001:2015, FSC® CoC, EcoVadis Silver, HACCP and G7 Master.",
+    "stat4_label": "Years of Excellence",
+    "stat4_desc": "Partnering in the sustainable growth of thousands of brands since 2004."
   },
   "products_section": {
     "badge": "PRODUCT CATEGORIES",

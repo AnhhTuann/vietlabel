@@ -16,22 +16,32 @@
     "quote": "Báo giá"
   },
   "hero": {
-    "title": "Đối tác chiến lược cung cấp giải pháp bao bì tối ưu, nâng tầm giá trị thương hiệu",
+    "kicker": "NHÀ MÁY SẢN XUẤT BAO BÌ B2B",
+    "title": "VIETLABEL - ĐỐI TÁC CÙNG DOANH NGHIỆP VỚI GIẢI PHÁP TEM NHÃN CHUYÊN BIỆT, NÂNG TẦM GIÁ TRỊ THƯƠNG HIỆU",
     "subtitle": "Hơn 20 năm kinh nghiệm sản xuất bao bì giấy chuyên nghiệp, đáp ứng tiêu chuẩn xuất khẩu toàn cầu FSC, ISO 9001, HACCP và G7.",
     "cta_products": "Khám phá sản phẩm",
-    "cta_contact": "Liên hệ tư vấn"
+    "cta_contact": "Liên hệ tư vấn",
+    "cert_fsc_iso": "Chứng nhận FSC® & ISO 9001:2015",
+    "cert_g7": "Tiêu chuẩn in ấn chuẩn màu G7 Master",
+    "factory_area": "Nhà máy 10.000m² tại TP. Hồ Chí Minh",
+    "view_solution": "Xem chi tiết giải pháp"
   },
   "stats": {
+    "badge": "NĂNG LỰC SẢN XUẤT THỰC TẾ",
     "title": "Nền tảng doanh nghiệp vững chắc",
     "desc": "Vietlabel tự hào là đơn vị tiên phong áp dụng công nghệ in ấn hiện đại và quy trình quản lý chất lượng khép kín, mang lại giải pháp đóng gói & tem nhãn chuẩn mực cho hơn 500+ thương hiệu hàng đầu.",
-    "stat1_value": "200+",
+    "bullet1": "Kiểm soát chất lượng khép kín từ chế bản CTP đến thành phẩm",
+    "bullet2": "Dây chuyền nhập khẩu trực tiếp từ Đức, Nhật Bản & Thụy Sĩ",
+    "bullet3": "Cam kết tiến độ giao hàng đúng hẹn 99.8% trên toàn quốc",
     "stat1_label": "Nhân sự tay nghề cao",
-    "stat2_value": "10 Triệu+",
+    "stat1_desc": "Đội ngũ kỹ sư in ấn, thợ bế dán bậc cao & chuyên viên R&D cấu trúc.",
+    "stat2_suffix": " triệu+",
     "stat2_label": "Sản lượng bao bì / năm",
-    "stat3_value": "05+",
+    "stat2_desc": "Công suất ổn định phục vụ các tập đoàn FMCG, thực phẩm và bán lẻ lớn.",
     "stat3_label": "Hệ thống tiêu chuẩn quốc tế",
-    "stat4_value": "20+",
-    "stat4_label": "Năm kinh nghiệm phát triển"
+    "stat3_desc": "ISO 9001:2015, FSC® CoC, EcoVadis Silver, HACCP và G7 Master.",
+    "stat4_label": "Năm kinh nghiệm phát triển",
+    "stat4_desc": "Đồng hành cùng sự lớn mạnh của hàng ngàn thương hiệu từ năm 2004."
   },
   "products_section": {
     "badge": "DANH MỤC SẢN PHẨM",

@@ -150,16 +150,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             {/* Clean unboxed Trust Kicker (no pills) */}
             <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-[#E9F0FF]">
               <span className="uppercase tracking-[0.18em] text-[#E9F0FF]">
-                NHÀ MÁY SẢN XUẤT BAO BÌ B2B
+                {t('hero.kicker')}
               </span>
               <span aria-hidden="true" className="text-[#BE1E2D]">
                 ·
               </span>
-              <span className="text-slate-300 font-normal tracking-[0.12em]">EST. 2004</span>
+              <span className="text-slate-300 font-normal tracking-[0.12em]">EST. 2018</span>
             </div>
 
             {/* Dominant Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.18] sm:leading-[1.15] lg:leading-[1.12] [text-wrap:balance]">
+            <h1 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-white leading-[1.22] [text-wrap:balance]">
               <span className="block text-white">{t('hero.title')}</span>
             </h1>
 
@@ -197,15 +197,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             <div className="pt-6 border-t border-slate-700/60 flex flex-wrap items-center gap-6 text-xs text-slate-300">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#BE1E2D] shrink-0" />
-                <span>Chứng nhận FSC® & ISO 9001:2015</span>
+                <span>{t('hero.cert_fsc_iso')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Award className="w-4 h-4 text-[#E9F0FF] shrink-0" />
-                <span>Tiêu chuẩn in ấn chuẩn màu G7 Master</span>
+                <span>{t('hero.cert_g7')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#BE1E2D] inline-block animate-pulse"></span>
-                <span>Nhà máy 15.000m² tại TP. HCM</span>
+                <span>{t('hero.factory_area')}</span>
               </div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                           {currentLang === 'vi' ? slide.titleVi : slide.titleEn}
                         </h3>
                         <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-300 group-hover:text-white transition-colors">
-                          <span>Xem chi tiết giải pháp</span>
+                          <span>{t('hero.view_solution')}</span>
                           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#BE1E2D]" />
                         </div>
                       </div>
@@ -258,15 +258,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
               {/* Navigation Bar below image */}
               <div className="mt-3 px-2 flex items-center justify-between text-xs text-slate-400">
-                <div className="flex items-center gap-1.5 max-w-[160px] overflow-x-auto py-1">
+                <div className="flex items-center gap-1.5 max-w-[220px] overflow-x-auto py-1 no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                   {slides.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveSlide(idx)}
                       className={`h-1.5 rounded-full transition-all cursor-pointer shrink-0 ${
                         idx === activeSlide
-                          ? 'w-6 bg-[#BE1E2D]'
-                          : 'w-2 bg-slate-700 hover:bg-slate-500'
+                          ? 'w-5 bg-[#BE1E2D]'
+                          : 'w-1.5 bg-slate-700 hover:bg-slate-500'
                       }`}
                       aria-label={`Chuyển tới mẫu sản phẩm ${idx + 1}`}
                     />

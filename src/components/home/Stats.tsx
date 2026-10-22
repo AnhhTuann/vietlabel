@@ -13,7 +13,7 @@ export const Stats: React.FC = () => {
           {/* Left Column: Enterprise Foundation Intro (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-[#BE1E2D]">
-              NĂNG LỰC SẢN XUẤT THỰC TẾ
+              {t('stats.badge')}
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1E4384] tracking-tight leading-tight [text-wrap:balance]">
               {t('stats.title')}
@@ -25,15 +25,15 @@ export const Stats: React.FC = () => {
             <ul className="pt-2 space-y-2.5 text-xs sm:text-sm text-slate-700">
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Kiểm soát chất lượng khép kín từ chế bản CTP đến thành phẩm</span>
+                <span>{t('stats.bullet1')}</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Dây chuyền nhập khẩu trực tiếp từ Đức, Nhật Bản & Thụy Sĩ</span>
+                <span>{t('stats.bullet2')}</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Cam kết tiến độ giao hàng đúng hẹn 99.8% trên toàn quốc</span>
+                <span>{t('stats.bullet3')}</span>
               </li>
             </ul>
           </div>
@@ -41,67 +41,67 @@ export const Stats: React.FC = () => {
           {/* Right Column: 4-Item Numerical Grid with Animated Count-up (7 cols) */}
           <div className="lg:col-span-7">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* Stat 1: 200+ Nhân sự */}
+              {/* Stat 1: 50+ Nhân sự */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
                 <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Users className="w-6 h-6" />
                 </div>
                 <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
-                  <CountUp end={200} suffix="+" />
+                  <CountUp end={50} suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
                   {t('stats.stat1_label')}
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
-                  Đội ngũ kỹ sư in ấn, thợ bế dán bậc cao & chuyên viên R&D cấu trúc.
+                  {t('stats.stat1_desc')}
                 </p>
               </div>
 
-              {/* Stat 2: 10 Triệu+ Sản lượng/năm */}
+              {/* Stat 2: 5 Triệu+ Sản lượng/năm */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
                 <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Layers className="w-6 h-6" />
                 </div>
                 <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
-                  <CountUp end={10} suffix=" Triệu+" />
+                  <CountUp end={5} suffix={t('stats.stat2_suffix')} />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
                   {t('stats.stat2_label')}
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
-                  Công suất ổn định phục vụ các tập đoàn FMCG, thực phẩm và bán lẻ lớn.
+                  {t('stats.stat2_desc')}
                 </p>
               </div>
 
-              {/* Stat 3: 05+ Hệ thống tiêu chuẩn */}
+              {/* Stat 3: 3+ Hệ thống tiêu chuẩn */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
                 <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Award className="w-6 h-6" />
                 </div>
                 <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
-                  <CountUp end={5} prefix="0" suffix="+" />
+                  <CountUp end={3} suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
                   {t('stats.stat3_label')}
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
-                  ISO 9001:2015, FSC® CoC, EcoVadis Silver, HACCP và G7 Master.
+                  {t('stats.stat3_desc')}
                 </p>
               </div>
 
-              {/* Stat 4: 20+ Năm phát triển */}
+              {/* Stat 4: 5+ Năm phát triển */}
               <div className="p-6 rounded-2xl bg-[#F5F7FA] border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 group">
                 <div className="w-12 h-12 rounded-xl bg-white text-[#1E4384] flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:text-[#BE1E2D] transition-all">
                   <Calendar className="w-6 h-6" />
                 </div>
                 <div className="text-3xl sm:text-4xl font-extrabold text-[#1E4384] tracking-tight">
-                  <CountUp end={20} suffix="+" />
+                  <CountUp end={5} suffix="+" />
                 </div>
                 <p className="text-sm font-semibold text-slate-700 mt-1">
                   {t('stats.stat4_label')}
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
-                  Đồng hành cùng sự lớn mạnh của hàng ngàn thương hiệu từ năm 2004.
+                  {t('stats.stat4_desc')}
                 </p>
               </div>
             </div>
