@@ -1,4 +1,4 @@
-import { ArrowRight, Award, ChevronLeft, ChevronRight, PhoneCall, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Award, PhoneCall, ShieldCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -95,11 +95,24 @@ const HERO_GALLERY_COLUMNS = [
   ],
 ];
 
+const HERO_GALLERY_IMAGES = HERO_GALLERY_COLUMNS.flat();
+
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const [heroBrand, ...heroHeadlineParts] = t('hero.title').split(' - ');
+  const heroHeadline = heroHeadlineParts.join(' - ');
   const [slides, setSlides] = useState<any[]>(CAROUSEL_SLIDES);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeGalleryImage, setActiveGalleryImage] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => {
+      setActiveGalleryImage((active) => (active + 1) % HERO_GALLERY_IMAGES.length);
+    }, 3600);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -154,35 +167,44 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#071C33] via-[#071C33]/90 to-[#071C33]/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#071C33] via-transparent to-black/30" />
+        <div className="hero-light-drift absolute inset-0 opacity-70" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-4 sm:py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-x-6 xl:gap-x-10 items-center">
           {/* Left Column: Proposition and Call to Actions (7 cols) */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-white text-left">
-            {/* Clean unboxed Trust Kicker (no pills) */}
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-[#E9F0FF]">
-              <span className="uppercase tracking-[0.18em] text-[#E9F0FF]">
+          <div className="relative z-20 lg:col-span-5 lg:col-start-1 space-y-4 sm:space-y-6 text-white text-left">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[10px] font-semibold tracking-[0.16em] text-[#E9F0FF] backdrop-blur-sm sm:text-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F04452] opacity-50" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F04452]" />
+              </span>
+              <span className="uppercase">
                 {t('hero.kicker')}
               </span>
-              <span aria-hidden="true" className="text-[#BE1E2D]">
-                ·
+              <span aria-hidden="true" className="h-3 w-px bg-white/20">
               </span>
-              <span className="text-slate-300 font-normal tracking-[0.12em]">EST. 2018</span>
+              <span className="font-normal tracking-[0.12em] text-slate-300">EST. 2018</span>
             </div>
 
-            {/* Dominant Headline */}
-            <h1 className="text-xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-white leading-[1.22] [text-wrap:balance]">
-              <span className="block text-white">{t('hero.title')}</span>
+            <h1 className="w-full max-w-full [text-wrap:balance]">
+              <span className="block bg-gradient-to-r from-[#7ea5db] via-white to-[#f04452] bg-clip-text text-4xl font-black leading-none tracking-[-0.055em] text-transparent sm:text-6xl lg:text-[58px] xl:text-[68px]">
+                {heroBrand}
+              </span>
+              {heroHeadline && (
+                <span className="mt-3 block border-l-[3px] border-[#BE1E2D] pl-4 text-xl font-bold leading-[1.2] tracking-tight text-white sm:mt-4 sm:pl-5 sm:text-2xl lg:text-[30px] xl:text-[34px]">
+                  {heroHeadline}
+                </span>
+              )}
             </h1>
 
             {/* Sub-paragraph */}
-            <p className="text-sm sm:text-lg text-slate-300 max-w-2xl leading-relaxed [text-wrap:balance]">
+            <p className="max-w-[48ch] text-sm leading-relaxed text-slate-300 sm:text-base lg:text-[17px]">
               {t('hero.subtitle')}
             </p>
 
             {/* Primary Action Buttons */}
-            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4">
               <Link to="/san-pham">
                 <Button
                   variant="primary"
@@ -206,50 +228,98 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
               </Button>
             </div>
 
-          </div>
-
-          {/* Right Column: Infinite 2-column vertical scroll gallery */}
-          <div className="lg:col-span-5">
-            {/* Outer rounded card */}
-            <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl backdrop-blur-md p-2 sm:p-3 h-[220px] sm:h-[320px] lg:h-[420px] xl:h-[480px]">
-              {/* Fade top & bottom masks */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-12 z-10 bg-gradient-to-b from-[#0d1832] to-transparent rounded-t-xl" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-[#0d1832] to-transparent rounded-b-xl" />
-
-              {/* Two-column gallery */}
-              <div className="hero-gallery flex gap-2.5 h-full overflow-hidden rounded-xl">
-                {HERO_GALLERY_COLUMNS.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex-1 overflow-hidden">
-                    <div className={`${columnIndex === 0 ? 'animate-scroll-up' : 'animate-scroll-up-2'} flex flex-col`}>
-                      {[0, 1].map((setIndex) => (
-                        <div key={setIndex} className="flex flex-col gap-2.5 pb-2.5">
-                          {column.map((src) => (
-                            <div key={src} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
-                              <img src={src} alt="" className="w-full h-full object-cover" loading="eager" decoding="async" />
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-l-2 border-white/15 pl-3 pt-2 text-[10px] text-slate-300 sm:gap-x-6 sm:pl-4 sm:text-[11px]">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#F04452] shrink-0" />
+                <span>{t('hero.cert_fsc_iso')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-sky-200 shrink-0" />
+                <span>{t('hero.cert_g7')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#F04452] inline-block animate-pulse"></span>
+                <span>{t('hero.factory_area')}</span>
               </div>
             </div>
           </div>
 
-          {/* Trust badges follow the gallery on mobile and sit under the copy on desktop */}
-          <div className="lg:col-span-7 pt-4 sm:pt-6 border-t border-slate-700/60 flex flex-wrap items-center gap-x-6 gap-y-3 text-[11px] sm:text-xs text-slate-300">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#BE1E2D] shrink-0" />
-              <span>{t('hero.cert_fsc_iso')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#E9F0FF] shrink-0" />
-              <span>{t('hero.cert_g7')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#BE1E2D] inline-block animate-pulse"></span>
-              <span>{t('hero.factory_area')}</span>
+          {/* Right Column: Layered product showcase */}
+          <div className="lg:col-span-7 lg:col-start-6 lg:-mr-10 xl:-mr-20">
+            <div className="hero-showcase relative mx-auto h-[260px] w-full sm:h-[360px] lg:h-[460px] xl:h-[500px]">
+              <div className="hero-showcase-orbit absolute left-1/2 top-1/2 hidden h-[86%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-sky-200/20 sm:block" />
+              <div className="hero-showcase-glow absolute left-1/2 top-1/2 h-[70%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/20 blur-3xl" />
+
+              <div className="hero-float-card hero-float-card-top absolute right-[2%] top-[7%] z-20 hidden h-[34%] aspect-square overflow-hidden rounded-2xl border border-white/60 bg-white p-1.5 shadow-2xl sm:block sm:rounded-3xl sm:p-2">
+                <img
+                  src={HERO_GALLERY_IMAGES[(activeGalleryImage + 1) % HERO_GALLERY_IMAGES.length]}
+                  alt=""
+                  className="h-full w-full rounded-xl object-cover sm:rounded-2xl"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+
+              <div className="hero-float-card hero-float-card-bottom absolute bottom-[5%] left-[1%] z-20 hidden h-[31%] aspect-square overflow-hidden rounded-2xl border border-white/60 bg-white p-1.5 shadow-2xl sm:block sm:rounded-3xl sm:p-2">
+                <img
+                  src={HERO_GALLERY_IMAGES[(activeGalleryImage + 3) % HERO_GALLERY_IMAGES.length]}
+                  alt=""
+                  className="h-full w-full rounded-xl object-cover sm:rounded-2xl"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+
+              <div className="absolute inset-x-[2%] bottom-[13%] top-[2%] z-10 overflow-hidden rounded-[1.6rem] border border-white/30 bg-[#0b1b3a] shadow-[0_28px_90px_rgba(0,0,0,0.45)] sm:inset-x-[13%] sm:bottom-[7%] sm:top-[7%] sm:rounded-[2rem]">
+                <img
+                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 hidden h-full w-full scale-110 object-cover blur-2xl sm:block"
+                  loading="eager"
+                  decoding="async"
+                />
+                <img
+                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-2xl sm:hidden"
+                  loading="eager"
+                  decoding="async"
+                />
+                <img
+                  key={HERO_GALLERY_IMAGES[activeGalleryImage]}
+                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
+                  alt=""
+                  className="hero-feature-image absolute inset-0 z-[1] block h-full w-full object-contain sm:object-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071C33]/60 via-transparent to-white/10" />
+                <div className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-2 sm:inset-x-5 sm:bottom-5">
+                  <div className="hidden rounded-full border border-white/25 bg-[#071C33]/65 px-3 py-1.5 text-[9px] font-semibold tracking-[0.16em] text-white backdrop-blur-md sm:block sm:px-4 sm:py-2 sm:text-[10px]">
+                    VIETLABEL · PRINT & PACKAGING
+                  </div>
+                  <div className="rounded-full bg-white/90 px-2.5 py-1.5 text-[10px] font-bold text-[#1e4384] shadow-lg backdrop-blur sm:px-3 sm:text-xs">
+                    {String(activeGalleryImage + 1).padStart(2, '0')} / {String(HERO_GALLERY_IMAGES.length).padStart(2, '0')}
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-0 right-1/2 z-30 flex translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-[#071C33]/75 px-2.5 py-2 shadow-xl backdrop-blur-md sm:right-[8%] sm:translate-x-0 sm:gap-2 sm:px-3">
+                {HERO_GALLERY_IMAGES.map((image, index) => (
+                  <button
+                    key={image}
+                    type="button"
+                    aria-label={`${currentLang.startsWith('vi') ? 'Hiển thị ảnh sản phẩm' : 'Show product image'} ${index + 1}`}
+                    aria-pressed={index === activeGalleryImage}
+                    onClick={() => setActiveGalleryImage(index)}
+                    className={`h-1.5 rounded-full transition-all duration-300 sm:h-2 ${
+                      index === activeGalleryImage ? 'w-5 bg-white sm:w-7' : 'w-1.5 bg-white/45 hover:bg-white/75 sm:w-2'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
