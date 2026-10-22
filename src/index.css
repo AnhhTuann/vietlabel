@@ -109,11 +109,11 @@ body {
 }
 
 .animate-scroll-up {
-  animation: scrollUp 18s linear infinite;
+  animation: scrollUp 12s linear infinite;
 }
 
 .animate-scroll-up-2 {
-  animation: scrollUp2 22s linear infinite;
+  animation: scrollUp2 15s linear infinite;
 }
 
 /* Hero gallery pause on hover */

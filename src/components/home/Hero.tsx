@@ -82,6 +82,19 @@ const CAROUSEL_SLIDES = [
   },
 ];
 
+const HERO_GALLERY_COLUMNS = [
+  [
+    '/images/vietlabel/hero-gallery/chai-dau-hat-lanh.webp',
+    '/images/vietlabel/hero-gallery/hop-kimchi-bibigo.webp',
+    '/images/vietlabel/hero-gallery/sua-chua-dalat-milk.webp',
+  ],
+  [
+    '/images/vietlabel/hero-gallery/green-super-canxi.webp',
+    '/images/vietlabel/hero-gallery/decal-pvoil.webp',
+    '/images/vietlabel/hero-gallery/nuoc-mau-bep-xua.webp',
+  ],
+];
+
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
@@ -131,7 +144,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   };
 
   return (
-    <section className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-24 pb-16">
+    <section className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-20 pb-10 sm:pt-24 sm:pb-16">
       {/* Background with measured contrast scrim */}
       <div className="absolute inset-0 z-0">
         <img
@@ -143,10 +156,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#071C33] via-transparent to-black/30" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-4 sm:py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-center">
           {/* Left Column: Proposition and Call to Actions (7 cols) */}
-          <div className="lg:col-span-7 space-y-6 text-white text-left">
+          <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-white text-left">
             {/* Clean unboxed Trust Kicker (no pills) */}
             <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-[#E9F0FF]">
               <span className="uppercase tracking-[0.18em] text-[#E9F0FF]">
@@ -159,17 +172,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             </div>
 
             {/* Dominant Headline */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-white leading-[1.22] [text-wrap:balance]">
+            <h1 className="text-xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-white leading-[1.22] [text-wrap:balance]">
               <span className="block text-white">{t('hero.title')}</span>
             </h1>
 
             {/* Sub-paragraph */}
-            <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed [text-wrap:balance]">
+            <p className="text-sm sm:text-lg text-slate-300 max-w-2xl leading-relaxed [text-wrap:balance]">
               {t('hero.subtitle')}
             </p>
 
             {/* Primary Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
               <Link to="/san-pham">
                 <Button
                   variant="primary"
@@ -193,83 +206,50 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
               </Button>
             </div>
 
-            {/* Adjacent Trust Badges & Indicators */}
-            <div className="pt-6 border-t border-slate-700/60 flex flex-wrap items-center gap-6 text-xs text-slate-300">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#BE1E2D] shrink-0" />
-                <span>{t('hero.cert_fsc_iso')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#E9F0FF] shrink-0" />
-                <span>{t('hero.cert_g7')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#BE1E2D] inline-block animate-pulse"></span>
-                <span>{t('hero.factory_area')}</span>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Infinite 2-column vertical scroll gallery */}
-          <div className="lg:col-span-5 hidden lg:block">
+          <div className="lg:col-span-5">
             {/* Outer rounded card */}
-            <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl backdrop-blur-md p-3 h-[420px] xl:h-[480px]">
+            <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl backdrop-blur-md p-2 sm:p-3 h-[220px] sm:h-[320px] lg:h-[420px] xl:h-[480px]">
               {/* Fade top & bottom masks */}
               <div className="pointer-events-none absolute inset-x-0 top-0 h-12 z-10 bg-gradient-to-b from-[#0d1832] to-transparent rounded-t-xl" />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-[#0d1832] to-transparent rounded-b-xl" />
 
               {/* Two-column gallery */}
               <div className="hero-gallery flex gap-2.5 h-full overflow-hidden rounded-xl">
-                {/* Column 1 — scrolls up (18s) */}
-                <div className="flex-1 overflow-hidden">
-                  <div className="animate-scroll-up flex flex-col gap-2.5">
-                    {[
-                      '/images/vietlabel/hero-gallery/product-oil.webp',
-                      '/images/vietlabel/hero-gallery/product-kimchi.webp',
-                      '/images/vietlabel/hero-gallery/product-yogurt.webp',
-                      '/images/vietlabel/solutions/solution-rfid.webp',
-                      '/images/vietlabel/solutions/solution-cosmetics.webp',
-                      '/images/vietlabel/solutions/solution-food-beverage.webp',
-                      /* duplicate for seamless loop */
-                      '/images/vietlabel/hero-gallery/product-oil.webp',
-                      '/images/vietlabel/hero-gallery/product-kimchi.webp',
-                      '/images/vietlabel/hero-gallery/product-yogurt.webp',
-                      '/images/vietlabel/solutions/solution-rfid.webp',
-                      '/images/vietlabel/solutions/solution-cosmetics.webp',
-                      '/images/vietlabel/solutions/solution-food-beverage.webp',
-                    ].map((src, i) => (
-                      <div key={i} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
-                        <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-                      </div>
-                    ))}
+                {HERO_GALLERY_COLUMNS.map((column, columnIndex) => (
+                  <div key={columnIndex} className="flex-1 overflow-hidden">
+                    <div className={`${columnIndex === 0 ? 'animate-scroll-up' : 'animate-scroll-up-2'} flex flex-col`}>
+                      {[0, 1].map((setIndex) => (
+                        <div key={setIndex} className="flex flex-col gap-2.5 pb-2.5">
+                          {column.map((src) => (
+                            <div key={src} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
+                              <img src={src} alt="" className="w-full h-full object-cover" loading="eager" decoding="async" />
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                {/* Column 2 — scrolls up offset (22s), starts halfway through */}
-                <div className="flex-1 overflow-hidden">
-                  <div className="animate-scroll-up-2 flex flex-col gap-2.5">
-                    {[
-                      '/images/vietlabel/hero-gallery/product-calcium.webp',
-                      '/images/vietlabel/hero-gallery/product-pvoil.webp',
-                      '/images/vietlabel/hero-gallery/product-sauce.webp',
-                      '/images/vietlabel/solutions/solution-pharmaceutical.webp',
-                      '/images/vietlabel/solutions/solution-apparel.webp',
-                      '/images/vietlabel/solutions/solution-eco.webp',
-                      /* duplicate for seamless loop */
-                      '/images/vietlabel/hero-gallery/product-calcium.webp',
-                      '/images/vietlabel/hero-gallery/product-pvoil.webp',
-                      '/images/vietlabel/hero-gallery/product-sauce.webp',
-                      '/images/vietlabel/solutions/solution-pharmaceutical.webp',
-                      '/images/vietlabel/solutions/solution-apparel.webp',
-                      '/images/vietlabel/solutions/solution-eco.webp',
-                    ].map((src, i) => (
-                      <div key={i} className="w-full aspect-square rounded-lg overflow-hidden shrink-0 bg-slate-800">
-                        <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
+            </div>
+          </div>
+
+          {/* Trust badges follow the gallery on mobile and sit under the copy on desktop */}
+          <div className="lg:col-span-7 pt-4 sm:pt-6 border-t border-slate-700/60 flex flex-wrap items-center gap-x-6 gap-y-3 text-[11px] sm:text-xs text-slate-300">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#BE1E2D] shrink-0" />
+              <span>{t('hero.cert_fsc_iso')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award className="w-4 h-4 text-[#E9F0FF] shrink-0" />
+              <span>{t('hero.cert_g7')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#BE1E2D] inline-block animate-pulse"></span>
+              <span>{t('hero.factory_area')}</span>
             </div>
           </div>
         </div>
