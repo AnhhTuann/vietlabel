@@ -147,7 +147,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   };
 
   return (
-    <section className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-20 pb-10 sm:pt-24 sm:pb-16">
+    <section data-scroll-reveal="off" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-20 pb-10 sm:pt-24 sm:pb-16">
       {/* Background with measured contrast scrim */}
       <div className="absolute inset-0 z-0">
         <img
@@ -164,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-x-6 xl:gap-x-10 items-center">
           {/* Left Column: Proposition and Call to Actions (7 cols) */}
           <div className="relative z-20 lg:col-span-5 lg:col-start-1 space-y-4 sm:space-y-6 text-white text-left">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[10px] font-semibold tracking-[0.16em] text-[#E9F0FF] backdrop-blur-sm sm:text-xs">
+            <div className="hero-copy-item inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[10px] font-semibold tracking-[0.16em] text-[#E9F0FF] backdrop-blur-sm sm:text-xs">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F04452] opacity-50" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F04452]" />
@@ -178,23 +178,36 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             </div>
 
             <h1 className="w-full max-w-full [text-wrap:balance]">
-              <span className="block bg-gradient-to-r from-[#7ea5db] via-white to-[#f04452] bg-clip-text text-4xl font-black leading-none tracking-[-0.055em] text-transparent sm:text-6xl lg:text-[58px] xl:text-[68px]">
+              <span className="hero-copy-item block bg-gradient-to-r from-[#7ea5db] via-white to-[#f04452] bg-clip-text text-4xl font-black leading-none tracking-[-0.055em] text-transparent sm:text-6xl lg:text-[58px] xl:text-[68px]" style={{ animationDelay: '120ms' }}>
                 {heroBrand}
               </span>
               {heroHeadline && (
                 <span className="mt-3 block border-l-[3px] border-[#BE1E2D] pl-4 text-xl font-bold leading-[1.2] tracking-tight text-white sm:mt-4 sm:pl-5 sm:text-2xl lg:text-[30px] xl:text-[34px]">
-                  {heroHeadline}
+                  <span className="sr-only">{heroHeadline}</span>
+                  <span aria-hidden="true">
+                    {heroHeadline.split(' ').map((word, index) => (
+                      <React.Fragment key={`${word}-${index}`}>
+                        {index > 0 && ' '}
+                        <span
+                          className="hero-headline-word"
+                          style={{ animationDelay: `${280 + index * 55}ms` }}
+                        >
+                          {word}
+                        </span>
+                      </React.Fragment>
+                    ))}
+                  </span>
                 </span>
               )}
             </h1>
 
             {/* Sub-paragraph */}
-            <p className="max-w-[48ch] text-sm leading-relaxed text-slate-300 sm:text-base lg:text-[17px]">
+            <p className="hero-copy-item max-w-[48ch] text-sm leading-relaxed text-slate-300 sm:text-base lg:text-[17px]" style={{ animationDelay: '620ms' }}>
               {t('hero.subtitle')}
             </p>
 
             {/* Primary Action Buttons */}
-            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4">
+            <div className="hero-copy-item pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4" style={{ animationDelay: '760ms' }}>
               <Link to="/san-pham">
                 <Button
                   variant="primary"
@@ -218,7 +231,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-l-2 border-white/15 pl-3 pt-2 text-[10px] text-slate-300 sm:gap-x-6 sm:pl-4 sm:text-[11px]">
+            <div className="hero-copy-item flex flex-wrap items-center gap-x-5 gap-y-2 border-l-2 border-white/15 pl-3 pt-2 text-[10px] text-slate-300 sm:gap-x-6 sm:pl-4 sm:text-[11px]" style={{ animationDelay: '900ms' }}>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#F04452] shrink-0" />
                 <span>{t('hero.cert_fsc_iso')}</span>
