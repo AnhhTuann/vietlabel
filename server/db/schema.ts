@@ -163,3 +163,17 @@ export interface Job {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface JobApplication {
+  id: string;
+  jobId: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  coverLetter: string;
+  cvStorageKey: string;
+  cvFileName: string;
+  cvFileSize: number;
+  status: 'NEW' | 'REVIEWING' | 'REJECTED' | 'ACCEPTED';
+  createdAt: string;
+}

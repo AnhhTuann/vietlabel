@@ -4,7 +4,10 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from '../db/store';
 import { User, UserRole } from '../db/schema';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'vietlabel_secret_key_crm_2026_super_secure';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || Buffer.byteLength(JWT_SECRET) < 32) {
+  throw new Error('JWT_SECRET is required and must be at least 32 bytes. Generate one with: openssl rand -hex 32');
+}
 const TOKEN_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
@@ -68,7 +71,7 @@ export const authService = {
   },
 
   async login(email: string, password: string): Promise<{ token: string; user: Omit<User, 'passwordHash'> }> {
-    const user = db.users.findByEmail(email);
+    const user = await db.users.findByEmail(email);
     if (!user) {
       throw new Error('Email hoặc mật khẩu không chính xác.');
     }
@@ -92,7 +95,7 @@ export const authService = {
         lockedUntil = new Date(Date.now() + LOCKOUT_MS).toISOString();
       }
 
-      db.users.update(user.id, {
+      await db.users.update(user.id, {
         failedLoginAttempts: failedCount,
         lockedUntil,
       });
@@ -105,7 +108,7 @@ export const authService = {
     }
 
     // Reset failed attempts on success
-    db.users.update(user.id, {
+    await db.users.update(user.id, {
       failedLoginAttempts: 0,
       lockedUntil: undefined,
     });
@@ -137,13 +140,16 @@ export const authService = {
       return res.status(401).json({ error: 'Phiên đăng nhập đã hết hạn hoặc không hợp lệ.' });
     }
 
-    const user = db.users.findById(payload.userId);
-    if (!user || !user.active) {
-      return res.status(401).json({ error: 'Người dùng không tồn tại hoặc đã bị vô hiệu hóa.' });
-    }
-
-    req.user = user;
-    next();
+    // Async user lookup
+    db.users.findById(payload.userId).then((user) => {
+      if (!user || !user.active) {
+        return res.status(401).json({ error: 'Người dùng không tồn tại hoặc đã bị vô hiệu hóa.' });
+      }
+      req.user = user;
+      next();
+    }).catch(() => {
+      return res.status(500).json({ error: 'Lỗi xác thực, vui lòng thử lại.' });
+    });
   },
 
   requireRole(allowedRoles: UserRole[]) {

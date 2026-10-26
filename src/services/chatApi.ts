@@ -1,4 +1,10 @@
 import { CustomerBrief } from '../config/leadScoring';
+import { fileToBase64 } from './fileEncoding';
+
+function getStaffAuthHeaders(): HeadersInit {
+  const token = localStorage.getItem('vietlabel_admin_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export interface ChatMessageItem {
   id: string;
@@ -7,6 +13,8 @@ export interface ChatMessageItem {
   timestamp: string;
   attachments?: Array<{ name: string; url?: string; size?: number }>;
   isError?: boolean;
+  feedbackMessageId?: string;
+  feedbackSent?: boolean;
 }
 
 export interface SendMessageOptions {
@@ -25,6 +33,7 @@ export interface ChatApiResponse {
   needHuman: boolean;
   briefReady: boolean;
   sources?: string[];
+  messageId?: string;
 }
 
 export const chatApi = {
@@ -55,31 +64,46 @@ export const chatApi = {
         const decoder = new TextDecoder();
         let fullReply = '';
         let metadata: any = null;
+        let buffer = '';
+        let eventData: string[] = [];
+
+        const dispatchEvent = () => {
+          if (eventData.length === 0) return;
+          let parsed: any;
+          try {
+            parsed = JSON.parse(eventData.join('\n'));
+          } catch {
+            throw new Error('Phản hồi chat không đúng định dạng. Vui lòng thử lại.');
+          }
+          eventData = [];
+          if (typeof parsed.chunk === 'string') {
+            fullReply += parsed.chunk;
+            onChunk(parsed.chunk);
+          }
+          if (parsed.done && parsed.metadata) metadata = parsed.metadata;
+        };
+
+        const processLine = (line: string) => {
+          if (line === '') {
+            dispatchEvent();
+          } else if (line.startsWith('data:')) {
+            eventData.push(line.slice(5).replace(/^ /, ''));
+          }
+        };
 
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break;
-
-          const text = decoder.decode(value, { stream: true });
-          const lines = text.split('\n');
-
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              try {
-                const parsed = JSON.parse(line.replace('data: ', '').trim());
-                if (parsed.chunk) {
-                  fullReply += parsed.chunk;
-                  onChunk(parsed.chunk);
-                }
-                if (parsed.done && parsed.metadata) {
-                  metadata = parsed.metadata;
-                }
-              } catch (e) {
-                // Ignore chunk parse glitch
-              }
-            }
+          buffer += decoder.decode(value, { stream: !done });
+          let newline = buffer.indexOf('\n');
+          while (newline !== -1) {
+            processLine(buffer.slice(0, newline).replace(/\r$/, ''));
+            buffer = buffer.slice(newline + 1);
+            newline = buffer.indexOf('\n');
           }
+          if (done) break;
         }
+        if (buffer) processLine(buffer.replace(/\r$/, ''));
+        dispatchEvent();
 
         return {
           reply: fullReply || metadata?.replyText || '',
@@ -89,6 +113,7 @@ export const chatApi = {
           needHuman: Boolean(metadata?.needHuman),
           briefReady: Boolean(metadata?.briefReady),
           sources: metadata?.sources || [],
+          messageId: metadata?.messageId,
         };
       }
 
@@ -101,6 +126,18 @@ export const chatApi = {
       }
       console.error('API chat call failed:', err);
       throw err;
+    }
+  },
+
+  async flagUnhelpfulAnswer(sessionId: string, messageId: string): Promise<void> {
+    const response = await fetch('/api/chat/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, messageId, helpful: false }),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.error || 'Không thể gửi đánh giá.');
     }
   },
 
@@ -127,7 +164,7 @@ export const chatApi = {
 
     const payload = {
       fileName: file.name,
-      fileSize: file.size,
+      fileBase64: await fileToBase64(file),
     };
 
     const response = await fetch('/api/upload', {
@@ -178,7 +215,7 @@ export const chatApi = {
   async claimLead(leadId: string, claimedBy: string): Promise<{ success: boolean; message: string; lead?: any }> {
     const response = await fetch(`/api/lead/${leadId}/claim`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...getStaffAuthHeaders() },
       body: JSON.stringify({ claimedBy }),
     });
 
@@ -196,7 +233,9 @@ export const chatApi = {
     if (params?.score) query.set('score', params.score);
     if (params?.q) query.set('q', params.q);
 
-    const response = await fetch(`/api/lead?${query.toString()}`);
+    const response = await fetch(`/api/lead?${query.toString()}`, {
+      headers: getStaffAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Lỗi lấy danh sách lead');
     }
@@ -204,7 +243,9 @@ export const chatApi = {
   },
 
   async getLeadById(id: string): Promise<{ success: boolean; lead: any }> {
-    const response = await fetch(`/api/lead/${id}`);
+    const response = await fetch(`/api/lead/${id}`, {
+      headers: getStaffAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Không tìm thấy hồ sơ lead');
     }

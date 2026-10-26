@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { leadsDatabase, getLeadById } from './lead';
+import { db } from '../db/store';
 import { telegramNotifier } from '../notifiers';
 
 export const telegramWebhookRouter = Router();
@@ -16,7 +16,7 @@ telegramWebhookRouter.post('/', async (req: Request, res: Response) => {
 
     if (data.startsWith('claim:')) {
       const leadId = data.replace('claim:', '');
-      const lead = getLeadById(leadId);
+      const lead = await db.leads.findById(leadId);
 
       if (lead) {
         if (lead.status === 'CLAIMED' && lead.claimedBy) {
@@ -35,10 +35,12 @@ telegramWebhookRouter.post('/', async (req: Request, res: Response) => {
           return res.json({ ok: true });
         }
 
-        // Mark claimed
-        lead.status = 'CLAIMED';
-        lead.claimedBy = staffName;
-        lead.claimedAt = new Date().toISOString();
+        // Mark claimed in PostgreSQL
+        const updated = await db.leads.update(lead.id, {
+          status: 'CLAIMED',
+          claimedBy: staffName,
+          claimedAt: new Date().toISOString(),
+        });
 
         // Answer callback query popup
         if (botToken) {
@@ -54,12 +56,14 @@ telegramWebhookRouter.post('/', async (req: Request, res: Response) => {
         }
 
         // Edit Telegram message to update status
-        await telegramNotifier.updateClaimed(lead, staffName);
+        if (updated) {
+          await telegramNotifier.updateClaimed(updated as any, staffName);
+        }
         console.log(`[TELEGRAM CALLBACK] Lead #${lead.id} claimed via Telegram button by ${staffName}`);
       }
     } else if (data.startsWith('claimed_info:')) {
-      const leadId = data.replace('claimed_info:', '');
-      const lead = getLeadById(leadId);
+      const leadId = data.replace('claim:', '');
+      const lead = await db.leads.findById(leadId);
       if (botToken) {
         await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
           method: 'POST',

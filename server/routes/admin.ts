@@ -56,16 +56,12 @@ adminRouter.get('/events', authService.middleware, (req: AuthenticatedRequest, r
 // ==========================================
 // 3. LEADS MANAGEMENT
 // ==========================================
-adminRouter.get('/leads', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.get('/leads', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { status, score, source, assignedToId, q, offset, limit } = req.query;
 
-  // SALES role can only see their own leads or unassigned leads
   let assignedFilter = assignedToId as string | undefined;
-  if (req.user!.role === 'SALES') {
-    // If not specified, show all, but they only have write access to their own
-  }
 
-  const result = leadService.getLeads({
+  const result = await leadService.getLeads({
     status: status as string,
     score: score as string,
     source: source as string,
@@ -78,9 +74,9 @@ adminRouter.get('/leads', authService.middleware, (req: AuthenticatedRequest, re
   return res.json(result);
 });
 
-adminRouter.get('/leads/:id', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.get('/leads/:id', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
-  const leadData = leadService.getLeadById(id, req.user!.id, req.user!.name);
+  const leadData = await leadService.getLeadById(id, req.user!.id, req.user!.name, false);
 
   if (!leadData) {
     return res.status(404).json({ error: 'Không tìm thấy hồ sơ lead.' });
@@ -91,7 +87,7 @@ adminRouter.get('/leads/:id', authService.middleware, (req: AuthenticatedRequest
 
 adminRouter.patch('/leads/:id', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
-  const lead = db.leads.findById(id);
+  const lead = await db.leads.findById(id);
   if (!lead) return res.status(404).json({ error: 'Không tìm thấy lead.' });
 
   // Role check: SALES can only edit their own or unassigned leads
@@ -109,7 +105,7 @@ adminRouter.patch('/leads/:id', authService.middleware, async (req: Authenticate
     await leadService.assign(id, assignedToId, req.user!.id, req.user!.name);
   }
 
-  const updated = db.leads.update(id, {
+  const updated = await db.leads.update(id, {
     customerName: customerName ?? lead.customerName,
     company: company ?? lead.company,
     phone: phone ?? lead.phone,
@@ -173,8 +169,8 @@ adminRouter.post('/leads/:id/reopen', authService.middleware, async (req: Authen
   }
 });
 
-adminRouter.get('/export.csv', authService.middleware, (_req: AuthenticatedRequest, res: Response) => {
-  const csv = leadService.exportCsv();
+adminRouter.get('/export.csv', authService.middleware, async (_req: AuthenticatedRequest, res: Response) => {
+  const csv = await leadService.exportCsv();
   res.setHeader('Content-Type', 'text/csv; charset=utf-8');
   res.setHeader('Content-Disposition', `attachment; filename="leads_export_${Date.now()}.csv"`);
   return res.send(csv);
@@ -183,32 +179,32 @@ adminRouter.get('/export.csv', authService.middleware, (_req: AuthenticatedReque
 // ==========================================
 // 4. INBOX & CONVERSATION TAKEOVER
 // ==========================================
-adminRouter.get('/inbox', authService.middleware, (_req: AuthenticatedRequest, res: Response) => {
-  const inbox = conversationService.listActiveInbox();
+adminRouter.get('/inbox', authService.middleware, async (_req: AuthenticatedRequest, res: Response) => {
+  const inbox = await conversationService.listActiveInbox();
   return res.json({ total: inbox.length, conversations: inbox });
 });
 
-adminRouter.post('/conversations/:id/takeover', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/conversations/:id/takeover', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   try {
-    const conv = conversationService.takeover(id, req.user!.id, req.user!.name);
+    const conv = await conversationService.takeover(id, req.user!.id, req.user!.name);
     return res.json({ success: true, conversation: conv });
   } catch (err: any) {
     return res.status(400).json({ error: err.message });
   }
 });
 
-adminRouter.post('/conversations/:id/release', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/conversations/:id/release', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   try {
-    const conv = conversationService.release(id, req.user!.id, req.user!.name);
+    const conv = await conversationService.release(id, req.user!.id, req.user!.name);
     return res.json({ success: true, conversation: conv });
   } catch (err: any) {
     return res.status(400).json({ error: err.message });
   }
 });
 
-adminRouter.post('/conversations/:id/messages', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/conversations/:id/messages', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   const { text, attachments } = req.body;
 
@@ -217,7 +213,7 @@ adminRouter.post('/conversations/:id/messages', authService.middleware, (req: Au
   }
 
   try {
-    const msg = conversationService.appendMessage({
+    const msg = await conversationService.appendMessage({
       conversationId: id,
       sender: 'STAFF',
       staffId: req.user!.id,
@@ -235,55 +231,75 @@ adminRouter.post('/conversations/:id/messages', authService.middleware, (req: Au
 // ==========================================
 // 5. KNOWLEDGE BASE MANAGER
 // ==========================================
-adminRouter.get('/kb', authService.middleware, (_req: AuthenticatedRequest, res: Response) => {
-  const docs = kbService.listDocuments();
-  const flagged = kbService.listFlaggedAnswers();
+adminRouter.get('/kb', authService.middleware, async (_req: AuthenticatedRequest, res: Response) => {
+  const docs = await kbService.listDocuments();
+  const flagged = await kbService.listFlaggedAnswers();
   return res.json({ documents: docs, flaggedAnswers: flagged });
 });
 
-adminRouter.post('/kb', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/kb', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), async (req: AuthenticatedRequest, res: Response) => {
   const { title, content, status } = req.body;
   if (!title || !content) {
     return res.status(400).json({ error: 'Tiêu đề và nội dung là bắt buộc.' });
   }
-  const doc = kbService.createDocument(title, content, status);
+  if (typeof title !== 'string' || typeof content !== 'string' ||
+      title.trim().length < 3 || title.length > 160 ||
+      content.trim().length < 10 || content.length > 30_000) {
+    return res.status(400).json({ error: 'Tiêu đề cần 3–160 ký tự, nội dung 10–30.000 ký tự.' });
+  }
+  if (status !== undefined && status !== 'DRAFT' && status !== 'APPROVED') {
+    return res.status(400).json({ error: 'Trạng thái tài liệu không hợp lệ.' });
+  }
+  const doc = await kbService.createDocument(title.trim(), content.trim(), status || 'DRAFT');
   return res.status(201).json({ success: true, document: doc });
 });
 
-adminRouter.patch('/kb/:id', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.patch('/kb/:id', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
+  const { title, content, status } = req.body;
+  if (
+    (title !== undefined && (typeof title !== 'string' || title.trim().length < 3 || title.length > 160)) ||
+    (content !== undefined && (typeof content !== 'string' || content.trim().length < 10 || content.length > 30_000)) ||
+    (status !== undefined && status !== 'DRAFT' && status !== 'APPROVED')
+  ) {
+    return res.status(400).json({ error: 'Tiêu đề, nội dung hoặc trạng thái tài liệu không hợp lệ.' });
+  }
   try {
-    const doc = kbService.updateDocument(id, req.body);
+    const doc = await kbService.updateDocument(id, {
+      ...(title !== undefined && { title: title.trim() }),
+      ...(content !== undefined && { content: content.trim() }),
+      ...(status !== undefined && { status }),
+    });
     return res.json({ success: true, document: doc });
   } catch (err: any) {
     return res.status(400).json({ error: err.message });
   }
 });
 
-adminRouter.delete('/kb/:id', authService.middleware, authService.requireRole(['ADMIN']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.delete('/kb/:id', authService.middleware, authService.requireRole(['ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
-  const ok = kbService.deleteDocument(id);
+  const ok = await kbService.deleteDocument(id);
   return res.json({ success: ok });
 });
 
-adminRouter.post('/kb/ingest', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), (_req: AuthenticatedRequest, res: Response) => {
-  const result = kbService.reingest();
+adminRouter.post('/kb/ingest', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), async (_req: AuthenticatedRequest, res: Response) => {
+  const result = await kbService.reingest();
   return res.json({ success: true, ...result });
 });
 
-adminRouter.post('/kb/flag', authService.middleware, (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/kb/flag', authService.middleware, async (req: AuthenticatedRequest, res: Response) => {
   const { messageId, reason } = req.body;
   if (!messageId) return res.status(400).json({ error: 'Thiếu messageId.' });
-  kbService.flagWrongAnswer(messageId, reason);
+  await kbService.flagWrongAnswer(messageId, reason);
   return res.json({ success: true });
 });
 
 // ==========================================
 // 6. STATS & KPI DASHBOARD
 // ==========================================
-adminRouter.get('/stats', authService.middleware, (_req: AuthenticatedRequest, res: Response) => {
-  const leads = db.leads.list();
-  const users = db.users.list();
+adminRouter.get('/stats', authService.middleware, async (_req: AuthenticatedRequest, res: Response) => {
+  const leads = await db.leads.list();
+  const users = await db.users.list();
 
   // Metrics
   const totalLeads = leads.length;
@@ -335,18 +351,22 @@ adminRouter.get('/stats', authService.middleware, (_req: AuthenticatedRequest, r
     .sort((a, b) => b.count - a.count)
     .slice(0, 6);
 
-  // Daily leads past 7 days
+  // Bug #2 fix: Daily leads from real DB data (not Math.random)
   const dailyLeads: Array<{ date: string; hot: number; warm: number; cold: number }> = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const dateStr = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+    const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate()).toISOString();
+    const dayEnd = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1).toISOString();
+
+    const dayLeads = leads.filter(l => l.createdAt >= dayStart && l.createdAt < dayEnd);
 
     dailyLeads.push({
       date: dateStr,
-      hot: Math.floor(Math.random() * 4) + (i === 0 ? hotLeads : 2),
-      warm: Math.floor(Math.random() * 5) + 3,
-      cold: Math.floor(Math.random() * 3) + 1,
+      hot: dayLeads.filter(l => l.score === 'HOT').length,
+      warm: dayLeads.filter(l => l.score === 'WARM').length,
+      cold: dayLeads.filter(l => l.score === 'COLD').length,
     });
   }
 
@@ -371,39 +391,39 @@ adminRouter.get('/stats', authService.middleware, (_req: AuthenticatedRequest, r
 // ==========================================
 // 7. SETTINGS & USERS
 // ==========================================
-adminRouter.get('/settings', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), (_req: AuthenticatedRequest, res: Response) => {
-  return res.json({ settings: db.settings.getAll() });
+adminRouter.get('/settings', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), async (_req: AuthenticatedRequest, res: Response) => {
+  return res.json({ settings: await db.settings.getAll() });
 });
 
-adminRouter.put('/settings', authService.middleware, authService.requireRole(['ADMIN']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.put('/settings', authService.middleware, authService.requireRole(['ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
   const { settings } = req.body;
   if (settings && typeof settings === 'object') {
     for (const [key, val] of Object.entries(settings)) {
-      db.settings.set(key, val);
+      await db.settings.set(key, val);
     }
   }
-  return res.json({ success: true, settings: db.settings.getAll() });
+  return res.json({ success: true, settings: await db.settings.getAll() });
 });
 
-adminRouter.get('/users', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), (_req: AuthenticatedRequest, res: Response) => {
-  const users = db.users.list().map(({ passwordHash: _, ...u }) => u);
+adminRouter.get('/users', authService.middleware, authService.requireRole(['ADMIN', 'MANAGER']), async (_req: AuthenticatedRequest, res: Response) => {
+  const users = (await db.users.list()).map(({ passwordHash: _, ...u }) => u);
   return res.json({ users });
 });
 
-adminRouter.post('/users', authService.middleware, authService.requireRole(['ADMIN']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.post('/users', authService.middleware, authService.requireRole(['ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
   const { name, email, password, role, telegramUserId } = req.body;
   if (!name || !email || !password || !role) {
     return res.status(400).json({ error: 'Vui lòng nhập đầy đủ tên, email, mật khẩu và vai trò.' });
   }
 
-  const existing = db.users.findByEmail(email);
+  const existing = await db.users.findByEmail(email);
   if (existing) {
     return res.status(400).json({ error: 'Email này đã tồn tại trên hệ thống.' });
   }
 
   const salt = bcrypt.genSaltSync(10);
   const now = new Date().toISOString();
-  const newUser = db.users.create({
+  const newUser = await db.users.create({
     id: `user_${Date.now()}`,
     name,
     email,
@@ -420,7 +440,7 @@ adminRouter.post('/users', authService.middleware, authService.requireRole(['ADM
   return res.status(201).json({ success: true, user: safeUser });
 });
 
-adminRouter.patch('/users/:id', authService.middleware, authService.requireRole(['ADMIN']), (req: AuthenticatedRequest, res: Response) => {
+adminRouter.patch('/users/:id', authService.middleware, authService.requireRole(['ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
   const updates: any = { ...req.body };
   if (updates.password) {
@@ -428,7 +448,7 @@ adminRouter.patch('/users/:id', authService.middleware, authService.requireRole(
     updates.passwordHash = bcrypt.hashSync(updates.password, salt);
     delete updates.password;
   }
-  const updated = db.users.update(id, updates);
+  const updated = await db.users.update(id, updates);
   if (!updated) return res.status(404).json({ error: 'Không tìm thấy người dùng.' });
   const { passwordHash: _, ...safeUser } = updated;
   return res.json({ success: true, user: safeUser });

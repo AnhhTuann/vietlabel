@@ -41,15 +41,53 @@ npm install
 
 ### 2. Chạy môi trường phát triển (Development)
 ```bash
+cp .env.example .env
+```
+
+Đặt `POSTGRES_PASSWORD` và `JWT_SECRET` trong `.env` thành các giá trị ngẫu nhiên riêng. `POSTGRES_PASSWORD` chỉ dùng cho PostgreSQL trong Docker Compose; `DATABASE_URL` cần trỏ đến PostgreSQL bạn dùng khi phát triển cục bộ. Có thể tạo mật khẩu bằng:
+```bash
+openssl rand -hex 32
+```
+
+Với PostgreSQL cục bộ, cấu hình thông tin kết nối riêng trong `DATABASE_URL`. Tạo tài khoản quản trị đầu tiên bằng cách đặt `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` (tối thiểu 16 ký tự), sau đó chạy migration:
+```bash
+npm run db:migrate
+```
+
+Migration nạp danh mục, sản phẩm, bài viết và tin tuyển dụng từ `src/data` vào các bảng CMS còn trống; các tin tuyển dụng đã quá hạn được lưu ở trạng thái đóng. Migration chỉ tạo tài khoản quản trị từ các biến này, không tạo lead giả hay tài khoản demo/mật khẩu mặc định. Với Docker Compose, PostgreSQL chỉ được bind vào loopback (`127.0.0.1:5433`); app tự chạy migration trước khi khởi động.
+
+CV ứng tuyển được lưu ngoài thư mục public trong `server/data/uploads` (Compose dùng volume riêng). Chỉ tài khoản ADMIN/MANAGER mới xem danh sách hồ sơ hoặc tải CV qua API.
+
+Chat mặc định chạy chế độ `AI_PROVIDER=rules`: không gửi nội dung khách hàng tới nhà cung cấp AI và không phát sinh phí token; chế độ này dùng bộ tư vấn theo quy tắc nên hội thoại ít linh hoạt hơn LLM. Để bật Gemini, đặt `AI_PROVIDER=gemini`, `GEMINI_API_KEY` và (nếu cần) `LLM_MODEL` trong `.env`. Lệnh gọi Gemini sử dụng quota/gói giá hiện hành của tài khoản; mức miễn phí và giá có thể thay đổi, hãy theo dõi usage trong Google AI Studio. Không đặt API key với tiền tố `VITE_` vì biến đó có thể bị đóng gói ra frontend.
+
+Chat áp giới hạn theo IP và session (12 lượt/phút, 50 lượt/giờ, 100 lượt/ngày theo IP; 6 lượt/phút, 25 lượt/giờ, 30 lượt/ngày theo session), giới hạn độ dài tin nhắn và ngữ cảnh, đồng thời giới hạn token đầu ra Gemini. Bộ đếm giới hạn nằm trong bộ nhớ của từng tiến trình và được xóa khi khởi động lại; nếu triển khai nhiều app instance, cần dùng rate limiter dùng chung như Redis để có giới hạn nhất quán.
+
+Để cải thiện câu trả lời mà không cho bot tự học sai từ hội thoại: khách có thể bấm **Chưa hữu ích**; ADMIN/MANAGER xem câu hỏi và câu trả lời bị gắn cờ trong **Quản trị → Kiến thức AI**, tạo bản nháp, viết câu trả lời đã xác minh, rồi chuyển sang **Đã phê duyệt**. Bot chỉ dùng FAQ đã duyệt; thay đổi được nạp ngay và khôi phục từ database khi app khởi động lại.
+
+Khởi chạy cả PostgreSQL và app bằng Docker Compose:
+```bash
+docker compose up --build -d
+```
+App sẵn sàng tại `http://localhost:3000`; PostgreSQL chỉ truy cập từ máy local tại cổng `5433`. Compose tự chạy migration trước khi khởi động app. Giữ `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` trong `.env` khi khởi tạo database mới; migration không ghi đè mật khẩu của admin đang hoạt động. Sau khi các database đã được khởi tạo và bạn đã lưu mật khẩu admin, có thể xóa `INITIAL_ADMIN_PASSWORD` khỏi `.env`.
+
+Các tài khoản manager/sales mang ID demo cũ sẽ bị vô hiệu hóa.
+
+### 3. Chạy môi trường phát triển (Development)
+```bash
 npm run dev
 ```
 Ứng dụng sẽ tự động chạy tại: `http://localhost:5173`
 
-### 3. Đóng gói sản phẩm (Production Build)
+### 4. Đóng gói sản phẩm (Production Build)
 ```bash
 npm run build
 ```
 Kết quả được xuất ra thư mục `dist`, sẵn sàng để deploy.
+
+### 5. Kiểm thử tự động
+```bash
+npm test
+```
 
 ---
 

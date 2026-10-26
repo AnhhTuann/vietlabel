@@ -24,12 +24,12 @@ export interface CreateOrUpdateChatLeadInput {
 export const leadService = {
   async createOrUpdateFromChat(input: CreateOrUpdateChatLeadInput): Promise<{ lead: Lead; isNew: boolean }> {
     // 1. Find existing conversation by sessionId
-    const existingConv = db.conversations.findBySessionId(input.sessionId);
+    const existingConv = await db.conversations.findBySessionId(input.sessionId);
     let lead: Lead | null = null;
     let isNew = false;
 
     if (existingConv) {
-      lead = db.leads.findById(existingConv.leadId) || null;
+      lead = await db.leads.findById(existingConv.leadId);
     }
 
     // Extract phone/contact
@@ -52,7 +52,7 @@ export const leadService = {
       notes: input.notes || lead?.brief?.notes,
     };
 
-    // Calculate deterministic lead score by code
+    // Calculate deterministic lead score
     const scoreResult = computeLeadScore({
       fullName: input.fullName || lead?.customerName,
       contact: phone || email,
@@ -72,7 +72,7 @@ export const leadService = {
       // Create new Lead
       isNew = true;
       const leadId = `LEAD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      const code = db.leads.getNextCode();
+      const code = await db.leads.getNextCode();
 
       const initialStatus: LeadStatus = (scoreResult.isHot || input.needHuman) ? 'NEEDS_HUMAN' : 'NEW';
 
@@ -96,11 +96,11 @@ export const leadService = {
         updatedAt: now,
       };
 
-      db.leads.create(lead);
+      await db.leads.create(lead);
 
       // Create conversation
       const convId = `conv_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
-      db.conversations.create({
+      await db.conversations.create({
         id: convId,
         leadId: lead.id,
         sessionId: input.sessionId,
@@ -111,7 +111,7 @@ export const leadService = {
       });
 
       // Log event
-      db.events.create({
+      await db.events.create({
         id: `ev_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
         leadId: lead.id,
         type: 'CREATED',
@@ -141,7 +141,7 @@ export const leadService = {
         statusUpdates.status = 'NEEDS_HUMAN';
       }
 
-      lead = db.leads.update(lead.id, statusUpdates) || lead;
+      lead = await db.leads.update(lead.id, statusUpdates) || lead;
 
       realtimeHub.broadcast('lead:updated', lead);
     }
@@ -155,7 +155,7 @@ export const leadService = {
   },
 
   async claim(leadId: string, userId: string, staffName: string): Promise<Lead> {
-    const lead = db.leads.findById(leadId);
+    const lead = await db.leads.findById(leadId);
     if (!lead) {
       throw new Error('Không tìm thấy hồ sơ lead.');
     }
@@ -170,7 +170,7 @@ export const leadService = {
     }
 
     const now = new Date().toISOString();
-    const updated = db.leads.update(lead.id, {
+    const updated = await db.leads.update(lead.id, {
       status: 'CLAIMED',
       assignedToId: userId,
       claimedBy: staffName,
@@ -182,7 +182,7 @@ export const leadService = {
     }
 
     // Log event
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_claim`,
       leadId: lead.id,
       type: 'CLAIMED',
@@ -202,7 +202,7 @@ export const leadService = {
   },
 
   async changeStatus(leadId: string, newStatus: LeadStatus, actorId?: string, actorName?: string, reason?: string): Promise<Lead> {
-    const lead = db.leads.findById(leadId);
+    const lead = await db.leads.findById(leadId);
     if (!lead) {
       throw new Error('Không tìm thấy hồ sơ lead.');
     }
@@ -219,12 +219,12 @@ export const leadService = {
       updates.firstResponseAt = now;
     }
 
-    const updated = db.leads.update(leadId, updates);
+    const updated = await db.leads.update(leadId, updates);
     if (!updated) {
       throw new Error('Cập nhật trạng thái thất bại.');
     }
 
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_status`,
       leadId,
       type: 'STATUS_CHANGED',
@@ -240,13 +240,13 @@ export const leadService = {
   },
 
   async assign(leadId: string, targetUserId: string, actorId?: string, actorName?: string): Promise<Lead> {
-    const lead = db.leads.findById(leadId);
+    const lead = await db.leads.findById(leadId);
     if (!lead) throw new Error('Không tìm thấy lead.');
-    const user = db.users.findById(targetUserId);
+    const user = await db.users.findById(targetUserId);
     if (!user) throw new Error('Nhân viên không tồn tại.');
 
     const now = new Date().toISOString();
-    const updated = db.leads.update(leadId, {
+    const updated = await db.leads.update(leadId, {
       assignedToId: user.id,
       claimedBy: user.name,
       claimedAt: lead.claimedAt || now,
@@ -255,7 +255,7 @@ export const leadService = {
 
     if (!updated) throw new Error('Gán phụ trách thất bại.');
 
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_assign`,
       leadId,
       type: 'ASSIGNED',
@@ -270,10 +270,10 @@ export const leadService = {
   },
 
   async addNote(leadId: string, authorId: string, authorName: string, text: string): Promise<Note> {
-    const lead = db.leads.findById(leadId);
+    const lead = await db.leads.findById(leadId);
     if (!lead) throw new Error('Không tìm thấy lead.');
 
-    const note = db.notes.create({
+    const note = await db.notes.create({
       id: `note_${Date.now()}`,
       leadId,
       authorId,
@@ -282,7 +282,7 @@ export const leadService = {
       createdAt: new Date().toISOString(),
     });
 
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_note`,
       leadId,
       type: 'NOTE_ADDED',
@@ -295,7 +295,7 @@ export const leadService = {
     return note;
   },
 
-  getLeads(filter?: {
+  async getLeads(filter?: {
     status?: string;
     score?: string;
     source?: string;
@@ -304,7 +304,7 @@ export const leadService = {
     limit?: number;
     offset?: number;
   }) {
-    let list = db.leads.list();
+    let list = await db.leads.list();
 
     if (filter?.status && filter.status !== 'ALL') {
       list = list.filter(l => l.status === filter.status);
@@ -335,7 +335,7 @@ export const leadService = {
     const limit = filter?.limit || 100;
     const paged = list.slice(offset, offset + limit);
 
-    const allLeads = db.leads.list();
+    const allLeads = await db.leads.list();
     const stats = {
       total: allLeads.length,
       hot: allLeads.filter(l => l.score === 'HOT').length,
@@ -353,19 +353,24 @@ export const leadService = {
     return { total, leads: paged, stats };
   },
 
-  getLeadById(leadId: string, currentUserId?: string, currentUserName?: string) {
-    const lead = db.leads.findById(leadId);
+  /**
+   * Get full lead detail.
+   * NOTE: Only pass viewPhone=true when the user explicitly requests to see the phone number.
+   * This prevents PHONE_VIEWED event spam on every page load.
+   */
+  async getLeadById(leadId: string, currentUserId?: string, currentUserName?: string, viewPhone = false) {
+    const lead = await db.leads.findById(leadId);
     if (!lead) return null;
 
-    const conversation = db.conversations.findByLeadId(leadId);
-    const messages = conversation ? db.messages.listByConversationId(conversation.id) : [];
-    const notes = db.notes.listByLeadId(leadId);
-    const events = db.events.listByLeadId(leadId);
-    const notificationLogs = db.notificationLogs.listByLeadId(leadId);
+    const conversation = await db.conversations.findByLeadId(leadId);
+    const messages = conversation ? await db.messages.listByConversationId(conversation.id) : [];
+    const notes = await db.notes.listByLeadId(leadId);
+    const events = await db.events.listByLeadId(leadId);
+    const notificationLogs = await db.notificationLogs.listByLeadId(leadId);
 
-    // Audit log: viewing full phone number
-    if (currentUserId) {
-      db.events.create({
+    // Only audit-log phone view when explicitly requested (Bug #5 fix)
+    if (viewPhone && currentUserId) {
+      await db.events.create({
         id: `ev_${Date.now()}_viewphone`,
         leadId,
         type: 'PHONE_VIEWED',
@@ -385,8 +390,8 @@ export const leadService = {
     };
   },
 
-  exportCsv(): string {
-    const leads = db.leads.list();
+  async exportCsv(): Promise<string> {
+    const leads = await db.leads.list();
     const headers = [
       'Mã hồ sơ',
       'Khách hàng',

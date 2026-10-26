@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vietlabel_postgres
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${POSTGRES_PORT:-5433}:5432'
+    environment:
+      POSTGRES_DB: vietlabel
+      POSTGRES_USER: vietlabel
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U vietlabel -d vietlabel']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vietlabel_app
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://vietlabel:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/vietlabel
+      UPLOAD_DIR: /app/data/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/data/uploads
+
+volumes:
+  pgdata:
+  uploads:

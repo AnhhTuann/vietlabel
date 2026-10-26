@@ -8,7 +8,7 @@ const SESSION_ID_KEY = 'vietlabel_chat_session_id';
 const INITIAL_WELCOME_MESSAGE: ChatMessageItem = {
   id: 'msg-welcome',
   role: 'assistant',
-  content: `Chào anh/chị! Em là **Trợ lý AI Vietlabel** 🤖.
+  content: `Chào anh/chị! Em là **Trợ lý tư vấn Vietlabel** 🤖.
 
 Em có thể hỗ trợ anh/chị tư vấn nhanh về:
 • **Tem nhãn Decal cuộn**: Dầu nhớt, dược phẩm, mỹ phẩm, tem pop-up gập mở, tem vỡ chống giả...
@@ -29,7 +29,7 @@ function getOrCreateSessionId(): string {
 }
 
 export function useChat() {
-  const [sessionId] = useState<string>(getOrCreateSessionId);
+  const [sessionId, setSessionId] = useState<string>(getOrCreateSessionId);
   const [messages, setMessages] = useState<ChatMessageItem[]>(() => {
     try {
       const saved = sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -56,6 +56,7 @@ export function useChat() {
   const [briefLeadId, setBriefLeadId] = useState<string | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
+  const requestIdRef = useRef(0);
 
   // Sync messages to sessionStorage
   useEffect(() => {
@@ -75,7 +76,11 @@ export function useChat() {
     }
   }, [extractedBrief]);
 
-  const sendMessage = useCallback(async (content: string, attachments?: Array<{ name: string; url?: string; size?: number }>) => {
+  const sendMessage = useCallback(async (
+    content: string,
+    attachments?: Array<{ name: string; url?: string; size?: number }>,
+    retry = false,
+  ) => {
     if (!content.trim() && (!attachments || attachments.length === 0)) return;
 
     setError(null);
@@ -88,7 +93,18 @@ export function useChat() {
       attachments,
     };
 
-    const newMessages = [...messages, userMessage];
+    let previousMessages = messages;
+    if (retry) {
+      let lastUserIndex = -1;
+      for (let index = messages.length - 1; index >= 0; index -= 1) {
+        if (messages[index].role === 'user') {
+          lastUserIndex = index;
+          break;
+        }
+      }
+      previousMessages = messages.filter((message, index) => !message.isError && index !== lastUserIndex);
+    }
+    const newMessages = [...previousMessages, userMessage];
     setMessages(newMessages);
     setIsLoading(true);
     setIsStreaming(true);
@@ -97,13 +113,20 @@ export function useChat() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+    const requestId = ++requestIdRef.current;
     abortControllerRef.current = new AbortController();
 
     try {
-      const apiPayload = newMessages.map(m => ({
+      const apiPayload = newMessages.filter(m => m.role !== 'system').slice(-12).map(m => ({
         role: m.role,
         content: m.content,
       }));
+      while (
+        apiPayload.length > 1
+        && apiPayload.reduce((total, message) => total + message.content.length, 0) > 10_000
+      ) {
+        apiPayload.shift();
+      }
 
       const res = await chatApi.sendMessage({
         sessionId,
@@ -120,6 +143,7 @@ export function useChat() {
         role: 'assistant',
         content: res.reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        feedbackMessageId: res.messageId,
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -137,7 +161,7 @@ export function useChat() {
       if (res.leadScore) setLeadScore(res.leadScore);
 
     } catch (err: any) {
-      if (err.name === 'AbortError') return;
+      if (err.name === 'AbortError' || requestId !== requestIdRef.current) return;
 
       console.error('Chat error:', err);
       setError(err.message || 'Lỗi kết nối máy chủ');
@@ -151,12 +175,24 @@ export function useChat() {
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
-      setIsLoading(false);
-      setIsStreaming(false);
-      setStreamingText('');
-      abortControllerRef.current = null;
+      if (requestId === requestIdRef.current) {
+        setIsLoading(false);
+        setIsStreaming(false);
+        setStreamingText('');
+        abortControllerRef.current = null;
+      }
     }
   }, [messages, sessionId]);
+
+  const flagUnhelpfulAnswer = useCallback(async (message: ChatMessageItem) => {
+    if (!message.feedbackMessageId) {
+      throw new Error('Không tìm thấy câu trả lời đã lưu để đánh giá.');
+    }
+    await chatApi.flagUnhelpfulAnswer(sessionId, message.feedbackMessageId);
+    setMessages(prev => prev.map(item => (
+      item.id === message.id ? { ...item, feedbackSent: true } : item
+    )));
+  }, [sessionId]);
 
   const retryLastMessage = useCallback(() => {
     // Find the last user message
@@ -164,7 +200,7 @@ export function useChat() {
     if (lastUser) {
       // Remove any trailing error message
       setMessages(prev => prev.filter(m => !m.isError));
-      sendMessage(lastUser.content, lastUser.attachments);
+      sendMessage(lastUser.content, lastUser.attachments, true);
     }
   }, [messages, sendMessage]);
 
@@ -174,6 +210,7 @@ export function useChat() {
     }
     const newId = `vl-sess-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 7)}`;
     sessionStorage.setItem(SESSION_ID_KEY, newId);
+    setSessionId(newId);
     sessionStorage.removeItem(SESSION_STORAGE_KEY);
     setMessages([INITIAL_WELCOME_MESSAGE]);
     setExtractedBrief({});
@@ -269,6 +306,7 @@ export function useChat() {
     briefLeadId,
     sendMessage,
     retryLastMessage,
+    flagUnhelpfulAnswer,
     resetChat,
     updateBrief,
     submitBrief,

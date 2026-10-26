@@ -3,40 +3,37 @@ import { generateAdvisorResponse, ChatMessage } from '../lib/llm';
 import { db } from '../db/store';
 import { leadService } from '../services/leadService';
 import { conversationService } from '../services/conversationService';
+import { ChatRateLimiter, validateChatRequest } from '../lib/chatProtection';
 
 export const chatRouter = Router();
-
-// In-memory rate limiting map: ip -> timestamps
-const ipRequests = new Map<string, number[]>();
-
-function checkRateLimit(ip: string, limit = 40, windowMs = 60 * 1000): boolean {
-  const now = Date.now();
-  const timestamps = (ipRequests.get(ip) || []).filter(t => now - t < windowMs);
-  if (timestamps.length >= limit) {
-    return false;
-  }
-  timestamps.push(now);
-  ipRequests.set(ip, timestamps);
-  return true;
-}
+const chatRateLimiter = new ChatRateLimiter();
 
 chatRouter.post('/', async (req: Request, res: Response) => {
   const clientIp = req.ip || req.socket.remoteAddress || '127.0.0.1';
-
-  if (!checkRateLimit(clientIp)) {
-    return res.status(429).json({
-      error: 'Quá nhiều yêu cầu. Vui lòng thử lại sau 1 phút.',
+  const input = validateChatRequest(req.body);
+  if (!input) {
+    return res.status(400).json({
+      error: 'Tin nhắn không hợp lệ. Mỗi tin tối đa 2.000 ký tự, tối đa 5 file và cần gửi tin nhắn cuối cùng.',
     });
   }
 
-  const { sessionId = 'default-session', messages, attachments, stream } = req.body;
-
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'Danh sách tin nhắn không hợp lệ.' });
+  const latestClientMessage = input.messages[input.messages.length - 1];
+  if (latestClientMessage.role !== 'user') {
+    return res.status(400).json({ error: 'Tin nhắn cuối cùng cần là tin nhắn của khách hàng.' });
   }
 
-  const latestUserMsg = [...messages].reverse().find(m => m.role === 'user');
-  const latestText = latestUserMsg?.content || '';
+  const rateLimit = chatRateLimiter.consume(clientIp, input.sessionId);
+  if (!rateLimit.allowed) {
+    res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
+    return res.status(429).json({
+      error: 'Anh/chị đang gửi tin quá nhanh. Vui lòng đợi một chút rồi thử lại.',
+      retryAfterSeconds: rateLimit.retryAfterSeconds,
+    });
+  }
+
+  const { sessionId, messages, attachments, stream } = input;
+  const latestUserMsg = messages[messages.length - 1];
+  const latestText = latestUserMsg.content;
 
   try {
     // 1. Ensure Lead and Conversation exist in Database via shared leadService
@@ -46,11 +43,11 @@ chatRouter.post('/', async (req: Request, res: Response) => {
       notes: latestText,
     });
 
-    const conversation = db.conversations.findBySessionId(sessionId);
+    const conversation = await db.conversations.findBySessionId(sessionId);
 
     if (conversation && latestUserMsg) {
       // Append customer message to database
-      conversationService.appendMessage({
+      await conversationService.appendMessage({
         conversationId: conversation.id,
         sender: 'CUSTOMER',
         text: latestText,
@@ -59,7 +56,7 @@ chatRouter.post('/', async (req: Request, res: Response) => {
 
       // 2. CHECK IF CONVERSATION IS TAKEN OVER BY HUMAN AGENT
       if (conversation.mode === 'HUMAN') {
-        const staffUser = conversation.humanAgentId ? db.users.findById(conversation.humanAgentId) : null;
+        const staffUser = conversation.humanAgentId ? await db.users.findById(conversation.humanAgentId) : null;
         const staffName = staffUser?.name || 'Chuyên viên tư vấn';
 
         const humanWaitReply = `Dạ ${staffName} đang tiếp quản và đọc tin nhắn của anh/chị. Nhân viên sẽ phản hồi trực tiếp ngay tại đây ạ!`;
@@ -92,7 +89,7 @@ chatRouter.post('/', async (req: Request, res: Response) => {
 
     // Save bot reply to database
     if (conversation) {
-      conversationService.appendMessage({
+      const savedReply = await conversationService.appendMessage({
         conversationId: conversation.id,
         sender: 'BOT',
         text: analysis.replyText,
@@ -105,6 +102,7 @@ chatRouter.post('/', async (req: Request, res: Response) => {
         missingFields: analysis.missingFields,
         needHuman: analysis.needHuman,
       });
+      analysis.messageId = savedReply.id;
     }
 
     // 4. Return response (streaming SSE or JSON)
@@ -132,11 +130,48 @@ chatRouter.post('/', async (req: Request, res: Response) => {
       needHuman: analysis.needHuman,
       briefReady: analysis.briefReady,
       sources: analysis.sources,
+      messageId: analysis.messageId,
     });
   } catch (error) {
     console.error('Chat endpoint error:', error);
     return res.status(500).json({
       error: 'Hệ thống đang bận. Vui lòng kết nối trực tiếp qua Hotline 086 896 8089.',
     });
+  }
+});
+
+chatRouter.post('/feedback', async (req: Request, res: Response) => {
+  const clientIp = req.ip || req.socket.remoteAddress || '127.0.0.1';
+  const { sessionId, messageId, helpful } = req.body || {};
+  if (
+    typeof sessionId !== 'string'
+    || !/^[a-zA-Z0-9_-]{8,100}$/.test(sessionId)
+    || typeof messageId !== 'string'
+    || messageId.length > 120
+    || helpful !== false
+  ) {
+    return res.status(400).json({ error: 'Đánh giá câu trả lời không hợp lệ.' });
+  }
+
+  const rateLimit = chatRateLimiter.consume(clientIp, sessionId);
+  if (!rateLimit.allowed) {
+    res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
+    return res.status(429).json({ error: 'Vui lòng thử lại sau.', retryAfterSeconds: rateLimit.retryAfterSeconds });
+  }
+
+  try {
+    const conversation = await db.conversations.findBySessionId(sessionId);
+    if (!conversation) return res.status(404).json({ error: 'Không tìm thấy cuộc trò chuyện.' });
+    const messages = await db.messages.listByConversationId(conversation.id);
+    const target = messages.find(message => message.id === messageId && message.sender === 'BOT');
+    if (!target) return res.status(404).json({ error: 'Không tìm thấy câu trả lời để đánh giá.' });
+    if (target.isFlaggedWrong) return res.json({ success: true, alreadySubmitted: true });
+
+    const updated = await db.messages.update(messageId, { isFlaggedWrong: true });
+    if (!updated) return res.status(404).json({ error: 'Không tìm thấy câu trả lời để đánh giá.' });
+    return res.json({ success: true });
+  } catch (error) {
+    console.error('Failed to record chat answer feedback:', error);
+    return res.status(500).json({ error: 'Không thể ghi nhận đánh giá lúc này.' });
   }
 });

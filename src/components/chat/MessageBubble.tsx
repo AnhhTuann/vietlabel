@@ -1,15 +1,28 @@
 import React from 'react';
-import { Bot, User, RefreshCw, FileText, AlertCircle } from 'lucide-react';
+import { Bot, User, RefreshCw, FileText, AlertCircle, ThumbsDown, Check } from 'lucide-react';
+import { useState } from 'react';
 import { ChatMessageItem } from '../../services/chatApi';
 import { cn } from '../../lib/utils';
 
 interface MessageBubbleProps {
   message: ChatMessageItem;
   onRetry?: () => void;
+  onFlagWrongAnswer?: () => Promise<void>;
 }
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }) => {
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry, onFlagWrongAnswer }) => {
   const isUser = message.role === 'user';
+  const [feedbackError, setFeedbackError] = useState<string | null>(null);
+
+  const handleFlagWrongAnswer = async () => {
+    if (!onFlagWrongAnswer) return;
+    setFeedbackError(null);
+    try {
+      await onFlagWrongAnswer();
+    } catch (error) {
+      setFeedbackError(error instanceof Error ? error.message : 'Không gửi được đánh giá.');
+    }
+  };
 
   // Helper to render simple markdown with bold, bullet points and linebreaks
   const renderFormattedText = (text: string) => {
@@ -129,7 +142,27 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRetry }
               <span>Thử lại</span>
             </button>
           )}
+          {!isUser && !message.isError && onFlagWrongAnswer && (
+            message.feedbackSent ? (
+              <span className="inline-flex items-center gap-1 text-emerald-600" role="status">
+                <Check className="w-3 h-3" />
+                Đã ghi nhận
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={handleFlagWrongAnswer}
+                className="inline-flex items-center gap-1 text-slate-400 hover:text-rose-600 cursor-pointer"
+                aria-label="Đánh dấu câu trả lời chưa hữu ích"
+                title="Đánh dấu câu trả lời cần cải thiện"
+              >
+                <ThumbsDown className="w-3 h-3" />
+                <span>Chưa hữu ích</span>
+              </button>
+            )
+          )}
         </div>
+        {feedbackError && <span role="alert" className="mt-1 text-[10px] text-rose-600">{feedbackError}</span>}
       </div>
     </div>
   );

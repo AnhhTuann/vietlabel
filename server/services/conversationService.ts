@@ -12,14 +12,14 @@ export interface AppendMessageInput {
 }
 
 export const conversationService = {
-  appendMessage(input: AppendMessageInput): Message {
-    const conv = db.conversations.findById(input.conversationId);
+  async appendMessage(input: AppendMessageInput): Promise<Message> {
+    const conv = await db.conversations.findById(input.conversationId);
     if (!conv) {
       throw new Error('Không tìm thấy cuộc trò chuyện.');
     }
 
     const now = new Date().toISOString();
-    const msg = db.messages.create({
+    const msg = await db.messages.create({
       id: `msg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       conversationId: input.conversationId,
       sender: input.sender,
@@ -30,7 +30,7 @@ export const conversationService = {
       createdAt: now,
     });
 
-    db.conversations.update(conv.id, {
+    await db.conversations.update(conv.id, {
       lastMessageAt: now,
     });
 
@@ -44,11 +44,11 @@ export const conversationService = {
     return msg;
   },
 
-  takeover(conversationId: string, staffId: string, staffName: string): Conversation {
-    const conv = db.conversations.findById(conversationId);
+  async takeover(conversationId: string, staffId: string, staffName: string): Promise<Conversation> {
+    const conv = await db.conversations.findById(conversationId);
     if (!conv) throw new Error('Không tìm thấy cuộc hội thoại.');
 
-    const updated = db.conversations.update(conv.id, {
+    const updated = await db.conversations.update(conv.id, {
       mode: 'HUMAN',
       humanAgentId: staffId,
     });
@@ -56,14 +56,14 @@ export const conversationService = {
     if (!updated) throw new Error('Chuyển quyền tiếp quản thất bại.');
 
     // Append system message
-    this.appendMessage({
+    await this.appendMessage({
       conversationId,
       sender: 'SYSTEM',
       text: `Chuyên viên tư vấn ${staffName} đã tiếp quản cuộc trò chuyện.`,
     });
 
     // Log lead event
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_takeover`,
       leadId: conv.leadId,
       type: 'TAKEOVER',
@@ -82,31 +82,31 @@ export const conversationService = {
     return updated;
   },
 
-  release(conversationId: string, staffId: string, staffName: string): Conversation {
-    const conv = db.conversations.findById(conversationId);
+  async release(conversationId: string, staffId: string, staffName: string): Promise<Conversation> {
+    const conv = await db.conversations.findById(conversationId);
     if (!conv) throw new Error('Không tìm thấy cuộc hội thoại.');
 
-    const updated = db.conversations.update(conv.id, {
+    const updated = await db.conversations.update(conv.id, {
       mode: 'BOT',
       humanAgentId: undefined,
     });
 
     if (!updated) throw new Error('Trả lại cho bot thất bại.');
 
-    // Append system & bot message
-    this.appendMessage({
+    // Append system & bot messages
+    await this.appendMessage({
       conversationId,
       sender: 'SYSTEM',
       text: `Đã hoàn trả hội thoại cho Trợ lý AI.`,
     });
 
-    this.appendMessage({
+    await this.appendMessage({
       conversationId,
       sender: 'BOT',
       text: `Chào anh/chị, em là Trợ lý AI Vietlabel! Em đã quay trở lại để tiếp tục hỗ trợ tư vấn quy cách và vật liệu bao bì. Anh/chị cần hỏi thêm thông tin gì cứ nhắn em nhé!`,
     });
 
-    db.events.create({
+    await db.events.create({
       id: `ev_${Date.now()}_release`,
       leadId: conv.leadId,
       type: 'RELEASED',
@@ -124,28 +124,34 @@ export const conversationService = {
     return updated;
   },
 
-  getConversation(conversationId: string) {
-    const conv = db.conversations.findById(conversationId);
+  async getConversation(conversationId: string) {
+    const conv = await db.conversations.findById(conversationId);
     if (!conv) return null;
-    const messages = db.messages.listByConversationId(conv.id);
+    const messages = await db.messages.listByConversationId(conv.id);
     return { ...conv, messages };
   },
 
-  listActiveInbox() {
-    const convs = db.conversations.list();
-    return convs.map(c => {
-      const lead = db.leads.findById(c.leadId);
-      const messages = db.messages.listByConversationId(c.id);
-      const lastMessage = messages[messages.length - 1];
-      const unreadCount = messages.filter(m => m.sender === 'CUSTOMER' && !m.readAt).length;
+  async listActiveInbox() {
+    const convs = await db.conversations.list();
+    const results = await Promise.all(
+      convs.map(async (c) => {
+        const lead = await db.leads.findById(c.leadId);
+        const messages = await db.messages.listByConversationId(c.id);
+        const lastMessage = messages[messages.length - 1];
+        const unreadCount = messages.filter(m => m.sender === 'CUSTOMER' && !m.readAt).length;
 
-      return {
-        ...c,
-        lead,
-        lastMessage,
-        unreadCount,
-        totalMessages: messages.length,
-      };
-    }).sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
+        return {
+          ...c,
+          lead,
+          lastMessage,
+          unreadCount,
+          totalMessages: messages.length,
+        };
+      })
+    );
+
+    return results.sort((a, b) =>
+      new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
+    );
   },
 };

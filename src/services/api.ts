@@ -1,3 +1,5 @@
+import { fileToBase64 } from './fileEncoding';
+
 export interface ContactFormData {
   fullName: string;
   company: string;
@@ -11,13 +13,10 @@ export interface ContactFormData {
 
 export interface JobApplicationData {
   jobId: string;
-  jobTitle: string;
   fullName: string;
   email: string;
   phone: string;
   coverLetter?: string;
-  cvFileName?: string;
-  cvFileSize?: number;
 }
 
 export async function submitContact(data: ContactFormData): Promise<{ success: boolean; message: string; trackingId?: string }> {
@@ -27,71 +26,67 @@ export async function submitContact(data: ContactFormData): Promise<{ success: b
     return { success: true, message: 'Yêu cầu đã được gửi thành công.', trackingId: 'AP-SPAM-000' };
   }
 
-  let trackingId = `VL-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+  const res = await fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: data.fullName,
+      company: data.company,
+      email: data.email,
+      phone: data.phone,
+      type: data.productInterest || 'Hộp giấy & Tem nhãn',
+      quantity: data.quantity,
+      description: data.message,
+    }),
+  });
 
-  try {
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: data.fullName,
-        company: data.company,
-        email: data.email,
-        phone: data.phone,
-        type: data.productInterest || 'Hộp giấy & Tem nhãn',
-        quantity: data.quantity,
-        description: data.message,
-      }),
-    });
-
-    if (res.ok) {
-      const json = await res.json();
-      if (json.trackingId) {
-        trackingId = json.trackingId;
-      }
-    }
-  } catch (e) {
-    console.warn('Backend API connection warning, using local fallback:', e);
-  }
-
-  // Store in localStorage for audit / demo preview if in browser
-  try {
-    const existing = JSON.parse(localStorage.getItem('vietlabel_inquiries') || '[]');
-    existing.unshift({
-      ...data,
-      trackingId,
-      submittedAt: new Date().toISOString(),
-    });
-    localStorage.setItem('vietlabel_inquiries', JSON.stringify(existing.slice(0, 50)));
-  } catch (e) {
-    console.error('Storage error', e);
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(result.error || 'Không thể gửi yêu cầu đến máy chủ. Vui lòng thử lại.');
   }
 
   return {
     success: true,
     message: 'Yêu cầu báo giá đã được chuyển đến bộ phận dự toán kỹ thuật Vietlabel. Chúng tôi sẽ liên hệ trong 2 giờ.',
-    trackingId,
+    trackingId: result.trackingId,
   };
 }
 
-export async function submitJobApplication(data: JobApplicationData): Promise<{ success: boolean; message: string }> {
-  await new Promise((resolve) => setTimeout(resolve, 900));
-
-  try {
-    const existing = JSON.parse(localStorage.getItem('vietlabel_applications') || '[]');
-    existing.unshift({
-      ...data,
-      submittedAt: new Date().toISOString(),
-    });
-    localStorage.setItem('vietlabel_applications', JSON.stringify(existing.slice(0, 30)));
-  } catch (e) {
-    console.error('Storage error', e);
+export async function submitJobApplication(
+  data: JobApplicationData,
+  cvFile: File,
+): Promise<{ success: boolean; message: string }> {
+  const uploadResponse = await fetch('/api/upload/cv', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      fileName: cvFile.name,
+      fileBase64: await fileToBase64(cvFile),
+    }),
+  });
+  const uploadResult = await uploadResponse.json().catch(() => ({}));
+  if (!uploadResponse.ok) {
+    throw new Error(uploadResult.error || 'Không thể tải CV lên máy chủ.');
   }
 
-  return {
-    success: true,
-    message: 'Hồ sơ ứng tuyển đã được gửi thành công đến Phòng Nhân sự Vietlabel.',
-  };
+  const response = await fetch('/api/applications', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jobId: data.jobId,
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      coverLetter: data.coverLetter,
+      uploadId: uploadResult.uploadId,
+      cvFileName: cvFile.name,
+    }),
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(result.error || 'Không thể gửi hồ sơ ứng tuyển.');
+  }
+  return result;
 }
 
 export const api = {

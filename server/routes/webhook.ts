@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { leadsDatabase } from './lead';
+import { leadService } from '../services/leadService';
 import { generateAdvisorResponse } from '../lib/llm';
 
 export const webhookRouter = Router();
@@ -29,15 +29,14 @@ webhookRouter.post('/zalo', async (req: Request, res: Response) => {
       ]);
 
       if (analysis.extractedFields && Object.keys(analysis.extractedFields).length > 0) {
-        leadsDatabase.unshift({
-          id: `LEAD-ZALO-${Date.now().toString(36)}`,
+        await leadService.createOrUpdateFromChat({
+          sessionId: `zalo_${senderId || Date.now()}`,
+          source: 'zalo',
           contact: senderId,
           productType: analysis.extractedFields.productType || 'Tư vấn Zalo OA',
-          leadScore: analysis.leadScore || 'WARM',
-          status: 'NEW',
-          source: 'zalo_oa',
-          ...analysis.extractedFields,
-          createdAt: new Date().toISOString(),
+          needHuman: analysis.needHuman,
+          brief: analysis.extractedFields,
+          notes: userText,
         });
       }
     }

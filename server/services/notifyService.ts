@@ -33,9 +33,9 @@ export const notifyService = {
     try {
       const tgRes = await telegramNotifier.send(notifierLead);
       if (tgRes.messageId) {
-        db.leads.update(lead.id, { telegramMessageId: tgRes.messageId });
+        await db.leads.update(lead.id, { telegramMessageId: tgRes.messageId });
       }
-      db.notificationLogs.create({
+      await db.notificationLogs.create({
         id: `notif_tg_${Date.now()}`,
         leadId: lead.id,
         channel: 'telegram',
@@ -45,7 +45,7 @@ export const notifyService = {
       });
     } catch (err: any) {
       console.error('[NOTIFY ERROR] Telegram send failed:', err.message);
-      db.notificationLogs.create({
+      await db.notificationLogs.create({
         id: `notif_tg_${Date.now()}`,
         leadId: lead.id,
         channel: 'telegram',
@@ -57,10 +57,10 @@ export const notifyService = {
 
     // 2. Zalo OA (if enabled)
     try {
-      const isZaloEnabled = db.settings.get('zalo_enabled') === true || process.env.ZALO_ENABLED === 'true';
+      const isZaloEnabled = (await db.settings.get('zalo_enabled')) === true || process.env.ZALO_ENABLED === 'true';
       if (isZaloEnabled) {
         const zaloRes = await zaloNotifier.send(notifierLead);
-        db.notificationLogs.create({
+        await db.notificationLogs.create({
           id: `notif_zl_${Date.now()}`,
           leadId: lead.id,
           channel: 'zalo',
@@ -76,7 +76,7 @@ export const notifyService = {
     // 3. Email
     try {
       await emailNotifier.send(notifierLead);
-      db.notificationLogs.create({
+      await db.notificationLogs.create({
         id: `notif_em_${Date.now()}`,
         leadId: lead.id,
         channel: 'email',
@@ -100,9 +100,9 @@ export const notifyService = {
     });
 
     // 5. Escalation timer: check after ESCALATION_MINUTES
-    const escalationMinutes = Number(db.settings.get('escalation_minutes') || 10);
+    const escalationMinutes = Number((await db.settings.get('escalation_minutes')) || 10);
     setTimeout(async () => {
-      const current = db.leads.findById(lead.id);
+      const current = await db.leads.findById(lead.id);
       if (current && (current.status === 'NEEDS_HUMAN' || current.status === 'NEW')) {
         console.warn(`[ESCALATION REMINDER] Lead ${current.code} unclaimed after ${escalationMinutes} min!`);
         await telegramNotifier.sendReminder({

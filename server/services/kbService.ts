@@ -1,75 +1,102 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { db } from '../db/store';
 import { KbDocument } from '../db/schema';
-import { loadKnowledgeBase } from '../lib/rag';
+import { clearKnowledgeBaseCache, loadKnowledgeBase } from '../lib/rag';
+
+const KNOWLEDGE_DIR = path.resolve(process.cwd(), 'server/knowledge');
+
+function resolveKnowledgePath(filePath: string): string {
+  const resolved = path.resolve(KNOWLEDGE_DIR, filePath);
+  if (path.dirname(resolved) !== KNOWLEDGE_DIR || !filePath.endsWith('.md')) {
+    throw new Error('Đường dẫn tài liệu kiến thức không hợp lệ.');
+  }
+  return resolved;
+}
+
+async function removeDocumentFile(filePath: string): Promise<void> {
+  try {
+    await fs.promises.unlink(resolveKnowledgePath(filePath));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+  }
+}
 
 export const kbService = {
-  listDocuments(): KbDocument[] {
+  async listDocuments(): Promise<KbDocument[]> {
     return db.kbDocuments.list();
   },
 
-  getDocument(id: string): KbDocument | null {
-    return db.kbDocuments.findById(id) || null;
+  async getDocument(id: string): Promise<KbDocument | null> {
+    return db.kbDocuments.findById(id);
   },
 
-  createDocument(title: string, content: string, status: 'DRAFT' | 'APPROVED' = 'DRAFT'): KbDocument {
-    const filename = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.md`;
-    const doc = db.kbDocuments.create({
-      id: `kb_${Date.now()}`,
+  async createDocument(title: string, content: string, status: 'DRAFT' | 'APPROVED' = 'DRAFT'): Promise<KbDocument> {
+    const id = crypto.randomUUID();
+    const doc = await db.kbDocuments.create({
+      id: `kb_${id}`,
       title,
-      filePath: filename,
+      filePath: `${id}.md`,
       content,
       status,
       updatedAt: new Date().toISOString(),
     });
 
     if (status === 'APPROVED') {
-      this.writeDocumentToDisk(doc);
+      await this.writeDocumentToDisk(doc);
+      await this.reingest();
     }
 
     return doc;
   },
 
-  updateDocument(id: string, updates: Partial<KbDocument>): KbDocument {
-    const updated = db.kbDocuments.update(id, updates);
+  async updateDocument(id: string, updates: Partial<KbDocument>): Promise<KbDocument> {
+    const existing = await db.kbDocuments.findById(id);
+    if (!existing) throw new Error('Không tìm thấy tài liệu.');
+    const updated = await db.kbDocuments.update(id, updates);
     if (!updated) throw new Error('Không tìm thấy tài liệu.');
 
     if (updated.status === 'APPROVED') {
-      this.writeDocumentToDisk(updated);
+      await this.writeDocumentToDisk(updated);
+      await this.reingest();
+    } else {
+      await removeDocumentFile(existing.filePath);
+      await this.refreshKnowledgeBase();
     }
 
     return updated;
   },
 
-  deleteDocument(id: string): boolean {
-    const doc = db.kbDocuments.findById(id);
-    if (doc) {
-      const diskPath = path.resolve(process.cwd(), 'server/knowledge', doc.filePath);
-      if (fs.existsSync(diskPath)) {
-        try { fs.unlinkSync(diskPath); } catch (e) {}
-      }
+  async deleteDocument(id: string): Promise<boolean> {
+    const doc = await db.kbDocuments.findById(id);
+    if (!doc) return false;
+    await removeDocumentFile(doc.filePath);
+    const deleted = await db.kbDocuments.delete(id);
+    if (deleted) {
+      await this.refreshKnowledgeBase();
     }
-    return db.kbDocuments.delete(id);
+    return deleted;
   },
 
-  writeDocumentToDisk(doc: KbDocument) {
-    const knowledgeDir = path.resolve(process.cwd(), 'server/knowledge');
-    if (!fs.existsSync(knowledgeDir)) {
-      fs.mkdirSync(knowledgeDir, { recursive: true });
-    }
-    fs.writeFileSync(path.join(knowledgeDir, doc.filePath), doc.content, 'utf-8');
+  async writeDocumentToDisk(doc: KbDocument): Promise<void> {
+    await fs.promises.mkdir(KNOWLEDGE_DIR, { recursive: true });
+    await fs.promises.writeFile(resolveKnowledgePath(doc.filePath), doc.content, 'utf-8');
   },
 
-  reingest(): { chunksCount: number; timestamp: string } {
-    // Write all approved documents to disk
-    const approvedDocs = db.kbDocuments.list().filter(d => d.status === 'APPROVED');
+  async reingest(): Promise<{ chunksCount: number; timestamp: string }> {
+    const allDocs = await db.kbDocuments.list();
+    const approvedDocs = allDocs.filter(d => d.status === 'APPROVED');
     for (const doc of approvedDocs) {
-      this.writeDocumentToDisk(doc);
-      db.kbDocuments.update(doc.id, { ingestedAt: new Date().toISOString() });
+      await this.writeDocumentToDisk(doc);
+      await db.kbDocuments.update(doc.id, { ingestedAt: new Date().toISOString() });
     }
 
-    // Trigger reload of RAG chunks
+    for (const doc of allDocs) {
+      if (doc.status !== 'APPROVED') await removeDocumentFile(doc.filePath);
+    }
+
+    await this.refreshKnowledgeBase();
     const chunks = loadKnowledgeBase();
     console.log(`[KB REINGEST] Successfully ingested ${chunks.length} chunks from ${approvedDocs.length} approved documents.`);
 
@@ -79,23 +106,34 @@ export const kbService = {
     };
   },
 
-  flagWrongAnswer(messageId: string, feedbackReason?: string): void {
-    const msg = db.messages.update(messageId, { isFlaggedWrong: true });
+  async refreshKnowledgeBase(): Promise<void> {
+    clearKnowledgeBaseCache();
+    loadKnowledgeBase();
+  },
+
+  async flagWrongAnswer(messageId: string, feedbackReason?: string): Promise<void> {
+    const msg = await db.messages.update(messageId, { isFlaggedWrong: true });
     if (msg) {
       console.warn(`[KB AUDIT] Message ${messageId} was flagged as incorrect answer: ${feedbackReason || 'No comment'}`);
     }
   },
 
-  listFlaggedAnswers() {
-    const allConvs = db.conversations.list();
+  async listFlaggedAnswers() {
+    const allConvs = await db.conversations.list();
     const flagged = [];
     for (const c of allConvs) {
-      const messages = db.messages.listByConversationId(c.id);
+      const messages = await db.messages.listByConversationId(c.id);
       for (const m of messages) {
         if (m.isFlaggedWrong) {
-          const lead = db.leads.findById(c.leadId);
+          const lead = await db.leads.findById(c.leadId);
+          const flaggedIndex = messages.findIndex(message => message.id === m.id);
+          const customerQuestion = messages
+            .slice(0, flaggedIndex)
+            .reverse()
+            .find(message => message.sender === 'CUSTOMER');
           flagged.push({
             message: m,
+            customerQuestion,
             conversation: c,
             lead,
           });

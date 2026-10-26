@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ShieldCheck, Lock, Mail, AlertCircle, ArrowRight, Sparkles, KeyRound } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { Button } from '../../components/ui/Button';
 
@@ -35,11 +35,6 @@ export const AdminLoginPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleQuickLogin = (quickEmail: string, quickPass: string) => {
-    setEmail(quickEmail);
-    setPassword(quickPass);
   };
 
   return (
@@ -125,40 +120,9 @@ export const AdminLoginPage: React.FC = () => {
         {showForgotNotice && (
           <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1">
             <span className="font-bold block">Khôi phục mật khẩu:</span>
-            <p>Vui lòng liên hệ Admin hệ thống qua email <strong>admin@vietlabel.com.vn</strong> hoặc Hotline kỹ thuật nội bộ để đặt lại mật khẩu an toàn.</p>
+            <p>Vui lòng liên hệ quản trị viên hệ thống hoặc Hotline kỹ thuật nội bộ để đặt lại mật khẩu an toàn.</p>
           </div>
         )}
-
-        {/* Quick Demo Logins for Testing */}
-        <div className="pt-4 border-t border-slate-100 space-y-2">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block text-center">
-            Tài khoản mẫu để kiểm thử nhanh:
-          </span>
-
-          <div className="grid grid-cols-3 gap-1.5 text-xs">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('sales@vietlabel.com.vn', 'Sales@123456')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-center font-semibold text-slate-700 cursor-pointer"
-            >
-              Sales
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('manager@vietlabel.com.vn', 'Manager@123456')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-center font-semibold text-slate-700 cursor-pointer"
-            >
-              Manager
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('admin@vietlabel.com.vn', 'Admin@123456')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-center font-semibold text-slate-700 cursor-pointer"
-            >
-              Admin
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

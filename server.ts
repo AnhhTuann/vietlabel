@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
+import { testConnection } from './server/db/drizzle';
 import { chatRouter } from './server/routes/chat';
 import { leadRouter } from './server/routes/lead';
 import { uploadRouter } from './server/routes/upload';
@@ -11,6 +13,8 @@ import { telegramWebhookRouter } from './server/routes/telegramWebhook';
 import { adminRouter } from './server/routes/admin';
 import { cmsRouter } from './server/routes/cms';
 import { contactRouter } from './server/routes/contact';
+import { applicationsRouter } from './server/routes/applications';
+import { kbService } from './server/services/kbService';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +23,23 @@ const isProduction = process.env.NODE_ENV === 'production';
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
+  // Test PostgreSQL connection
+  let databaseAvailable = false;
+  try {
+    await testConnection();
+    databaseAvailable = true;
+  } catch (err: any) {
+    console.error('⚠️ [DB Warning] Could not connect to PostgreSQL:', err.message);
+    console.error('Make sure PostgreSQL is running: docker compose up -d postgres');
+  }
+  if (databaseAvailable) {
+    try {
+      await kbService.reingest();
+    } catch (err) {
+      console.error('⚠️ [KB Warning] Could not reload approved knowledge documents:', err);
+    }
+  }
+
   const app = express();
 
   // Basic security and parsing middlewares
@@ -30,6 +51,7 @@ async function startServer() {
   app.use('/api/chat', chatRouter);
   app.use('/api/lead', leadRouter);
   app.use('/api/upload', uploadRouter);
+  app.use('/api/applications', applicationsRouter);
   app.use('/api/feedback', feedbackRouter);
   app.use('/api/contact', contactRouter);
   app.use('/api/webhook', webhookRouter);

@@ -11,6 +11,10 @@ export interface KnowledgeChunk {
 
 let cachedChunks: KnowledgeChunk[] | null = null;
 
+export function clearKnowledgeBaseCache(): void {
+  cachedChunks = null;
+}
+
 export function loadKnowledgeBase(): KnowledgeChunk[] {
   if (cachedChunks) return cachedChunks;
 
@@ -99,4 +103,39 @@ export function retrieveRelevantKnowledge(query: string, topK = 4): { text: stri
   const sources = Array.from(new Set(top.map(item => item.chunk.source)));
 
   return { text, sources };
+}
+
+export function findApprovedFaqAnswer(query: string): { answer: string; source: string } | null {
+  return matchApprovedFaqAnswer(query, loadKnowledgeBase());
+}
+
+export function matchApprovedFaqAnswer(
+  query: string,
+  chunks: KnowledgeChunk[],
+): { answer: string; source: string } | null {
+  const stopWords = new Set([
+    'anh', 'chi', 'chị', 'cho', 'em', 'cua', 'của', 'giup', 'giúp', 'toi', 'tôi',
+    'minh', 'mình', 'muon', 'muốn', 'hoi', 'hỏi', 'la', 'là', 'bao', 'nhiêu',
+    'the', 'thế', 'nao', 'nào', 'voi', 'với', 'duoc', 'được', 'khong', 'không',
+    've', 'về', 'co', 'có', 'xin', 'mot', 'một',
+  ]);
+  const terms = (text: string) => (text.toLocaleLowerCase('vi').match(/[\p{L}\p{N}]+/gu) || [])
+    .filter(term => term.length > 1 && !stopWords.has(term));
+  const queryTerms = new Set(terms(query));
+  if (queryTerms.size === 0) return null;
+
+  const candidates = chunks
+    .filter(chunk => /^(?:câu hỏi|q)\s*:/i.test(chunk.title))
+    .map(chunk => {
+      const titleTerms = new Set(terms(chunk.title));
+      const matches = [...queryTerms].filter(term => titleTerms.has(term)).length;
+      const answer = chunk.content.match(/\*\*trả lời:\*\*\s*([\s\S]*)/i)?.[1]?.trim();
+      return { chunk, matches, answer };
+    })
+    .filter(candidate => candidate.answer && candidate.matches >= Math.min(2, queryTerms.size))
+    .sort((a, b) => b.matches - a.matches);
+
+  const best = candidates[0];
+  if (!best?.answer) return null;
+  return { answer: best.answer, source: best.chunk.source };
 }

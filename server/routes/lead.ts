@@ -1,19 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
-import { LeadRecord } from '../notifiers/types';
 import { notifyStaff, telegramNotifier, isWithinWorkingHours } from '../notifiers';
 import { computeLeadScore } from '../lib/scoring';
 import { leadService } from '../services/leadService';
+import { db } from '../db/store';
+import { authService, AuthenticatedRequest } from '../services/authService';
 
 export const leadRouter = Router();
-
-// In-memory lead store for audit and CRM export
-export const leadsDatabase: LeadRecord[] = [];
-
-// Helper to look up latest state
-export function getLeadById(id: string): LeadRecord | undefined {
-  return leadsDatabase.find(l => l.id === id);
-}
 
 const customerBriefSchema = z.object({
   sessionId: z.string().optional(),
@@ -50,44 +43,29 @@ leadRouter.post('/', async (req: Request, res: Response) => {
   try {
     const validatedData = customerBriefSchema.parse(req.body);
 
-    // Compute deterministic lead score by code
+    // Compute deterministic lead score
     const scoreResult = computeLeadScore(validatedData);
 
-    const leadRecord: LeadRecord = {
-      id: `LEAD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      ...validatedData,
-      leadScore: scoreResult.score,
-      status: scoreResult.isHot ? 'NEEDS_HUMAN' : 'NEW',
-      createdAt: new Date().toISOString(),
-    };
+    const sessionId = validatedData.sessionId || `sess_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
 
-    leadsDatabase.unshift(leadRecord);
-    console.log(`[LEAD CREATED] ${leadRecord.id} | Score: ${leadRecord.leadScore} (${scoreResult.points} pts) | Contact: ${leadRecord.contact}`);
+    // Persist to central CRM DB (single source of truth — Bug #1 fix)
+    const { lead } = await leadService.createOrUpdateFromChat({
+      sessionId,
+      source: 'web',
+      fullName: validatedData.fullName,
+      company: validatedData.company,
+      contact: validatedData.contact,
+      email: validatedData.email,
+      productType: validatedData.productType,
+      quantity: validatedData.quantity,
+      deadline: validatedData.deadline,
+      hasDesignFile: validatedData.hasDesignFile,
+      needHuman: scoreResult.isHot,
+      brief: validatedData as Record<string, any>,
+      notes: validatedData.notes,
+    });
 
-    // Persist to central CRM DB store so Admin dashboard can manage it
-    try {
-      await leadService.createOrUpdateFromChat({
-        sessionId: validatedData.sessionId || leadRecord.id,
-        source: (validatedData.source as any) || 'web',
-        fullName: validatedData.fullName,
-        company: validatedData.company,
-        contact: validatedData.contact,
-        email: validatedData.email,
-        productType: validatedData.productType,
-        quantity: validatedData.quantity,
-        deadline: validatedData.deadline,
-        hasDesignFile: validatedData.hasDesignFile,
-        needHuman: scoreResult.isHot,
-        brief: validatedData,
-        notes: validatedData.notes,
-      });
-    } catch (dbErr) {
-      console.warn('DB lead persistence warning:', dbErr);
-    }
-
-    // Trigger notification to staff via Telegram (primary) + Zalo (secondary)
-    // Only notify when brief is completed or lead is HOT (Requirement 1)
-    await notifyStaff(leadRecord, getLeadById);
+    console.log(`[LEAD CREATED] ${lead.id} | Score: ${lead.score} | Contact: ${validatedData.contact}`);
 
     // Google Sheets / Webhook trigger
     const webhookUrl = process.env.SALES_WEBHOOK_URL;
@@ -95,7 +73,7 @@ leadRouter.post('/', async (req: Request, res: Response) => {
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ event: 'lead_created', lead: leadRecord }),
+        body: JSON.stringify({ event: 'lead_created', lead }),
       }).catch(err => console.warn('Sales webhook error:', err.message));
     }
 
@@ -106,8 +84,8 @@ leadRouter.post('/', async (req: Request, res: Response) => {
 
     return res.status(201).json({
       success: true,
-      leadId: leadRecord.id,
-      leadScore: leadRecord.leadScore,
+      leadId: lead.id,
+      leadScore: lead.score,
       message: 'Thông tin yêu cầu đã được chuyển thành công tới chuyên viên dự toán kỹ thuật Vietlabel!',
       notice: staffNotice,
       inWorkingHours: isWorking,
@@ -132,40 +110,20 @@ leadRouter.post('/handoff', async (req: Request, res: Response) => {
   try {
     const { contact, fullName, notes, productType, sessionId, conversationHistory } = req.body;
 
-    const leadRecord: LeadRecord = {
-      id: `HANDOFF-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      sessionId,
+    const sid = sessionId || `handoff_${Date.now().toString(36)}`;
+
+    // Persist to central CRM DB (single source of truth — Bug #1 fix)
+    const { lead } = await leadService.createOrUpdateFromChat({
+      sessionId: sid,
+      source: 'web',
       fullName: fullName || 'Khách yêu cầu gặp nhân viên',
-      contact: contact || 'Đang chờ trên web',
+      contact: contact,
       productType: productType || 'Tư vấn trực tiếp theo yêu cầu',
-      leadScore: 'HOT',
-      status: 'NEEDS_HUMAN',
+      needHuman: true,
       notes: notes || 'Khách bấm nút [Gặp nhân viên tư vấn] trên khung chat.',
-      source: 'web_handoff_request',
-      conversationHistory: conversationHistory || [],
-      createdAt: new Date().toISOString(),
-    };
+    });
 
-    leadsDatabase.unshift(leadRecord);
-    console.log(`[HANDOFF REQUEST] #${leadRecord.id} from customer ${leadRecord.fullName} (${leadRecord.contact})`);
-
-    // Persist to central CRM DB store
-    try {
-      await leadService.createOrUpdateFromChat({
-        sessionId: sessionId || leadRecord.id,
-        source: 'web',
-        fullName: fullName || 'Khách yêu cầu gặp nhân viên',
-        contact: contact,
-        productType: productType || 'Tư vấn trực tiếp theo yêu cầu',
-        needHuman: true,
-        notes: notes || 'Khách bấm nút [Gặp nhân viên tư vấn] trên khung chat.',
-      });
-    } catch (dbErr) {
-      console.warn('DB handoff persistence warning:', dbErr);
-    }
-
-    // Immediate dispatch to Telegram + Zalo
-    await notifyStaff(leadRecord, getLeadById);
+    console.log(`[HANDOFF REQUEST] #${lead.id} from ${lead.customerName} (${contact})`);
 
     const isWorking = isWithinWorkingHours();
     const notice = isWorking
@@ -174,7 +132,7 @@ leadRouter.post('/handoff', async (req: Request, res: Response) => {
 
     return res.json({
       success: true,
-      leadId: leadRecord.id,
+      leadId: lead.id,
       message: notice,
       inWorkingHours: isWorking,
     });
@@ -184,89 +142,62 @@ leadRouter.post('/handoff', async (req: Request, res: Response) => {
   }
 });
 
-// 3. Staff claims lead (Nhận xử lý)
-leadRouter.post('/:id/claim', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { claimedBy } = req.body;
-
-  const lead = leadsDatabase.find(l => l.id === id);
-  if (!lead) {
-    return res.status(404).json({ success: false, error: 'Không tìm thấy hồ sơ lead.' });
+// 3. Staff claim endpoint retained for authenticated legacy clients.
+leadRouter.post(
+  '/:id/claim',
+  authService.middleware,
+  authService.requireRole(['ADMIN', 'MANAGER', 'SALES']),
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.params;
+    try {
+      const updated = await leadService.claim(id, req.user!.id, req.user!.name);
+      return res.json({
+        success: true,
+        message: `Đã xác nhận nhận xử lý hồ sơ #${id}`,
+        lead: updated,
+      });
+    } catch (err: any) {
+      const statusCode = err.status || 400;
+      return res.status(statusCode).json({
+        success: false,
+        error: err.message,
+        claimedBy: err.claimedBy,
+        claimedAt: err.claimedAt,
+      });
+    }
   }
+);
 
-  if (lead.status === 'CLAIMED' && lead.claimedBy && lead.claimedBy !== claimedBy) {
-    return res.status(409).json({
-      success: false,
-      error: `Hồ sơ này đã được nhận xử lý bởi ${lead.claimedBy} vào lúc ${lead.claimedAt}.`,
-      claimedBy: lead.claimedBy,
-      claimedAt: lead.claimedAt,
+// Legacy CRM endpoints remain available only to authenticated staff.
+leadRouter.get(
+  '/',
+  authService.middleware,
+  authService.requireRole(['ADMIN', 'MANAGER', 'SALES']),
+  async (req: Request, res: Response) => {
+    const { status, score, q } = req.query;
+
+    const result = await leadService.getLeads({
+      status: status as string,
+      score: score as string,
+      q: q as string,
     });
+
+    return res.json(result);
   }
+);
 
-  const staffName = claimedBy || 'Chuyên viên Vietlabel';
-  lead.status = 'CLAIMED';
-  lead.claimedBy = staffName;
-  lead.claimedAt = new Date().toISOString();
+leadRouter.get(
+  '/:id',
+  authService.middleware,
+  authService.requireRole(['ADMIN', 'MANAGER', 'SALES']),
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const lead = await db.leads.findById(id);
 
-  // Update message in Telegram
-  await telegramNotifier.updateClaimed(lead, staffName);
+    if (!lead) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy hồ sơ lead.' });
+    }
 
-  console.log(`[LEAD CLAIMED] #${lead.id} claimed by ${staffName}`);
-
-  return res.json({
-    success: true,
-    message: `Đã xác nhận nhận xử lý hồ sơ #${lead.id}`,
-    lead,
-  });
-});
-
-// 4. Admin API: list leads with filters
-leadRouter.get('/', (req: Request, res: Response) => {
-  const { status, score, q } = req.query;
-
-  let filtered = [...leadsDatabase];
-
-  if (status && typeof status === 'string') {
-    filtered = filtered.filter(l => l.status === status);
+    return res.json({ success: true, lead });
   }
-
-  if (score && typeof score === 'string') {
-    filtered = filtered.filter(l => l.leadScore === score);
-  }
-
-  if (q && typeof q === 'string') {
-    const query = q.toLowerCase();
-    filtered = filtered.filter(
-      l =>
-        l.id.toLowerCase().includes(query) ||
-        (l.fullName && l.fullName.toLowerCase().includes(query)) ||
-        (l.contact && l.contact.toLowerCase().includes(query)) ||
-        (l.productType && l.productType.toLowerCase().includes(query))
-    );
-  }
-
-  return res.json({
-    total: filtered.length,
-    leads: filtered,
-    stats: {
-      total: leadsDatabase.length,
-      hot: leadsDatabase.filter(l => l.leadScore === 'HOT').length,
-      warm: leadsDatabase.filter(l => l.leadScore === 'WARM').length,
-      cold: leadsDatabase.filter(l => l.leadScore === 'COLD').length,
-      needsHuman: leadsDatabase.filter(l => l.status === 'NEEDS_HUMAN').length,
-      claimed: leadsDatabase.filter(l => l.status === 'CLAIMED').length,
-    },
-  });
-});
-
-// 5. Admin API: get single lead
-leadRouter.get('/:id', (req: Request, res: Response) => {
-  const { id } = req.params;
-  const lead = leadsDatabase.find(l => l.id === id);
-
-  if (!lead) {
-    return res.status(404).json({ success: false, error: 'Không tìm thấy hồ sơ lead.' });
-  }
-
-  return res.json({ success: true, lead });
-});
+);

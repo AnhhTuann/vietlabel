@@ -1,6 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import bcrypt from 'bcryptjs';
+/**
+ * DatabaseStore — PostgreSQL-backed (Drizzle ORM)
+ *
+ * Keeps the same interface as the old JSON-file store so all routes/services
+ * need minimal changes. All operations are now async-safe and persistent.
+ */
+import { eq, desc, asc, sql } from 'drizzle-orm';
+import { pgDb } from './drizzle';
+import * as t from './pgSchema';
 import {
   User,
   Lead,
@@ -14,572 +20,774 @@ import {
   Product,
   Post,
   Job,
+  JobApplication,
 } from './schema';
 
-interface DatabaseSchema {
-  users: User[];
-  leads: Lead[];
-  conversations: Conversation[];
-  messages: Message[];
-  notes: Note[];
-  events: LeadEvent[];
-  notificationLogs: NotificationLog[];
-  kbDocuments: KbDocument[];
-  categories: Category[];
-  products: Product[];
-  posts: Post[];
-  jobs: Job[];
-  settings: Record<string, any>;
-  nextLeadCounter: number;
+// ─── Helper: map DB row → TypeScript type ───────────────────────────────────
+
+function mapUser(row: typeof t.users.$inferSelect): User {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    passwordHash: row.passwordHash,
+    role: row.role as User['role'],
+    telegramUserId: row.telegramUserId ?? undefined,
+    zaloUserId: row.zaloUserId ?? undefined,
+    active: row.active,
+    failedLoginAttempts: row.failedLoginAttempts,
+    lockedUntil: row.lockedUntil ?? undefined,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
 }
 
-const DB_DIR = path.resolve(process.cwd(), 'server/data');
-const DB_FILE = path.join(DB_DIR, 'db.json');
-
-class DatabaseStore {
-  private data: DatabaseSchema;
-
-  constructor() {
-    this.data = this.loadDatabase();
-    this.seedDefaultData();
-  }
-
-  private loadDatabase(): DatabaseSchema {
-    if (!fs.existsSync(DB_DIR)) {
-      fs.mkdirSync(DB_DIR, { recursive: true });
-    }
-
-    if (fs.existsSync(DB_FILE)) {
-      try {
-        const raw = fs.readFileSync(DB_FILE, 'utf-8');
-        return JSON.parse(raw);
-      } catch (err) {
-        console.error('Error reading db.json, initializing fresh store:', err);
-      }
-    }
-
-    return {
-      users: [],
-      leads: [],
-      conversations: [],
-      messages: [],
-      notes: [],
-      events: [],
-      notificationLogs: [],
-      kbDocuments: [],
-      categories: [],
-      products: [],
-      posts: [],
-      jobs: [],
-      settings: {
-        working_hours: '08:00 - 17:30',
-        escalation_minutes: 10,
-        hot_threshold_quantity: 5000,
-        telegram_enabled: true,
-        zalo_enabled: false,
-        email_enabled: true,
-      },
-      nextLeadCounter: 1001,
-    };
-  }
-
-  public save() {
-    try {
-      if (!fs.existsSync(DB_DIR)) {
-        fs.mkdirSync(DB_DIR, { recursive: true });
-      }
-      const tmpFile = `${DB_FILE}.tmp`;
-      fs.writeFileSync(tmpFile, JSON.stringify(this.data, null, 2), 'utf-8');
-      fs.renameSync(tmpFile, DB_FILE);
-    } catch (err) {
-      console.error('Failed to write db.json:', err);
-    }
-  }
-
-  private seedDefaultData() {
-    let modified = false;
-
-    // Seed users if empty
-    if (this.data.users.length === 0) {
-      const now = new Date().toISOString();
-      const salt = bcrypt.genSaltSync(10);
-
-      this.data.users = [
-        {
-          id: 'user_admin_01',
-          name: 'Nguyễn Văn Admin',
-          email: 'admin@vietlabel.com.vn',
-          passwordHash: bcrypt.hashSync('Admin@123456', salt),
-          role: 'ADMIN',
-          telegramUserId: 'admin_tele',
-          active: true,
-          failedLoginAttempts: 0,
-          createdAt: now,
-          updatedAt: now,
-        },
-        {
-          id: 'user_manager_01',
-          name: 'Lê Hoàng Nam (Trưởng phòng KD)',
-          email: 'manager@vietlabel.com.vn',
-          passwordHash: bcrypt.hashSync('Manager@123456', salt),
-          role: 'MANAGER',
-          telegramUserId: 'manager_tele',
-          active: true,
-          failedLoginAttempts: 0,
-          createdAt: now,
-          updatedAt: now,
-        },
-        {
-          id: 'user_sales_01',
-          name: 'Trần Thu Hà (Sales Senior)',
-          email: 'sales@vietlabel.com.vn',
-          passwordHash: bcrypt.hashSync('Sales@123456', salt),
-          role: 'SALES',
-          telegramUserId: 'ha_sales',
-          active: true,
-          failedLoginAttempts: 0,
-          createdAt: now,
-          updatedAt: now,
-        },
-      ];
-      modified = true;
-    }
-
-    // Seed KB documents from server/knowledge/*.md if empty
-    if (this.data.kbDocuments.length === 0) {
-      const knowledgeDir = path.resolve(process.cwd(), 'server/knowledge');
-      if (fs.existsSync(knowledgeDir)) {
-        const files = fs.readdirSync(knowledgeDir).filter(f => f.endsWith('.md'));
-        const now = new Date().toISOString();
-        for (const file of files) {
-          const content = fs.readFileSync(path.join(knowledgeDir, file), 'utf-8');
-          const firstLine = content.split('\n')[0] || file;
-          const title = firstLine.replace(/^#*\s*/, '').trim() || file;
-          this.data.kbDocuments.push({
-            id: `kb_${file.replace('.md', '')}`,
-            title,
-            filePath: file,
-            content,
-            status: 'APPROVED',
-            updatedAt: now,
-            ingestedAt: now,
-          });
-        }
-        modified = true;
-      }
-    }
-
-    // Seed a sample initial lead for immediate demo view
-    if (this.data.leads.length === 0) {
-      const now = new Date().toISOString();
-      const leadId = 'LEAD-MUM8A-1001';
-      const convId = 'conv_demo_01';
-
-      this.data.leads.push({
-        id: leadId,
-        code: '#1001',
-        status: 'NEEDS_HUMAN',
-        score: 'HOT',
-        source: 'web',
-        customerName: 'Hoàng Minh Tuấn',
-        company: 'Công ty Cổ phần Dược phẩm BioPharm',
-        phone: '0988776655',
-        email: 'tuan.hoang@biopharm.vn',
-        industry: 'Dược phẩm & Y tế',
-        productType: 'Tem nhãn Pop-up gập mở 4 trang',
-        quantity: '30.000 tem',
-        deadline: 'Cần gấp trong 5 ngày',
-        hasDesignFile: true,
-        brief: {
-          productType: 'Tem nhãn Pop-up gập mở 4 trang',
-          quantity: '30.000 tem',
-          deadline: 'Cần gấp trong 5 ngày',
-          material: 'Decal nhựa PP kháng nước, keo y tế bóc dán 50 lần',
-          dimensions: '60 x 90 mm',
-          finishing: 'Cán màng mờ, phủ UV định hình logo, bế răng cưa',
-        },
-        missingFields: [],
-        createdAt: now,
-        updatedAt: now,
-      });
-
-      this.data.conversations.push({
-        id: convId,
-        leadId,
-        sessionId: 'sess_demo_01',
-        channel: 'web',
-        mode: 'BOT',
-        lastMessageAt: now,
-        createdAt: now,
-      });
-
-      this.data.messages.push(
-        {
-          id: 'msg_01',
-          conversationId: convId,
-          sender: 'CUSTOMER',
-          text: 'Bên mình cần đặt 30.000 tem pop-up gập mở cho chai thuốc siro kháng sinh, có thể gấp 4 trang hướng dẫn sử dụng được không?',
-          createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-        },
-        {
-          id: 'msg_02',
-          conversationId: convId,
-          sender: 'BOT',
-          text: 'Dạ chào anh Tuấn! Vietlabel hoàn toàn có dây chuyền sản xuất tem Pop-up gập mở đa tầng từ 3 đến 8 trang chuẩn GMP dược phẩm. Tem có thể mở ra đọc hướng dẫn và dán lại nhiều lần bằng lớp keo chuyên dụng.\n\nCho em hỏi kích thước chai thuốc dự kiến và anh đã có sẵn file thiết kế chưa ạ?',
-          createdAt: new Date(Date.now() - 1000 * 60 * 14).toISOString(),
-        },
-        {
-          id: 'msg_03',
-          conversationId: convId,
-          sender: 'CUSTOMER',
-          text: 'Kích thước khoảng 60x90mm, file thiết kế AI bên mình có sẵn rồi, cần giao hàng trong 5 ngày tới tại Bình Dương.',
-          createdAt: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-        },
-        {
-          id: 'msg_04',
-          conversationId: convId,
-          sender: 'BOT',
-          text: 'Dạ tuyệt vời! Em đã tổng hợp Customer Brief cho anh. Do đơn hàng có số lượng 30.000 tem và tiến độ gấp 5 ngày, em đã kết nối ưu tiên đến Trưởng bộ phận Kinh doanh để báo giá có chiết khấu tốt nhất ngay ạ.',
-          createdAt: new Date(Date.now() - 1000 * 60 * 11).toISOString(),
-        }
-      );
-
-      this.data.events.push(
-        {
-          id: 'ev_01',
-          leadId,
-          type: 'CREATED',
-          payload: { source: 'web_ai_chat', score: 'HOT' },
-          createdAt: now,
-        },
-        {
-          id: 'ev_02',
-          leadId,
-          type: 'STATUS_CHANGED',
-          payload: { from: 'NEW', to: 'NEEDS_HUMAN', reason: 'Lead HOT với số lượng 30.000 tem' },
-          createdAt: now,
-        }
-      );
-
-      this.data.notificationLogs.push({
-        id: 'notif_01',
-        leadId,
-        channel: 'telegram',
-        status: 'SENT',
-        sentAt: now,
-      });
-
-      this.data.nextLeadCounter = 1002;
-      modified = true;
-    }
-
-    if (modified) {
-      this.save();
-    }
-  }
-
-  // --- ACCESSORS ---
-  public get users() {
-    return {
-      findById: (id: string) => this.data.users.find(u => u.id === id),
-      findByEmail: (email: string) => this.data.users.find(u => u.email.toLowerCase() === email.toLowerCase()),
-      findByTelegramId: (telegramId: string) => this.data.users.find(u => u.telegramUserId === telegramId),
-      list: () => [...this.data.users],
-      create: (user: User) => {
-        this.data.users.push(user);
-        this.save();
-        return user;
-      },
-      update: (id: string, updates: Partial<User>) => {
-        const idx = this.data.users.findIndex(u => u.id === id);
-        if (idx !== -1) {
-          this.data.users[idx] = { ...this.data.users[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.users[idx];
-        }
-        return null;
-      },
-    };
-  }
-
-  public get leads() {
-    return {
-      getNextCode: () => {
-        const code = `#${this.data.nextLeadCounter}`;
-        this.data.nextLeadCounter++;
-        this.save();
-        return code;
-      },
-      findById: (id: string) => this.data.leads.find(l => l.id === id),
-      findByCode: (code: string) => this.data.leads.find(l => l.code === code),
-      list: () => [...this.data.leads],
-      create: (lead: Lead) => {
-        this.data.leads.unshift(lead);
-        this.save();
-        return lead;
-      },
-      update: (id: string, updates: Partial<Lead>) => {
-        const idx = this.data.leads.findIndex(l => l.id === id);
-        if (idx !== -1) {
-          this.data.leads[idx] = { ...this.data.leads[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.leads[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.leads.findIndex(l => l.id === id);
-        if (idx !== -1) {
-          this.data.leads.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
-
-  public get conversations() {
-    return {
-      findById: (id: string) => this.data.conversations.find(c => c.id === id),
-      findBySessionId: (sessionId: string) => this.data.conversations.find(c => c.sessionId === sessionId),
-      findByLeadId: (leadId: string) => this.data.conversations.find(c => c.leadId === leadId),
-      list: () => [...this.data.conversations],
-      create: (conv: Conversation) => {
-        this.data.conversations.unshift(conv);
-        this.save();
-        return conv;
-      },
-      update: (id: string, updates: Partial<Conversation>) => {
-        const idx = this.data.conversations.findIndex(c => c.id === id);
-        if (idx !== -1) {
-          this.data.conversations[idx] = { ...this.data.conversations[idx], ...updates };
-          this.save();
-          return this.data.conversations[idx];
-        }
-        return null;
-      },
-    };
-  }
-
-  public get messages() {
-    return {
-      listByConversationId: (convId: string) =>
-        this.data.messages.filter(m => m.conversationId === convId).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()),
-      create: (msg: Message) => {
-        this.data.messages.push(msg);
-        this.save();
-        return msg;
-      },
-      update: (id: string, updates: Partial<Message>) => {
-        const idx = this.data.messages.findIndex(m => m.id === id);
-        if (idx !== -1) {
-          this.data.messages[idx] = { ...this.data.messages[idx], ...updates };
-          this.save();
-          return this.data.messages[idx];
-        }
-        return null;
-      },
-    };
-  }
-
-  public get notes() {
-    return {
-      listByLeadId: (leadId: string) =>
-        this.data.notes.filter(n => n.leadId === leadId).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-      create: (note: Note) => {
-        this.data.notes.unshift(note);
-        this.save();
-        return note;
-      },
-    };
-  }
-
-  public get events() {
-    return {
-      listByLeadId: (leadId: string) =>
-        this.data.events.filter(e => e.leadId === leadId).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-      create: (event: LeadEvent) => {
-        this.data.events.unshift(event);
-        this.save();
-        return event;
-      },
-    };
-  }
-
-  public get notificationLogs() {
-    return {
-      listByLeadId: (leadId: string) =>
-        this.data.notificationLogs.filter(n => n.leadId === leadId).sort((a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()),
-      create: (log: NotificationLog) => {
-        this.data.notificationLogs.unshift(log);
-        this.save();
-        return log;
-      },
-    };
-  }
-
-  public get kbDocuments() {
-    return {
-      list: () => [...this.data.kbDocuments],
-      findById: (id: string) => this.data.kbDocuments.find(k => k.id === id),
-      create: (doc: KbDocument) => {
-        this.data.kbDocuments.unshift(doc);
-        this.save();
-        return doc;
-      },
-      update: (id: string, updates: Partial<KbDocument>) => {
-        const idx = this.data.kbDocuments.findIndex(k => k.id === id);
-        if (idx !== -1) {
-          this.data.kbDocuments[idx] = { ...this.data.kbDocuments[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.kbDocuments[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.kbDocuments.findIndex(k => k.id === id);
-        if (idx !== -1) {
-          this.data.kbDocuments.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
-
-  public get settings() {
-    return {
-      getAll: () => ({ ...this.data.settings }),
-      get: (key: string) => this.data.settings[key],
-      set: (key: string, value: any) => {
-        this.data.settings[key] = value;
-        this.save();
-        return value;
-      },
-    };
-  }
-  public get categories() {
-    return {
-      list: () => [...this.data.categories].sort((a, b) => a.order - b.order),
-      findById: (id: string) => this.data.categories.find(c => c.id === id),
-      create: (cat: Category) => {
-        this.data.categories.push(cat);
-        this.save();
-        return cat;
-      },
-      update: (id: string, updates: Partial<Category>) => {
-        const idx = this.data.categories.findIndex(c => c.id === id);
-        if (idx !== -1) {
-          this.data.categories[idx] = { ...this.data.categories[idx], ...updates };
-          this.save();
-          return this.data.categories[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.categories.findIndex(c => c.id === id);
-        if (idx !== -1) {
-          this.data.categories.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
-
-  public get products() {
-    return {
-      list: () => [...this.data.products].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-      findById: (id: string) => this.data.products.find(p => p.id === id),
-      findBySlug: (slug: string) => this.data.products.find(p => p.slug === slug),
-      create: (prod: Product) => {
-        this.data.products.unshift(prod);
-        this.save();
-        return prod;
-      },
-      update: (id: string, updates: Partial<Product>) => {
-        const idx = this.data.products.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          this.data.products[idx] = { ...this.data.products[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.products[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.products.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          this.data.products.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
-  public get posts() {
-    return {
-      list: () => [...this.data.posts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-      findById: (id: string) => this.data.posts.find(p => p.id === id),
-      findBySlug: (slug: string) => this.data.posts.find(p => p.slug === slug),
-      create: (post: Post) => {
-        this.data.posts.unshift(post);
-        this.save();
-        return post;
-      },
-      update: (id: string, updates: Partial<Post>) => {
-        const idx = this.data.posts.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          this.data.posts[idx] = { ...this.data.posts[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.posts[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.posts.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          this.data.posts.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
-
-  public get jobs() {
-    return {
-      list: () => [...this.data.jobs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-      findById: (id: string) => this.data.jobs.find(j => j.id === id),
-      create: (job: Job) => {
-        this.data.jobs.unshift(job);
-        this.save();
-        return job;
-      },
-      update: (id: string, updates: Partial<Job>) => {
-        const idx = this.data.jobs.findIndex(j => j.id === id);
-        if (idx !== -1) {
-          this.data.jobs[idx] = { ...this.data.jobs[idx], ...updates, updatedAt: new Date().toISOString() };
-          this.save();
-          return this.data.jobs[idx];
-        }
-        return null;
-      },
-      delete: (id: string) => {
-        const idx = this.data.jobs.findIndex(j => j.id === id);
-        if (idx !== -1) {
-          this.data.jobs.splice(idx, 1);
-          this.save();
-          return true;
-        }
-        return false;
-      },
-    };
-  }
+function mapLead(row: typeof t.leads.$inferSelect): Lead {
+  return {
+    id: row.id,
+    code: row.code,
+    status: row.status as Lead['status'],
+    score: row.score as Lead['score'],
+    source: row.source as Lead['source'],
+    customerName: row.customerName ?? undefined,
+    company: row.company ?? undefined,
+    phone: row.phone ?? undefined,
+    email: row.email ?? undefined,
+    industry: row.industry ?? undefined,
+    productType: row.productType,
+    quantity: row.quantity ?? undefined,
+    deadline: row.deadline ?? undefined,
+    hasDesignFile: row.hasDesignFile ?? undefined,
+    brief: (row.brief as Record<string, any>) || {},
+    missingFields: (row.missingFields as string[]) || [],
+    assignedToId: row.assignedToId ?? undefined,
+    claimedBy: row.claimedBy ?? undefined,
+    claimedAt: row.claimedAt ?? undefined,
+    firstResponseAt: row.firstResponseAt ?? undefined,
+    telegramMessageId: row.telegramMessageId ?? undefined,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
 }
 
-export const db = new DatabaseStore();
+function mapConversation(row: typeof t.conversations.$inferSelect): Conversation {
+  return {
+    id: row.id,
+    leadId: row.leadId,
+    sessionId: row.sessionId,
+    channel: row.channel as Conversation['channel'],
+    mode: row.mode as Conversation['mode'],
+    humanAgentId: row.humanAgentId ?? undefined,
+    lastMessageAt: row.lastMessageAt,
+    csat: row.csat ?? undefined,
+    createdAt: row.createdAt,
+  };
+}
+
+function mapMessage(row: typeof t.messages.$inferSelect): Message {
+  return {
+    id: row.id,
+    conversationId: row.conversationId,
+    sender: row.sender as Message['sender'],
+    staffId: row.staffId ?? undefined,
+    staffName: row.staffName ?? undefined,
+    text: row.text,
+    attachments: (row.attachments as Message['attachments']) ?? undefined,
+    createdAt: row.createdAt,
+    readAt: row.readAt ?? undefined,
+    isFlaggedWrong: row.isFlaggedWrong ?? undefined,
+  };
+}
+
+function mapNote(row: typeof t.notes.$inferSelect): Note {
+  return {
+    id: row.id,
+    leadId: row.leadId,
+    authorId: row.authorId,
+    authorName: row.authorName,
+    text: row.text,
+    createdAt: row.createdAt,
+  };
+}
+
+function mapEvent(row: typeof t.leadEvents.$inferSelect): LeadEvent {
+  return {
+    id: row.id,
+    leadId: row.leadId,
+    type: row.type as LeadEvent['type'],
+    actorId: row.actorId ?? undefined,
+    actorName: row.actorName ?? undefined,
+    payload: (row.payload as Record<string, any>) ?? undefined,
+    createdAt: row.createdAt,
+  };
+}
+
+function mapNotificationLog(row: typeof t.notificationLogs.$inferSelect): NotificationLog {
+  return {
+    id: row.id,
+    leadId: row.leadId,
+    channel: row.channel as NotificationLog['channel'],
+    status: row.status as NotificationLog['status'],
+    error: row.error ?? undefined,
+    sentAt: row.sentAt,
+  };
+}
+
+function mapKbDocument(row: typeof t.kbDocuments.$inferSelect): KbDocument {
+  return {
+    id: row.id,
+    title: row.title,
+    filePath: row.filePath,
+    content: row.content,
+    status: row.status as KbDocument['status'],
+    updatedAt: row.updatedAt,
+    ingestedAt: row.ingestedAt ?? undefined,
+  };
+}
+
+function mapCategory(row: typeof t.categories.$inferSelect): Category {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    parentId: row.parentId ?? undefined,
+    order: row.order,
+  };
+}
+
+function mapProduct(row: typeof t.products.$inferSelect): Product {
+  return {
+    id: row.id,
+    categoryId: row.categoryId,
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+    images: (row.images as string[]) || [],
+    specs: (row.specs as Record<string, string>) || {},
+    isActive: row.isActive,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+function mapPost(row: typeof t.posts.$inferSelect): Post {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    summary: row.summary,
+    content: row.content,
+    imageUrl: row.imageUrl ?? undefined,
+    category: row.category,
+    status: row.status as Post['status'],
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+function mapJob(row: typeof t.jobs.$inferSelect): Job {
+  return {
+    id: row.id,
+    title: row.title,
+    department: row.department,
+    location: row.location,
+    type: row.type,
+    description: row.description,
+    requirements: row.requirements,
+    benefits: row.benefits,
+    status: row.status as Job['status'],
+    deadline: row.deadline,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+function mapJobApplication(row: typeof t.jobApplications.$inferSelect): JobApplication {
+  return {
+    id: row.id,
+    jobId: row.jobId,
+    fullName: row.fullName,
+    email: row.email,
+    phone: row.phone,
+    coverLetter: row.coverLetter,
+    cvStorageKey: row.cvStorageKey,
+    cvFileName: row.cvFileName,
+    cvFileSize: row.cvFileSize,
+    status: row.status,
+    createdAt: row.createdAt,
+  };
+}
+
+// ─── DB object with same interface as old JSON store ─────────────────────────
+
+export const db = {
+  // ── Users ────────────────────────────────────────────────────────────────
+  users: {
+    findById: async (id: string): Promise<User | null> => {
+      const rows = await pgDb.select().from(t.users).where(eq(t.users.id, id)).limit(1);
+      return rows[0] ? mapUser(rows[0]) : null;
+    },
+    findByEmail: async (email: string): Promise<User | null> => {
+      const rows = await pgDb.select().from(t.users)
+        .where(sql`LOWER(${t.users.email}) = LOWER(${email})`).limit(1);
+      return rows[0] ? mapUser(rows[0]) : null;
+    },
+    findByTelegramId: async (telegramId: string): Promise<User | null> => {
+      const rows = await pgDb.select().from(t.users)
+        .where(eq(t.users.telegramUserId, telegramId)).limit(1);
+      return rows[0] ? mapUser(rows[0]) : null;
+    },
+    list: async (): Promise<User[]> => {
+      const rows = await pgDb.select().from(t.users);
+      return rows.map(mapUser);
+    },
+    create: async (user: User): Promise<User> => {
+      await pgDb.insert(t.users).values({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        passwordHash: user.passwordHash,
+        role: user.role,
+        telegramUserId: user.telegramUserId ?? null,
+        zaloUserId: user.zaloUserId ?? null,
+        active: user.active,
+        failedLoginAttempts: user.failedLoginAttempts,
+        lockedUntil: user.lockedUntil ?? null,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
+      return user;
+    },
+    update: async (id: string, updates: Partial<User>): Promise<User | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.users)
+        .set({
+          ...(updates.name !== undefined && { name: updates.name }),
+          ...(updates.email !== undefined && { email: updates.email }),
+          ...(updates.passwordHash !== undefined && { passwordHash: updates.passwordHash }),
+          ...(updates.role !== undefined && { role: updates.role }),
+          ...(updates.telegramUserId !== undefined && { telegramUserId: updates.telegramUserId }),
+          ...(updates.zaloUserId !== undefined && { zaloUserId: updates.zaloUserId }),
+          ...(updates.active !== undefined && { active: updates.active }),
+          ...(updates.failedLoginAttempts !== undefined && { failedLoginAttempts: updates.failedLoginAttempts }),
+          ...(updates.lockedUntil !== undefined && { lockedUntil: updates.lockedUntil ?? null }),
+          updatedAt: now,
+        })
+        .where(eq(t.users.id, id))
+        .returning();
+      return rows[0] ? mapUser(rows[0]) : null;
+    },
+  },
+
+  // ── Leads ────────────────────────────────────────────────────────────────
+  leads: {
+    getNextCode: async (): Promise<string> => {
+      const result = await pgDb
+        .update(t.counters)
+        .set({ value: sql`${t.counters.value} + 1` })
+        .where(eq(t.counters.name, 'lead_counter'))
+        .returning({ value: t.counters.value });
+      const counter = result[0]?.value ?? 1001;
+      return `#${counter}`;
+    },
+    findById: async (id: string): Promise<Lead | null> => {
+      const rows = await pgDb.select().from(t.leads).where(eq(t.leads.id, id)).limit(1);
+      return rows[0] ? mapLead(rows[0]) : null;
+    },
+    findByCode: async (code: string): Promise<Lead | null> => {
+      const rows = await pgDb.select().from(t.leads).where(eq(t.leads.code, code)).limit(1);
+      return rows[0] ? mapLead(rows[0]) : null;
+    },
+    list: async (): Promise<Lead[]> => {
+      const rows = await pgDb.select().from(t.leads).orderBy(desc(t.leads.createdAt));
+      return rows.map(mapLead);
+    },
+    create: async (lead: Lead): Promise<Lead> => {
+      await pgDb.insert(t.leads).values({
+        id: lead.id,
+        code: lead.code,
+        status: lead.status,
+        score: lead.score,
+        source: lead.source,
+        customerName: lead.customerName ?? null,
+        company: lead.company ?? null,
+        phone: lead.phone ?? null,
+        email: lead.email ?? null,
+        industry: lead.industry ?? null,
+        productType: lead.productType,
+        quantity: lead.quantity?.toString() ?? null,
+        deadline: lead.deadline ?? null,
+        hasDesignFile: lead.hasDesignFile?.toString() ?? null,
+        brief: lead.brief,
+        missingFields: lead.missingFields,
+        assignedToId: lead.assignedToId ?? null,
+        claimedBy: lead.claimedBy ?? null,
+        claimedAt: lead.claimedAt ?? null,
+        firstResponseAt: lead.firstResponseAt ?? null,
+        telegramMessageId: lead.telegramMessageId ?? null,
+        createdAt: lead.createdAt,
+        updatedAt: lead.updatedAt,
+      });
+      return lead;
+    },
+    update: async (id: string, updates: Partial<Lead>): Promise<Lead | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.leads)
+        .set({
+          ...(updates.status !== undefined && { status: updates.status }),
+          ...(updates.score !== undefined && { score: updates.score }),
+          ...(updates.source !== undefined && { source: updates.source }),
+          ...(updates.customerName !== undefined && { customerName: updates.customerName }),
+          ...(updates.company !== undefined && { company: updates.company }),
+          ...(updates.phone !== undefined && { phone: updates.phone }),
+          ...(updates.email !== undefined && { email: updates.email }),
+          ...(updates.industry !== undefined && { industry: updates.industry }),
+          ...(updates.productType !== undefined && { productType: updates.productType }),
+          ...(updates.quantity !== undefined && { quantity: updates.quantity?.toString() }),
+          ...(updates.deadline !== undefined && { deadline: updates.deadline }),
+          ...(updates.hasDesignFile !== undefined && { hasDesignFile: updates.hasDesignFile?.toString() }),
+          ...(updates.brief !== undefined && { brief: updates.brief }),
+          ...(updates.missingFields !== undefined && { missingFields: updates.missingFields }),
+          ...(updates.assignedToId !== undefined && { assignedToId: updates.assignedToId }),
+          ...(updates.claimedBy !== undefined && { claimedBy: updates.claimedBy }),
+          ...(updates.claimedAt !== undefined && { claimedAt: updates.claimedAt }),
+          ...(updates.firstResponseAt !== undefined && { firstResponseAt: updates.firstResponseAt }),
+          ...(updates.telegramMessageId !== undefined && { telegramMessageId: updates.telegramMessageId }),
+          updatedAt: now,
+        })
+        .where(eq(t.leads.id, id))
+        .returning();
+      return rows[0] ? mapLead(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.leads).where(eq(t.leads.id, id)).returning({ id: t.leads.id });
+      return rows.length > 0;
+    },
+    // Query leads created on a specific date range for stats
+    listByDateRange: async (from: string, to: string): Promise<Lead[]> => {
+      const rows = await pgDb.select().from(t.leads)
+        .where(sql`${t.leads.createdAt} >= ${from} AND ${t.leads.createdAt} <= ${to}`)
+        .orderBy(desc(t.leads.createdAt));
+      return rows.map(mapLead);
+    },
+  },
+
+  // ── Conversations ─────────────────────────────────────────────────────────
+  conversations: {
+    findById: async (id: string): Promise<Conversation | null> => {
+      const rows = await pgDb.select().from(t.conversations).where(eq(t.conversations.id, id)).limit(1);
+      return rows[0] ? mapConversation(rows[0]) : null;
+    },
+    findBySessionId: async (sessionId: string): Promise<Conversation | null> => {
+      const rows = await pgDb.select().from(t.conversations)
+        .where(eq(t.conversations.sessionId, sessionId)).limit(1);
+      return rows[0] ? mapConversation(rows[0]) : null;
+    },
+    findByLeadId: async (leadId: string): Promise<Conversation | null> => {
+      const rows = await pgDb.select().from(t.conversations)
+        .where(eq(t.conversations.leadId, leadId)).limit(1);
+      return rows[0] ? mapConversation(rows[0]) : null;
+    },
+    list: async (): Promise<Conversation[]> => {
+      const rows = await pgDb.select().from(t.conversations);
+      return rows.map(mapConversation);
+    },
+    create: async (conv: Conversation): Promise<Conversation> => {
+      await pgDb.insert(t.conversations).values({
+        id: conv.id,
+        leadId: conv.leadId,
+        sessionId: conv.sessionId,
+        channel: conv.channel,
+        mode: conv.mode,
+        humanAgentId: conv.humanAgentId ?? null,
+        lastMessageAt: conv.lastMessageAt,
+        csat: conv.csat ?? null,
+        createdAt: conv.createdAt,
+      });
+      return conv;
+    },
+    update: async (id: string, updates: Partial<Conversation>): Promise<Conversation | null> => {
+      const rows = await pgDb.update(t.conversations)
+        .set({
+          ...(updates.mode !== undefined && { mode: updates.mode }),
+          ...(updates.humanAgentId !== undefined && { humanAgentId: updates.humanAgentId }),
+          ...(updates.lastMessageAt !== undefined && { lastMessageAt: updates.lastMessageAt }),
+          ...(updates.csat !== undefined && { csat: updates.csat }),
+        })
+        .where(eq(t.conversations.id, id))
+        .returning();
+      return rows[0] ? mapConversation(rows[0]) : null;
+    },
+  },
+
+  // ── Messages ──────────────────────────────────────────────────────────────
+  messages: {
+    listByConversationId: async (convId: string): Promise<Message[]> => {
+      const rows = await pgDb.select().from(t.messages)
+        .where(eq(t.messages.conversationId, convId))
+        .orderBy(asc(t.messages.createdAt));
+      return rows.map(mapMessage);
+    },
+    create: async (msg: Message): Promise<Message> => {
+      await pgDb.insert(t.messages).values({
+        id: msg.id,
+        conversationId: msg.conversationId,
+        sender: msg.sender,
+        staffId: msg.staffId ?? null,
+        staffName: msg.staffName ?? null,
+        text: msg.text,
+        attachments: msg.attachments ?? null,
+        createdAt: msg.createdAt,
+        readAt: msg.readAt ?? null,
+        isFlaggedWrong: msg.isFlaggedWrong ?? false,
+      });
+      return msg;
+    },
+    update: async (id: string, updates: Partial<Message>): Promise<Message | null> => {
+      const rows = await pgDb.update(t.messages)
+        .set({
+          ...(updates.readAt !== undefined && { readAt: updates.readAt }),
+          ...(updates.isFlaggedWrong !== undefined && { isFlaggedWrong: updates.isFlaggedWrong }),
+          ...(updates.text !== undefined && { text: updates.text }),
+        })
+        .where(eq(t.messages.id, id))
+        .returning();
+      return rows[0] ? mapMessage(rows[0]) : null;
+    },
+  },
+
+  // ── Notes ─────────────────────────────────────────────────────────────────
+  notes: {
+    listByLeadId: async (leadId: string): Promise<Note[]> => {
+      const rows = await pgDb.select().from(t.notes)
+        .where(eq(t.notes.leadId, leadId))
+        .orderBy(desc(t.notes.createdAt));
+      return rows.map(mapNote);
+    },
+    create: async (note: Note): Promise<Note> => {
+      await pgDb.insert(t.notes).values({
+        id: note.id,
+        leadId: note.leadId,
+        authorId: note.authorId,
+        authorName: note.authorName,
+        text: note.text,
+        createdAt: note.createdAt,
+      });
+      return note;
+    },
+  },
+
+  // ── Lead Events ───────────────────────────────────────────────────────────
+  events: {
+    listByLeadId: async (leadId: string): Promise<LeadEvent[]> => {
+      const rows = await pgDb.select().from(t.leadEvents)
+        .where(eq(t.leadEvents.leadId, leadId))
+        .orderBy(desc(t.leadEvents.createdAt));
+      return rows.map(mapEvent);
+    },
+    create: async (event: LeadEvent): Promise<LeadEvent> => {
+      await pgDb.insert(t.leadEvents).values({
+        id: event.id,
+        leadId: event.leadId,
+        type: event.type,
+        actorId: event.actorId ?? null,
+        actorName: event.actorName ?? null,
+        payload: event.payload ?? null,
+        createdAt: event.createdAt,
+      });
+      return event;
+    },
+  },
+
+  // ── Notification Logs ─────────────────────────────────────────────────────
+  notificationLogs: {
+    listByLeadId: async (leadId: string): Promise<NotificationLog[]> => {
+      const rows = await pgDb.select().from(t.notificationLogs)
+        .where(eq(t.notificationLogs.leadId, leadId))
+        .orderBy(desc(t.notificationLogs.sentAt));
+      return rows.map(mapNotificationLog);
+    },
+    create: async (log: NotificationLog): Promise<NotificationLog> => {
+      await pgDb.insert(t.notificationLogs).values({
+        id: log.id,
+        leadId: log.leadId,
+        channel: log.channel,
+        status: log.status,
+        error: log.error ?? null,
+        sentAt: log.sentAt,
+      });
+      return log;
+    },
+  },
+
+  // ── KB Documents ──────────────────────────────────────────────────────────
+  kbDocuments: {
+    list: async (): Promise<KbDocument[]> => {
+      const rows = await pgDb.select().from(t.kbDocuments);
+      return rows.map(mapKbDocument);
+    },
+    findById: async (id: string): Promise<KbDocument | null> => {
+      const rows = await pgDb.select().from(t.kbDocuments).where(eq(t.kbDocuments.id, id)).limit(1);
+      return rows[0] ? mapKbDocument(rows[0]) : null;
+    },
+    create: async (doc: KbDocument): Promise<KbDocument> => {
+      await pgDb.insert(t.kbDocuments).values({
+        id: doc.id,
+        title: doc.title,
+        filePath: doc.filePath,
+        content: doc.content,
+        status: doc.status,
+        updatedAt: doc.updatedAt,
+        ingestedAt: doc.ingestedAt ?? null,
+      });
+      return doc;
+    },
+    update: async (id: string, updates: Partial<KbDocument>): Promise<KbDocument | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.kbDocuments)
+        .set({
+          ...(updates.title !== undefined && { title: updates.title }),
+          ...(updates.content !== undefined && { content: updates.content }),
+          ...(updates.status !== undefined && { status: updates.status }),
+          ...(updates.ingestedAt !== undefined && { ingestedAt: updates.ingestedAt }),
+          updatedAt: now,
+        })
+        .where(eq(t.kbDocuments.id, id))
+        .returning();
+      return rows[0] ? mapKbDocument(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.kbDocuments).where(eq(t.kbDocuments.id, id)).returning({ id: t.kbDocuments.id });
+      return rows.length > 0;
+    },
+  },
+
+  // ── Settings ──────────────────────────────────────────────────────────────
+  settings: {
+    getAll: async (): Promise<Record<string, any>> => {
+      const rows = await pgDb.select().from(t.settings);
+      return Object.fromEntries(rows.map(r => [r.key, r.value]));
+    },
+    get: async (key: string): Promise<any> => {
+      const rows = await pgDb.select().from(t.settings).where(eq(t.settings.key, key)).limit(1);
+      return rows[0]?.value ?? null;
+    },
+    set: async (key: string, value: any): Promise<any> => {
+      await pgDb.insert(t.settings)
+        .values({ key, value })
+        .onConflictDoUpdate({ target: t.settings.key, set: { value } });
+      return value;
+    },
+  },
+
+  // ── Categories ────────────────────────────────────────────────────────────
+  categories: {
+    list: async (): Promise<Category[]> => {
+      const rows = await pgDb.select().from(t.categories).orderBy(asc(t.categories.order));
+      return rows.map(mapCategory);
+    },
+    findById: async (id: string): Promise<Category | null> => {
+      const rows = await pgDb.select().from(t.categories).where(eq(t.categories.id, id)).limit(1);
+      return rows[0] ? mapCategory(rows[0]) : null;
+    },
+    create: async (cat: Category): Promise<Category> => {
+      await pgDb.insert(t.categories).values({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        parentId: cat.parentId ?? null,
+        order: cat.order,
+      });
+      return cat;
+    },
+    update: async (id: string, updates: Partial<Category>): Promise<Category | null> => {
+      const rows = await pgDb.update(t.categories)
+        .set({
+          ...(updates.name !== undefined && { name: updates.name }),
+          ...(updates.slug !== undefined && { slug: updates.slug }),
+          ...(updates.parentId !== undefined && { parentId: updates.parentId }),
+          ...(updates.order !== undefined && { order: updates.order }),
+        })
+        .where(eq(t.categories.id, id))
+        .returning();
+      return rows[0] ? mapCategory(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.categories).where(eq(t.categories.id, id)).returning({ id: t.categories.id });
+      return rows.length > 0;
+    },
+  },
+
+  // ── Products ──────────────────────────────────────────────────────────────
+  products: {
+    list: async (): Promise<Product[]> => {
+      const rows = await pgDb.select().from(t.products).orderBy(desc(t.products.createdAt));
+      return rows.map(mapProduct);
+    },
+    findById: async (id: string): Promise<Product | null> => {
+      const rows = await pgDb.select().from(t.products).where(eq(t.products.id, id)).limit(1);
+      return rows[0] ? mapProduct(rows[0]) : null;
+    },
+    findBySlug: async (slug: string): Promise<Product | null> => {
+      const rows = await pgDb.select().from(t.products).where(eq(t.products.slug, slug)).limit(1);
+      return rows[0] ? mapProduct(rows[0]) : null;
+    },
+    create: async (prod: Product): Promise<Product> => {
+      await pgDb.insert(t.products).values({
+        id: prod.id,
+        categoryId: prod.categoryId,
+        name: prod.name,
+        slug: prod.slug,
+        description: prod.description,
+        images: prod.images,
+        specs: prod.specs,
+        isActive: prod.isActive,
+        createdAt: prod.createdAt,
+        updatedAt: prod.updatedAt,
+      });
+      return prod;
+    },
+    update: async (id: string, updates: Partial<Product>): Promise<Product | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.products)
+        .set({
+          ...(updates.categoryId !== undefined && { categoryId: updates.categoryId }),
+          ...(updates.name !== undefined && { name: updates.name }),
+          ...(updates.slug !== undefined && { slug: updates.slug }),
+          ...(updates.description !== undefined && { description: updates.description }),
+          ...(updates.images !== undefined && { images: updates.images }),
+          ...(updates.specs !== undefined && { specs: updates.specs }),
+          ...(updates.isActive !== undefined && { isActive: updates.isActive }),
+          updatedAt: now,
+        })
+        .where(eq(t.products.id, id))
+        .returning();
+      return rows[0] ? mapProduct(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.products).where(eq(t.products.id, id)).returning({ id: t.products.id });
+      return rows.length > 0;
+    },
+  },
+
+  // ── Posts ─────────────────────────────────────────────────────────────────
+  posts: {
+    list: async (): Promise<Post[]> => {
+      const rows = await pgDb.select().from(t.posts).orderBy(desc(t.posts.createdAt));
+      return rows.map(mapPost);
+    },
+    findById: async (id: string): Promise<Post | null> => {
+      const rows = await pgDb.select().from(t.posts).where(eq(t.posts.id, id)).limit(1);
+      return rows[0] ? mapPost(rows[0]) : null;
+    },
+    findBySlug: async (slug: string): Promise<Post | null> => {
+      const rows = await pgDb.select().from(t.posts).where(eq(t.posts.slug, slug)).limit(1);
+      return rows[0] ? mapPost(rows[0]) : null;
+    },
+    create: async (post: Post): Promise<Post> => {
+      await pgDb.insert(t.posts).values({
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        summary: post.summary,
+        content: post.content,
+        imageUrl: post.imageUrl ?? null,
+        category: post.category,
+        status: post.status,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+      });
+      return post;
+    },
+    update: async (id: string, updates: Partial<Post>): Promise<Post | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.posts)
+        .set({
+          ...(updates.title !== undefined && { title: updates.title }),
+          ...(updates.slug !== undefined && { slug: updates.slug }),
+          ...(updates.summary !== undefined && { summary: updates.summary }),
+          ...(updates.content !== undefined && { content: updates.content }),
+          ...(updates.imageUrl !== undefined && { imageUrl: updates.imageUrl }),
+          ...(updates.category !== undefined && { category: updates.category }),
+          ...(updates.status !== undefined && { status: updates.status }),
+          updatedAt: now,
+        })
+        .where(eq(t.posts.id, id))
+        .returning();
+      return rows[0] ? mapPost(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.posts).where(eq(t.posts.id, id)).returning({ id: t.posts.id });
+      return rows.length > 0;
+    },
+  },
+
+  // ── Jobs ──────────────────────────────────────────────────────────────────
+  jobs: {
+    list: async (): Promise<Job[]> => {
+      const rows = await pgDb.select().from(t.jobs).orderBy(desc(t.jobs.createdAt));
+      return rows.map(mapJob);
+    },
+    findById: async (id: string): Promise<Job | null> => {
+      const rows = await pgDb.select().from(t.jobs).where(eq(t.jobs.id, id)).limit(1);
+      return rows[0] ? mapJob(rows[0]) : null;
+    },
+    create: async (job: Job): Promise<Job> => {
+      await pgDb.insert(t.jobs).values({
+        id: job.id,
+        title: job.title,
+        department: job.department,
+        location: job.location,
+        type: job.type,
+        description: job.description,
+        requirements: job.requirements,
+        benefits: job.benefits,
+        status: job.status,
+        deadline: job.deadline,
+        createdAt: job.createdAt,
+        updatedAt: job.updatedAt,
+      });
+      return job;
+    },
+    update: async (id: string, updates: Partial<Job>): Promise<Job | null> => {
+      const now = new Date().toISOString();
+      const rows = await pgDb.update(t.jobs)
+        .set({
+          ...(updates.title !== undefined && { title: updates.title }),
+          ...(updates.department !== undefined && { department: updates.department }),
+          ...(updates.location !== undefined && { location: updates.location }),
+          ...(updates.type !== undefined && { type: updates.type }),
+          ...(updates.description !== undefined && { description: updates.description }),
+          ...(updates.requirements !== undefined && { requirements: updates.requirements }),
+          ...(updates.benefits !== undefined && { benefits: updates.benefits }),
+          ...(updates.status !== undefined && { status: updates.status }),
+          ...(updates.deadline !== undefined && { deadline: updates.deadline }),
+          updatedAt: now,
+        })
+        .where(eq(t.jobs.id, id))
+        .returning();
+      return rows[0] ? mapJob(rows[0]) : null;
+    },
+    delete: async (id: string): Promise<boolean> => {
+      const rows = await pgDb.delete(t.jobs).where(eq(t.jobs.id, id)).returning({ id: t.jobs.id });
+      return rows.length > 0;
+    },
+  },
+
+  jobApplications: {
+    list: async (): Promise<JobApplication[]> => {
+      const rows = await pgDb.select().from(t.jobApplications).orderBy(desc(t.jobApplications.createdAt));
+      return rows.map(mapJobApplication);
+    },
+    findById: async (id: string): Promise<JobApplication | null> => {
+      const rows = await pgDb.select().from(t.jobApplications).where(eq(t.jobApplications.id, id)).limit(1);
+      return rows[0] ? mapJobApplication(rows[0]) : null;
+    },
+    create: async (application: JobApplication): Promise<JobApplication> => {
+      await pgDb.insert(t.jobApplications).values({
+        ...application,
+      });
+      return application;
+    },
+  },
+};

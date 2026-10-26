@@ -100,6 +100,7 @@ export const CareersPage: React.FC = () => {
   const [fileError, setFileError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -156,19 +157,16 @@ export const CareersPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    const job = jobsList.find((j) => j.id === values.jobId);
+    setSubmitError(null);
 
     try {
       const res = await submitJobApplication({
         jobId: values.jobId,
-        jobTitle: job ? job.titleVi : 'Vị trí chung',
         fullName: values.fullName,
         email: values.email,
         phone: values.phone,
         coverLetter: values.coverLetter,
-        cvFileName: selectedFile.name,
-        cvFileSize: selectedFile.size,
-      });
+      }, selectedFile);
 
       if (res.success) {
         setIsSuccess(true);
@@ -177,6 +175,7 @@ export const CareersPage: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
+      setSubmitError(err instanceof Error ? err.message : 'Không thể gửi hồ sơ ứng tuyển. Vui lòng thử lại.');
     } finally {
       setIsSubmitting(false);
     }
@@ -213,7 +212,11 @@ export const CareersPage: React.FC = () => {
             subtitle="Đãi ngộ cạnh tranh, môi trường làm việc chuẩn 5S hiện đại và cơ hội thăng tiến rộng mở"
           />
 
-          <div className="space-y-4">
+          {jobsList.length === 0 ? (
+            <p className="rounded-2xl border border-slate-200 bg-white px-6 py-8 text-center text-sm text-slate-600">
+              Hiện chưa có vị trí tuyển dụng đang mở. Vui lòng quay lại sau.
+            </p>
+          ) : <div className="space-y-4">
             {jobsList.map((job) => {
               const isExpanded = expandedJobId === job.id;
               return (
@@ -319,7 +322,7 @@ export const CareersPage: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </div>}
         </div>
       </section>
 
@@ -365,8 +368,10 @@ export const CareersPage: React.FC = () => {
                     </label>
                     <select
                       {...register('jobId')}
+                      disabled={jobsList.length === 0}
                       className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
                     >
+                      {jobsList.length === 0 && <option value="">Hiện chưa có vị trí tuyển dụng</option>}
                       {jobsList.map((j) => (
                         <option key={j.id} value={j.id}>
                           {j.titleVi} ({j.departmentVi})
@@ -471,12 +476,16 @@ export const CareersPage: React.FC = () => {
                   </div>
 
                   <div className="pt-2">
+                    {submitError && (
+                      <p role="alert" className="mb-3 text-sm text-red-600">{submitError}</p>
+                    )}
                     <Button
                       type="submit"
                       variant="primary"
                       size="lg"
                       className="w-full"
                       isLoading={isSubmitting}
+                      disabled={jobsList.length === 0}
                       icon={<Send className="w-4 h-4" />}
                     >
                       {isSubmitting ? 'Đang gửi hồ sơ...' : 'Nộp hồ sơ ứng tuyển ngay'}

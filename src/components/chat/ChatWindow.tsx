@@ -41,6 +41,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
     briefLeadId,
     sendMessage,
     retryLastMessage,
+    flagUnhelpfulAnswer,
     resetChat,
     submitBrief,
     setNeedHuman,
@@ -152,11 +153,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
 
           <div>
             <h3 id="chat-window-title" className="font-bold text-sm leading-tight flex items-center gap-1.5">
-              <span>Trợ lý AI Vietlabel</span>
+              <span>Trợ lý tư vấn Vietlabel</span>
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             </h3>
             <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-              Đang trực tuyến 24/7
+              Tư vấn tự động 24/7
             </span>
           </div>
         </div>
@@ -278,6 +279,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
             key={msg.id}
             message={msg}
             onRetry={msg.isError ? retryLastMessage : undefined}
+            onFlagWrongAnswer={msg.role === 'assistant' && msg.feedbackMessageId
+              ? () => flagUnhelpfulAnswer(msg)
+              : undefined}
           />
         ))}
 
@@ -349,6 +353,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose, isOpen }) => {
             value={inputMessage}
             onChange={handleInputResize}
             onKeyDown={handleKeyDown}
+            maxLength={2000}
             disabled={isLoading}
             placeholder="Nhập câu hỏi hoặc yêu cầu (ví dụ: cần 20.000 hộp thực phẩm)..."
             className="flex-1 resize-none max-h-32 text-xs sm:text-sm p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:ring-1 focus:ring-[#BE1E2D] focus:outline-none"
