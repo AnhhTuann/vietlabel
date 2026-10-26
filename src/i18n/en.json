@@ -145,12 +145,16 @@
     "working_hours": "Working Hours: Mon - Sat (8:00 AM - 5:30 PM)"
   },
   "footer": {
-    "about_text": "Vietlabel - Professional B2B paper packaging & labels manufacturer with over 20 years of experience, operating a 15,000m² international facility certified under FSC and ISO 9001.",
+    "about_text": "Vietlabel - Professional B2B paper packaging & labels manufacturer with 10 years of development, operating a 10,000m² facility certified to international FSC and ISO 9001 standards.",
     "quick_links": "Quick Links",
     "products_col": "Packaging Categories",
     "contact_col": "Contact Information",
-    "factory_address": "Factory: Lot B2-12, Tan Binh Industrial Park Expansion, Tay Thanh, Tan Phu, HCMC",
-    "office_address": "Office: 6th Floor, Vietlabel Building, 142 Cong Hoa, Ward 12, Tan Binh, HCMC",
+    "factory_label": "Main production facility:",
+    "factory_address": "266/6 Le Thi Rieng Street, Thoi An Ward, Ho Chi Minh City",
+    "office_label": "Representative office:",
+    "office_address": "282/7 Le Thi Rieng Street, Thoi An Ward, Ho Chi Minh City",
+    "hotline_label": "Hotline",
+    "quote_email_label": "Quotation email",
     "copyright": "© 2026 Vietlabel Packaging Corp. All rights reserved."
   }
 }

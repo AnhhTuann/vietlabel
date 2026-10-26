@@ -25,7 +25,7 @@ export const ProductDetailPage: React.FC = () => {
 
   // Find product by slug
   const product = useMemo(() => {
-    return PRODUCTS_LIST.find((p) => p.slug === slug) || PRODUCTS_LIST[0];
+    return PRODUCTS_LIST.find((p) => p.slug === slug);
   }, [slug]);
 
   const [selectedImage, setSelectedImage] = useState(product?.heroImage || '');

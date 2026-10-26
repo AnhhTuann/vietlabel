@@ -25,7 +25,7 @@ export const ProductsListPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 12;
 
   // Current category if URL param present
   const currentCategory = useMemo(() => {

@@ -172,42 +172,37 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Leadership Team */}
-      <section id="doi-ngu" className="py-20 bg-white border-b border-slate-200">
+      <section id="doi-ngu" className="border-b border-slate-200 bg-gradient-to-b from-white to-[#F7F9FC] py-14 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle
             kicker="BAN ĐIỀU HÀNH"
             title="Đội ngũ lãnh đạo giàu kinh nghiệm"
             subtitle="Hội tụ các chuyên gia đầu ngành trong lĩnh vực in ấn, quản trị chuỗi cung ứng và kỹ thuật bao bì công nghiệp"
+            className="mb-8 max-w-2xl sm:mb-10"
           />
 
-          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
             {LEADERSHIP_TEAM.map((member) => (
               <div
                 key={member.name}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-[#FAFAFC] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/20 hover:shadow-xl sm:flex-row"
+                className="group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_16px_rgba(16,35,61,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/25 hover:shadow-[0_12px_28px_rgba(30,67,132,0.12)]"
               >
-                <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-slate-200 sm:aspect-auto sm:min-h-[230px] sm:w-[40%]">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-200">
                   <img
                     src={member.avatar}
                     alt={member.name}
-                    className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                     decoding="async"
                   />
-                  <div className="absolute bottom-2 right-2 rounded-full bg-[#071C33]/80 px-2.5 py-1 text-[10px] font-semibold text-white shadow backdrop-blur-sm">
-                    {member.experience}
-                  </div>
                 </div>
 
-                <div className="flex flex-1 flex-col justify-center p-5 sm:p-6">
-                  <h4 className="text-base font-bold text-[#1E4384] transition-colors group-hover:text-[#BE1E2D] sm:text-lg">
+                <div className="px-4 py-4 text-center sm:px-5 sm:py-5">
+                  <h4 className="text-sm font-extrabold uppercase leading-snug tracking-wide text-[#1E4384] transition-colors group-hover:text-[#BE1E2D] sm:text-base">
                     {member.name}
                   </h4>
-                  <p className="mt-1 text-xs font-semibold text-[#BE1E2D] sm:text-sm">
+                  <p className="mt-1.5 text-xs font-semibold leading-snug text-[#BE1E2D] sm:text-sm">
                     {currentLang === 'vi' ? member.roleVi : member.roleEn}
-                  </p>
-                  <p className="mt-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                    {currentLang === 'vi' ? member.bioVi : member.bioEn}
                   </p>
                 </div>
               </div>
