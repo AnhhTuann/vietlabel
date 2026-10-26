@@ -3,9 +3,6 @@ import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Building,
-  Target,
-  Compass,
-  HeartHandshake,
   Download,
   Calendar,
   Award,
@@ -56,31 +53,31 @@ export const AboutPage: React.FC = () => {
   return (
     <div className="pt-24 pb-20">
       <SEO
-        title="Về Chúng Tôi | Vietlabel - 20 Năm Đồng Hành Cùng Thương Hiệu"
-        description="Lịch sử hình thành, tầm nhìn sứ mệnh, đội ngũ lãnh đạo và hệ sinh thái sản xuất bao bì giấy & tem nhãn chuyên nghiệp của Vietlabel."
+        title={t('about_page.seo_title')}
+        description={t('about_page.seo_description')}
       />
 
       {/* Header Banner */}
-      <section className="bg-[#1E4384] text-white py-16 sm:py-20 relative overflow-hidden">
+      <section className="relative bg-[#1E4384] py-8 text-white sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
-            VỀ CHÚNG TÔI
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]">
-            Tiên phong kiến tạo chuẩn mực bao bì giấy bền vững
+          <h1 className="bg-gradient-to-r from-[#7EA5DB] to-[#F04452] bg-clip-text text-3xl font-extrabold uppercase leading-tight tracking-tight text-transparent [text-wrap:balance] sm:text-4xl lg:text-5xl">
+            {t('about_page.title')}
           </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]">
-            Hơn hai thập kỷ kiên định với sứ mệnh mang đến giải pháp bao bì bảo vệ toàn diện, tối ưu chi phí và gia tăng giá trị thương hiệu cho các doanh nghiệp Việt Nam và toàn cầu.
+          <p className="mx-auto mt-4 max-w-5xl text-sm leading-relaxed text-slate-300 [text-wrap:balance] sm:mt-5 sm:text-base">
+            {t('about_page.intro')}
+          </p>
+          <p className="mx-auto mt-3 max-w-5xl text-sm leading-relaxed text-slate-300 [text-wrap:balance] sm:text-base">
+            {t('about_page.approach')}
           </p>
 
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-7 flex flex-wrap justify-center gap-3 sm:gap-4">
             <Button
               variant="primary"
               size="md"
               onClick={handleDownloadProfile}
               icon={<Download className="w-4 h-4" />}
             >
-              Tải hồ sơ năng lực (Profile PDF)
+              {t('about_page.download_profile')}
             </Button>
             <Button
               variant="outline"
@@ -88,78 +85,87 @@ export const AboutPage: React.FC = () => {
               onClick={() => onOpenQuoteModal()}
               className="border-white/30 text-white hover:bg-white/10"
             >
-              Tư vấn hợp tác B2B
+              {t('about_page.contact')}
             </Button>
           </div>
         </div>
       </section>
 
       {/* Vision, Mission, Core Values */}
-      <section className="py-20 bg-white border-b border-slate-200">
+      <section className="border-b border-slate-200 bg-white py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-red-100 text-[#BE1E2D] flex items-center justify-center mb-5">
-                <Target className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Tầm nhìn chiến lược</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Trở thành tập đoàn sản xuất bao bì giấy công nghiệp hàng đầu khu vực Đông Nam Á, tiên phong chuyển đổi sang giải pháp bao bì sinh thái tuần hoàn đạt chuẩn ESG toàn cầu.
+          <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3 md:gap-5">
+            <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-[#FAFAFC] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/25 hover:shadow-lg sm:p-7">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#1E4384] to-[#7EA5DB] opacity-80" />
+              <h3 className="mb-3 text-sm font-extrabold uppercase tracking-wide text-[#1E4384]">
+                {t('about_page.vision_title')}
+              </h3>
+              <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
+                {t('about_page.vision_text')}
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#1E4384] flex items-center justify-center mb-5">
-                <Compass className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Sứ mệnh doanh nghiệp</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Đồng hành cùng sự phát triển bền vững của khách hàng thông qua công nghệ in ấn vượt trội, quy trình chuẩn mực và tinh thần phụng sự tận tâm trong từng chiếc hộp bao bì.
+            <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-[#FAFAFC] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/25 hover:shadow-lg sm:p-7">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#1E4384] to-[#7EA5DB] opacity-80" />
+              <h3 className="mb-3 text-sm font-extrabold uppercase tracking-wide text-[#1E4384]">
+                {t('about_page.mission_title')}
+              </h3>
+              <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
+                {t('about_page.mission_text')}
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
-                <HeartHandshake className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-[#1E4384] mb-3">Giá trị cốt lõi</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                <strong>Chất lượng (Quality)</strong> - <strong>Trách nhiệm (Sustainability)</strong> - <strong>Sáng tạo (Innovation)</strong> - <strong>Đúng hẹn (Punctuality)</strong>.
-              </p>
+            <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-[#FAFAFC] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/25 hover:shadow-lg sm:p-7">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#BE1E2D] to-[#F04452] opacity-80" />
+              <h3 className="mb-3 text-sm font-extrabold uppercase tracking-wide text-[#1E4384]">
+                {t('about_page.values_title')}
+              </h3>
+              <ul className="space-y-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                {Array.from({ length: 6 }, (_, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="mt-[0.45em] h-1 w-1 shrink-0 rounded-full bg-[#BE1E2D]" />
+                    <span>{t(`about_page.value_${index + 1}`)}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
       {/* History Timeline */}
-      <section className="py-20 bg-[#F5F7FA] border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="LỊCH SỬ HÌNH THÀNH"
-            title="Hành trình hơn 20 năm phát triển vững chắc"
-            subtitle="Từ một xưởng in quy mô nhỏ đến tổ hợp nhà máy sản xuất bao bì công nghệ cao 15.000m²"
-          />
+      <section className="border-b border-slate-200 bg-[#F4F7FB] py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-8 max-w-2xl text-center sm:mb-10">
+            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#BE1E2D] sm:text-sm">
+              {t('about_page.history_kicker')}
+            </p>
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#1E4384] sm:text-3xl">
+              {t('about_page.history_title')}
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              {t('about_page.history_subtitle')}
+            </p>
+          </div>
 
-          <div className="relative mt-12 pl-6 sm:pl-8 border-l-2 border-slate-300 space-y-12">
-            {COMPANY_MILESTONES.map((m, idx) => (
-              <div key={m.year} className="relative group">
-                {/* Node circle */}
-                <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-5 h-5 rounded-full bg-[#1E4384] border-4 border-white shadow-md group-hover:bg-[#BE1E2D] group-hover:scale-125 transition-all" />
-
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xl font-extrabold font-mono text-[#BE1E2D] tracking-tight">
+          <div className="relative space-y-4 before:absolute before:bottom-5 before:left-[10px] before:top-5 before:w-px before:bg-[#1E4384]/20 sm:space-y-5 sm:before:left-[13px]">
+            {COMPANY_MILESTONES.map((m) => (
+              <article key={m.year} className="group relative pl-8 sm:pl-10">
+                <span className="absolute left-0 top-5 z-10 h-[21px] w-[21px] rounded-full border-[5px] border-[#F4F7FB] bg-[#1E4384] shadow-[0_0_0_1px_rgba(30,67,132,0.12)] transition-colors group-hover:bg-[#BE1E2D] sm:top-6 sm:h-[27px] sm:w-[27px] sm:border-[6px]" />
+                <div className="rounded-xl border border-slate-200/90 bg-white px-4 py-4 shadow-[0_2px_8px_rgba(16,35,61,0.04)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[#1E4384]/20 group-hover:shadow-md sm:rounded-2xl sm:px-6 sm:py-5">
+                  <div className="mb-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span className="text-sm font-extrabold tracking-wide text-[#BE1E2D] sm:text-base">
                       {m.year}
                     </span>
-                    <span className="text-sm font-bold text-[#1E4384]">
+                    <h3 className="text-xs font-bold uppercase leading-relaxed tracking-wide text-[#1E4384] sm:text-sm">
                       {currentLang === 'vi' ? m.titleVi : m.titleEn}
-                    </span>
+                    </h3>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
                     {currentLang === 'vi' ? m.descVi : m.descEn}
                   </p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
@@ -174,33 +180,33 @@ export const AboutPage: React.FC = () => {
             subtitle="Hội tụ các chuyên gia đầu ngành trong lĩnh vực in ấn, quản trị chuỗi cung ứng và kỹ thuật bao bì công nghiệp"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {LEADERSHIP_TEAM.map((member, i) => (
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+            {LEADERSHIP_TEAM.map((member) => (
               <div
-                key={i}
-                className="group rounded-2xl bg-[#FAFAFC] border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300"
+                key={member.name}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-[#FAFAFC] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1E4384]/20 hover:shadow-xl sm:flex-row"
               >
-                <div className="aspect-[4/3] bg-slate-200 overflow-hidden relative">
+                <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-slate-200 sm:aspect-auto sm:min-h-[230px] sm:w-[40%]">
                   <img
                     src={member.avatar}
                     alt={member.name}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
+                    className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded backdrop-blur-xs font-medium">
+                  <div className="absolute bottom-2 right-2 rounded-full bg-[#071C33]/80 px-2.5 py-1 text-[10px] font-semibold text-white shadow backdrop-blur-sm">
                     {member.experience}
                   </div>
                 </div>
 
-                <div className="p-5">
-                  <h4 className="text-base font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors">
+                <div className="flex flex-1 flex-col justify-center p-5 sm:p-6">
+                  <h4 className="text-base font-bold text-[#1E4384] transition-colors group-hover:text-[#BE1E2D] sm:text-lg">
                     {member.name}
                   </h4>
-                  <p className="text-xs font-semibold text-[#BE1E2D] mt-0.5">
+                  <p className="mt-1 text-xs font-semibold text-[#BE1E2D] sm:text-sm">
                     {currentLang === 'vi' ? member.roleVi : member.roleEn}
                   </p>
-                  <p className="mt-3 text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                  <p className="mt-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
                     {currentLang === 'vi' ? member.bioVi : member.bioEn}
                   </p>
                 </div>
