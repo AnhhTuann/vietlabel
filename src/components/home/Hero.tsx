@@ -98,21 +98,11 @@ const HERO_GALLERY_COLUMNS = [
 const HERO_GALLERY_IMAGES = HERO_GALLERY_COLUMNS.flat();
 
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
-  const { t, i18n } = useTranslation();
-  const currentLang = i18n.language;
+  const { t } = useTranslation();
   const [heroBrand, ...heroHeadlineParts] = t('hero.title').split(' - ');
   const heroHeadline = heroHeadlineParts.join(' - ');
   const [slides, setSlides] = useState<any[]>(CAROUSEL_SLIDES);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeGalleryImage, setActiveGalleryImage] = useState(0);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = window.setInterval(() => {
-      setActiveGalleryImage((active) => (active + 1) % HERO_GALLERY_IMAGES.length);
-    }, 3600);
-    return () => window.clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -244,82 +234,35 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
             </div>
           </div>
 
-          {/* Right Column: Layered product showcase */}
+          {/* Right Column: Vertical product gallery */}
           <div className="lg:col-span-7 lg:col-start-6 lg:-mr-10 xl:-mr-20">
-            <div className="hero-showcase relative mx-auto h-[260px] w-full sm:h-[360px] lg:h-[460px] xl:h-[500px]">
-              <div className="hero-showcase-orbit absolute left-1/2 top-1/2 hidden h-[86%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-sky-200/20 sm:block" />
-              <div className="hero-showcase-glow absolute left-1/2 top-1/2 h-[70%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/20 blur-3xl" />
-
-              <div className="hero-float-card hero-float-card-top absolute right-[2%] top-[7%] z-20 hidden h-[34%] aspect-square overflow-hidden rounded-2xl border border-white/60 bg-white p-1.5 shadow-2xl sm:block sm:rounded-3xl sm:p-2">
-                <img
-                  src={HERO_GALLERY_IMAGES[(activeGalleryImage + 1) % HERO_GALLERY_IMAGES.length]}
-                  alt=""
-                  className="h-full w-full rounded-xl object-cover sm:rounded-2xl"
-                  loading="eager"
-                  decoding="async"
-                />
-              </div>
-
-              <div className="hero-float-card hero-float-card-bottom absolute bottom-[5%] left-[1%] z-20 hidden h-[31%] aspect-square overflow-hidden rounded-2xl border border-white/60 bg-white p-1.5 shadow-2xl sm:block sm:rounded-3xl sm:p-2">
-                <img
-                  src={HERO_GALLERY_IMAGES[(activeGalleryImage + 3) % HERO_GALLERY_IMAGES.length]}
-                  alt=""
-                  className="h-full w-full rounded-xl object-cover sm:rounded-2xl"
-                  loading="eager"
-                  decoding="async"
-                />
-              </div>
-
-              <div className="absolute inset-x-[2%] bottom-[13%] top-[2%] z-10 overflow-hidden rounded-[1.6rem] border border-white/30 bg-[#0b1b3a] shadow-[0_28px_90px_rgba(0,0,0,0.45)] sm:inset-x-[13%] sm:bottom-[7%] sm:top-[7%] sm:rounded-[2rem]">
-                <img
-                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 hidden h-full w-full scale-110 object-cover blur-2xl sm:block"
-                  loading="eager"
-                  decoding="async"
-                />
-                <img
-                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-2xl sm:hidden"
-                  loading="eager"
-                  decoding="async"
-                />
-                <img
-                  key={HERO_GALLERY_IMAGES[activeGalleryImage]}
-                  src={HERO_GALLERY_IMAGES[activeGalleryImage]}
-                  alt=""
-                  className="hero-feature-image absolute inset-0 z-[1] block h-full w-full object-contain sm:object-cover"
-                  loading="eager"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071C33]/60 via-transparent to-white/10" />
-                <div className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-2 sm:inset-x-5 sm:bottom-5">
-                  <div className="hidden rounded-full border border-white/25 bg-[#071C33]/65 px-3 py-1.5 text-[9px] font-semibold tracking-[0.16em] text-white backdrop-blur-md sm:block sm:px-4 sm:py-2 sm:text-[10px]">
-                    VIETLABEL · PRINT & PACKAGING
-                  </div>
-                  <div className="rounded-full bg-white/90 px-2.5 py-1.5 text-[10px] font-bold text-[#1e4384] shadow-lg backdrop-blur sm:px-3 sm:text-xs">
-                    {String(activeGalleryImage + 1).padStart(2, '0')} / {String(HERO_GALLERY_IMAGES.length).padStart(2, '0')}
+            <div className="hero-gallery relative mx-auto grid h-[300px] w-full max-w-[28rem] grid-cols-1 grid-rows-2 gap-3 overflow-hidden sm:h-[360px] sm:grid-cols-2 sm:grid-rows-1 sm:gap-4 lg:h-[min(78vh,760px)] lg:gap-5">
+              {HERO_GALLERY_COLUMNS.map((column, columnIndex) => (
+                <div
+                  key={columnIndex}
+                  className="overflow-hidden rounded-[1.25rem] border border-white/20 bg-[#0b1b3a]/80 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:rounded-[1.75rem] sm:p-2.5"
+                >
+                  <div className={`hero-gallery-track ${columnIndex === 0 ? 'hero-gallery-track-up' : 'hero-gallery-track-down'}`}>
+                    {[0, 1].map((copy) => (
+                      <div key={copy} className="flex w-max flex-row gap-3 pr-3 sm:w-full sm:flex-col sm:gap-6 sm:pb-6 sm:pr-0 lg:gap-7 lg:pb-7">
+                        {column.map((image) => (
+                          <img
+                            key={`${copy}-${image}`}
+                            src={image}
+                            alt=""
+                            aria-hidden="true"
+                            className="aspect-square w-[118px] shrink-0 rounded-[0.9rem] border border-white/15 object-cover shadow-lg sm:w-full sm:shrink sm:rounded-[1.25rem]"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        ))}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-
-              <div className="absolute bottom-0 right-1/2 z-30 flex translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-[#071C33]/75 px-2.5 py-2 shadow-xl backdrop-blur-md sm:right-[8%] sm:translate-x-0 sm:gap-2 sm:px-3">
-                {HERO_GALLERY_IMAGES.map((image, index) => (
-                  <button
-                    key={image}
-                    type="button"
-                    aria-label={`${currentLang.startsWith('vi') ? 'Hiển thị ảnh sản phẩm' : 'Show product image'} ${index + 1}`}
-                    aria-pressed={index === activeGalleryImage}
-                    onClick={() => setActiveGalleryImage(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 sm:h-2 ${
-                      index === activeGalleryImage ? 'w-5 bg-white sm:w-7' : 'w-1.5 bg-white/45 hover:bg-white/75 sm:w-2'
-                    }`}
-                  />
-                ))}
-              </div>
+              ))}
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[#071C33]/80 to-transparent sm:h-16" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[#071C33]/80 to-transparent sm:h-16" />
             </div>
           </div>
         </div>
