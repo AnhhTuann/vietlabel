@@ -1,49 +1,63 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { LABEL_SOLUTIONS } from '../../data/labelSolutions';
-import { SectionTitle } from '../ui/SectionTitle';
+
+const LABEL_PARTNER_LOGOS = [
+  { name: 'Siegwerk', image: '/images/vietlabel/label-solutions/siegwerk.png' },
+  { name: 'Kodak', image: '/images/vietlabel/label-solutions/kodak.png' },
+  { name: 'Toyo Ink', image: '/images/vietlabel/label-solutions/toyo-ink.png' },
+  { name: 'VHM', image: '/images/vietlabel/label-solutions/vhm.png' },
+  { name: 'UPM', image: '/images/vietlabel/label-solutions/upm.png' },
+  { name: 'Avery Dennison', image: '/images/vietlabel/label-solutions/avery-dennison.png' },
+];
 
 export const LabelSolutionsMarquee: React.FC = () => {
   const { i18n } = useTranslation();
-  const currentLang = i18n.language;
-
-  // Duplicate arrays for smooth seamless infinite marquee loop
-  const repeated = [...LABEL_SOLUTIONS, ...LABEL_SOLUTIONS];
+  const isVietnamese = i18n.language.startsWith('vi');
 
   return (
-    <section className="py-16 bg-[#0B1B3A] overflow-hidden border-t border-[#1E4384]/30 relative">
-      <div className="absolute inset-0 bg-blue-900/10 pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center relative z-10">
-        <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-2">
-          {currentLang === 'vi' ? 'Giải pháp tem nhãn toàn diện' : 'Comprehensive Labeling Solutions'}
+    <section
+      aria-label={isVietnamese ? 'Giải pháp tem nhãn toàn diện' : 'Comprehensive Labeling Solutions'}
+      className="relative overflow-hidden border-y border-white/10 bg-[#0B1B3A] py-8 sm:py-12"
+    >
+      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-40 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#be1e2d]/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(30,67,132,0.32),transparent_65%)]" />
+
+      <div className="relative z-10 mx-auto mb-7 max-w-3xl px-4 text-center sm:mb-9">
+        <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+          {isVietnamese ? 'GIẢI PHÁP TEM NHÃN TOÀN DIỆN' : 'COMPREHENSIVE LABELING SOLUTIONS'}
         </h2>
-        <p className="text-sm text-white/60">
-          {currentLang === 'vi' ? 'Sản xuất chuyên dụng cho 12+ ngành công nghiệp trọng điểm' : 'Specialized manufacturing for 12+ key industries'}
+        <p className="mt-2 text-sm leading-relaxed text-white/65 sm:text-base">
+          {isVietnamese
+            ? 'Sản xuất chuyên dụng cho 12+ ngành công nghiệp trọng điểm'
+            : 'Specialized manufacturing for 12+ key industries'}
         </p>
       </div>
 
       <div className="relative w-full overflow-hidden">
-        {/* Gradient fade masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0B1B3A] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0B1B3A] to-transparent z-10 pointer-events-none" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-[#0B1B3A] to-transparent sm:w-24" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-[#0B1B3A] to-transparent sm:w-24" />
 
-        <div className="animate-marquee gap-6 px-2">
-          {repeated.map((solution, idx) => (
+        <div className="animate-marquee">
+          {[0, 1, 2, 3].map((copy) => (
             <div
-              key={`sol-${solution.id}-${idx}`}
-              className="group flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#BE1E2D]/50 hover:bg-white/10 transition-all duration-300 cursor-pointer shrink-0 min-w-[280px]"
+              key={copy}
+              aria-hidden={copy > 0}
+              className="flex w-max shrink-0 gap-3.5 pr-3.5 sm:gap-5 sm:pr-5"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/10 text-[#BE1E2D] flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#BE1E2D] group-hover:text-white transition-all duration-300">
-                <solution.icon className="w-6 h-6" />
-              </div>
-              <div className="flex flex-col flex-1 max-w-[200px]">
-                <span className="text-xs sm:text-sm font-bold text-white group-hover:text-[#BE1E2D] transition-colors whitespace-nowrap truncate">
-                  {currentLang === 'vi' ? solution.titleVi : solution.titleEn}
-                </span>
-                <span className="text-[10px] text-white/50 whitespace-nowrap truncate mt-0.5">
-                  {currentLang === 'vi' ? solution.descVi : solution.descEn}
-                </span>
-              </div>
+              {LABEL_PARTNER_LOGOS.map((logo) => (
+                <div
+                  key={logo.name}
+                  className="group flex h-[88px] w-[190px] shrink-0 items-center justify-center rounded-2xl border border-white bg-white px-5 py-3 shadow-[0_8px_28px_rgba(30,67,132,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#1e4384]/15 hover:shadow-[0_14px_34px_rgba(30,67,132,0.13)] sm:h-[108px] sm:w-[240px] sm:rounded-[1.35rem] sm:px-7 sm:py-4"
+                >
+                  <img
+                    src={logo.image}
+                    alt={copy === 0 ? logo.name : ''}
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>

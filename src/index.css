@@ -100,9 +100,11 @@ body {
 
 .client-logo-card {
   transition:
-    transform 140ms ease-out,
+    background-color 180ms ease,
     border-color 180ms ease,
-    box-shadow 180ms ease;
+    box-shadow 180ms ease,
+    transform 140ms ease-out;
+  appearance: none;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -115,8 +117,26 @@ body {
 }
 
 .client-logo-card:active {
-  transform: scale(0.985);
-  border-color: rgba(30, 67, 132, 0.2);
+  transform: scale(0.98);
+}
+
+.client-logo-card[data-accent='blue']:active,
+.client-logo-card[data-accent='blue']:focus-visible {
+  background-color: #1e4384;
+  border-color: #1e4384;
+  box-shadow: 0 6px 18px rgba(30, 67, 132, 0.24);
+}
+
+.client-logo-card[data-accent='red']:active,
+.client-logo-card[data-accent='red']:focus-visible {
+  background-color: #be1e2d;
+  border-color: #be1e2d;
+  box-shadow: 0 6px 18px rgba(190, 30, 45, 0.22);
+}
+
+.client-logo-card:focus-visible {
+  outline: 2px solid #1e4384;
+  outline-offset: 3px;
 }
 
 /* Reduced motion support */

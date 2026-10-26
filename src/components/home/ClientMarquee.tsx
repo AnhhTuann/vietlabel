@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CLIENT_ROW_1, CLIENT_ROW_2 } from '../../data/clients';
+import { SectionTitle } from '../ui/SectionTitle';
 
 export const ClientMarquee: React.FC = () => {
   const { t } = useTranslation();
@@ -11,6 +12,12 @@ export const ClientMarquee: React.FC = () => {
       aria-label={t('clients.title')}
       className="overflow-hidden border-b border-slate-200 bg-white py-12 sm:py-16"
     >
+      <SectionTitle
+        title={t('clients.title')}
+        subtitle={t('clients.subtitle')}
+        className="mb-8 px-4 sm:mb-10"
+      />
+
       <div className="space-y-4 sm:space-y-5">
         {rows.map((clients, rowIndex) => (
           <div
@@ -31,9 +38,13 @@ export const ClientMarquee: React.FC = () => {
                   className="flex w-max shrink-0 gap-3 pr-3 sm:gap-4 sm:pr-4"
                 >
                   {clients.map((client) => (
-                    <div
+                    <button
+                      type="button"
                       key={client.id}
-                      className="client-logo-card flex h-[76px] w-[164px] shrink-0 items-center justify-center rounded-2xl border border-slate-200/80 bg-white px-4 py-2.5 shadow-[0_4px_16px_rgba(15,35,70,0.04)] sm:h-[88px] sm:w-[190px] sm:px-5"
+                      aria-label={client.name}
+                      tabIndex={copy === 0 ? 0 : -1}
+                      data-accent={rowIndex === 0 ? 'blue' : 'red'}
+                      className="client-logo-card flex h-[76px] w-[164px] shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200/80 bg-white px-4 py-2.5 shadow-[0_4px_16px_rgba(15,35,70,0.04)] sm:h-[88px] sm:w-[190px] sm:px-5"
                     >
                       <img
                         src={client.image}
@@ -42,7 +53,7 @@ export const ClientMarquee: React.FC = () => {
                         loading="lazy"
                         decoding="async"
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               ))}
