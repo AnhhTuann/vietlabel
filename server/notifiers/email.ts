@@ -1,4 +1,4 @@
-import { Notifier, LeadRecord } from './types';
+import { Notifier, LeadRecord } from './types.js';
 
 export class EmailNotifier implements Notifier {
   name = 'Email';

@@ -11,8 +11,8 @@ import {
   normalizeUploadName,
   readPrivateUpload,
   savePrivateUpload,
-} from '../lib/privateUploads';
-import { authService, AuthenticatedRequest } from '../services/authService';
+} from '../lib/privateUploads.js';
+import { authService, AuthenticatedRequest } from '../services/authService.js';
 
 export const uploadRouter = Router();
 

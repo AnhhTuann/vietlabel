@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { db } from '../db/store';
-import { authService, AuthenticatedRequest } from '../services/authService';
+import { db } from '../db/store.js';
+import { authService, AuthenticatedRequest } from '../services/authService.js';
 
 // We need a simple UUID generator since uuid might not be installed, or we can use crypto
 import crypto from 'crypto';

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { db } from '../db/store';
-import { telegramNotifier } from '../notifiers';
+import { db } from '../db/store.js';
+import { telegramNotifier } from '../notifiers/index.js';
 
 export const telegramWebhookRouter = Router();
 

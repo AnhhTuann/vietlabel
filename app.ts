@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'node:path';
-import { createHttpApp } from './server/httpApp';
+import { createHttpApp } from './server/httpApp.js';
 
 const app = createHttpApp();
 const distPath = path.resolve(process.cwd(), 'dist');

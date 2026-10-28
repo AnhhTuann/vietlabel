@@ -1,7 +1,7 @@
-import { LeadRecord, Notifier } from './types';
-import { TelegramNotifier } from './telegram';
-import { ZaloNotifier } from './zalo';
-import { EmailNotifier } from './email';
+import { LeadRecord, Notifier } from './types.js';
+import { TelegramNotifier } from './telegram.js';
+import { ZaloNotifier } from './zalo.js';
+import { EmailNotifier } from './email.js';
 
 export const telegramNotifier = new TelegramNotifier();
 export const zaloNotifier = new ZaloNotifier();

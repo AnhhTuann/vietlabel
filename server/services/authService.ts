@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
-import { db } from '../db/store';
-import { User, UserRole } from '../db/schema';
+import { db } from '../db/store.js';
+import { User, UserRole } from '../db/schema.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET || Buffer.byteLength(JWT_SECRET) < 32) {

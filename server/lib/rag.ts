@@ -53,7 +53,7 @@ async function loadKnowledgeBase(): Promise<KnowledgeChunk[]> {
     return parseKnowledgeDocuments(documents);
   }
 
-  const { db } = await import('../db/store');
+  const { db } = await import('../db/store.js');
   const documents = await db.kbDocuments.list();
   return parseKnowledgeDocuments(documents.filter(document => document.status === 'APPROVED'));
 }

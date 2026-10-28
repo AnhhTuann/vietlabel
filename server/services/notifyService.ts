@@ -1,7 +1,7 @@
-import { db } from '../db/store';
-import { Lead } from '../db/schema';
-import { telegramNotifier, zaloNotifier, emailNotifier } from '../notifiers';
-import { realtimeHub } from './realtimeService';
+import { db } from '../db/store.js';
+import { Lead } from '../db/schema.js';
+import { telegramNotifier, zaloNotifier, emailNotifier } from '../notifiers/index.js';
+import { realtimeHub } from './realtimeService.js';
 
 export const notifyService = {
   async notifyStaff(lead: Lead, reason: string): Promise<void> {

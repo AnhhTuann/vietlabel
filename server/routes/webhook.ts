@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { leadService } from '../services/leadService';
-import { generateAdvisorResponse } from '../lib/llm';
+import { leadService } from '../services/leadService.js';
+import { generateAdvisorResponse } from '../lib/llm.js';
 
 export const webhookRouter = Router();
 

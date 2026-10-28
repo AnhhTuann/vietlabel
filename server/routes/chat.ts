@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { generateAdvisorResponse, ChatMessage } from '../lib/llm';
-import { db } from '../db/store';
-import { leadService } from '../services/leadService';
-import { conversationService } from '../services/conversationService';
-import { ChatRateLimiter, validateChatRequest } from '../lib/chatProtection';
+import { generateAdvisorResponse, ChatMessage } from '../lib/llm.js';
+import { db } from '../db/store.js';
+import { leadService } from '../services/leadService.js';
+import { conversationService } from '../services/conversationService.js';
+import { ChatRateLimiter, validateChatRequest } from '../lib/chatProtection.js';
 
 export const chatRouter = Router();
 const chatRateLimiter = new ChatRateLimiter();

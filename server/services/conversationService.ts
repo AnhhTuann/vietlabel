@@ -1,6 +1,6 @@
-import { db } from '../db/store';
-import { Conversation, Message, MessageSender } from '../db/schema';
-import { realtimeHub } from './realtimeService';
+import { db } from '../db/store.js';
+import { Conversation, Message, MessageSender } from '../db/schema.js';
+import { realtimeHub } from './realtimeService.js';
 
 export interface AppendMessageInput {
   conversationId: string;

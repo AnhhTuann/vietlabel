@@ -1,7 +1,7 @@
 import crypto from 'crypto';
-import { db } from '../db/store';
-import { KbDocument } from '../db/schema';
-import { parseKnowledgeDocuments } from '../lib/rag';
+import { db } from '../db/store.js';
+import { KbDocument } from '../db/schema.js';
+import { parseKnowledgeDocuments } from '../lib/rag.js';
 
 export const kbService = {
   async listDocuments(): Promise<KbDocument[]> {

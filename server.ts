@@ -2,9 +2,9 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { testConnection } from './server/db/drizzle';
-import { kbService } from './server/services/kbService';
-import { createHttpApp } from './server/httpApp';
+import { testConnection } from './server/db/drizzle.js';
+import { kbService } from './server/services/kbService.js';
+import { createHttpApp } from './server/httpApp.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

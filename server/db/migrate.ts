@@ -14,9 +14,9 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { PRODUCT_CATEGORIES, PRODUCTS_LIST } from '../../src/data/products';
-import { POSTS_LIST } from '../../src/data/posts';
-import { JOBS_LIST } from '../../src/data/jobs';
+import { PRODUCT_CATEGORIES, PRODUCTS_LIST } from '../../src/data/products.js';
+import { POSTS_LIST } from '../../src/data/posts.js';
+import { JOBS_LIST } from '../../src/data/jobs.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -1,15 +1,15 @@
 import compression from 'compression';
 import express, { NextFunction, Request, Response } from 'express';
-import { adminRouter } from './routes/admin';
-import { applicationsRouter } from './routes/applications';
-import { chatRouter } from './routes/chat';
-import { cmsRouter } from './routes/cms';
-import { contactRouter } from './routes/contact';
-import { feedbackRouter } from './routes/feedback';
-import { leadRouter } from './routes/lead';
-import { telegramWebhookRouter } from './routes/telegramWebhook';
-import { uploadRouter } from './routes/upload';
-import { webhookRouter } from './routes/webhook';
+import { adminRouter } from './routes/admin.js';
+import { applicationsRouter } from './routes/applications.js';
+import { chatRouter } from './routes/chat.js';
+import { cmsRouter } from './routes/cms.js';
+import { contactRouter } from './routes/contact.js';
+import { feedbackRouter } from './routes/feedback.js';
+import { leadRouter } from './routes/lead.js';
+import { telegramWebhookRouter } from './routes/telegramWebhook.js';
+import { uploadRouter } from './routes/upload.js';
+import { webhookRouter } from './routes/webhook.js';
 
 export function createHttpApp() {
   const app = express();

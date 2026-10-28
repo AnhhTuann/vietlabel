@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
-import { notifyStaff, telegramNotifier, isWithinWorkingHours } from '../notifiers';
-import { computeLeadScore } from '../lib/scoring';
-import { leadService } from '../services/leadService';
-import { db } from '../db/store';
-import { authService, AuthenticatedRequest } from '../services/authService';
+import { notifyStaff, telegramNotifier, isWithinWorkingHours } from '../notifiers/index.js';
+import { computeLeadScore } from '../lib/scoring.js';
+import { leadService } from '../services/leadService.js';
+import { db } from '../db/store.js';
+import { authService, AuthenticatedRequest } from '../services/authService.js';
 
 export const leadRouter = Router();
 

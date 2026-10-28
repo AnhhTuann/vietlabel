@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
 import { z } from 'zod';
-import { db } from '../db/store';
-import { isValidCvFile, MAX_CV_SIZE, normalizeUploadName, readPrivateUpload } from '../lib/privateUploads';
-import { authService, AuthenticatedRequest } from '../services/authService';
+import { db } from '../db/store.js';
+import { isValidCvFile, MAX_CV_SIZE, normalizeUploadName, readPrivateUpload } from '../lib/privateUploads.js';
+import { authService, AuthenticatedRequest } from '../services/authService.js';
 
 export const applicationsRouter = Router();
 

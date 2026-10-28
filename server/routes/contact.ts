@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { sendEmail } from '../services/emailService';
-import { leadService } from '../services/leadService';
+import { sendEmail } from '../services/emailService.js';
+import { leadService } from '../services/leadService.js';
 import crypto from 'crypto';
 
 export const contactRouter = Router();

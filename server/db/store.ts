@@ -5,8 +5,8 @@
  * need minimal changes. All operations are now async-safe and persistent.
  */
 import { eq, desc, asc, sql } from 'drizzle-orm';
-import { pgDb } from './drizzle';
-import * as t from './pgSchema';
+import { pgDb } from './drizzle.js';
+import * as t from './pgSchema.js';
 import {
   User,
   Lead,
@@ -21,7 +21,7 @@ import {
   Post,
   Job,
   JobApplication,
-} from './schema';
+} from './schema.js';
 
 // ─── Helper: map DB row → TypeScript type ───────────────────────────────────
 

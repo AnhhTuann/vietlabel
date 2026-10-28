@@ -1,8 +1,8 @@
-import { db } from '../db/store';
-import { Lead, LeadStatus, LeadScore, LeadEvent, Note } from '../db/schema';
-import { computeLeadScore } from '../lib/scoring';
-import { notifyService } from './notifyService';
-import { realtimeHub } from './realtimeService';
+import { db } from '../db/store.js';
+import { Lead, LeadStatus, LeadScore, LeadEvent, Note } from '../db/schema.js';
+import { computeLeadScore } from '../lib/scoring.js';
+import { notifyService } from './notifyService.js';
+import { realtimeHub } from './realtimeService.js';
 
 export interface CreateOrUpdateChatLeadInput {
   sessionId: string;

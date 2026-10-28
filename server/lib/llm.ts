@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
-import { ADVISOR_SYSTEM_PROMPT } from '../prompts/advisor';
-import { findApprovedFaqAnswer, retrieveRelevantKnowledge } from './rag';
+import { ADVISOR_SYSTEM_PROMPT } from '../prompts/advisor.js';
+import { findApprovedFaqAnswer, retrieveRelevantKnowledge } from './rag.js';
 
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';

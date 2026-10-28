@@ -1,10 +1,10 @@
 import { Router, Response } from 'express';
-import { db } from '../db/store';
-import { authService, AuthenticatedRequest } from '../services/authService';
-import { leadService } from '../services/leadService';
-import { conversationService } from '../services/conversationService';
-import { kbService } from '../services/kbService';
-import { realtimeHub } from '../services/realtimeService';
+import { db } from '../db/store.js';
+import { authService, AuthenticatedRequest } from '../services/authService.js';
+import { leadService } from '../services/leadService.js';
+import { conversationService } from '../services/conversationService.js';
+import { kbService } from '../services/kbService.js';
+import { realtimeHub } from '../services/realtimeService.js';
 import bcrypt from 'bcryptjs';
 
 export const adminRouter = Router();
