@@ -26,11 +26,8 @@ COPY server/ ./server/
 COPY --from=builder /app/src/data/ ./src/data/
 COPY tsconfig.json ./
 
-# Install tsx for running TypeScript in production
-RUN npm install tsx --save-dev
-
 # Create private upload directory
 RUN mkdir -p /app/data/uploads
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx tsx server/db/migrate.ts && npx tsx server.ts"]
+CMD ["sh", "-c", "./node_modules/.bin/tsx server/db/migrate.ts && ./node_modules/.bin/tsx server.ts"]

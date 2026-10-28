@@ -34,22 +34,34 @@ Website giới thiệu doanh nghiệp tiêu chuẩn công nghiệp B2B dành cho
 
 ## 🛠️ Hướng Dẫn Cài Đặt & Phát Triển Cục Bộ
 
-### 1. Cài đặt thư viện
-```bash
-npm install
-```
+### Chạy nhanh trên máy local
 
-### 2. Chạy môi trường phát triển (Development)
+Yêu cầu Node.js 22 và npm. Trong terminal, tại thư mục project:
+
 ```bash
+npm ci
 cp .env.example .env
+npm run dev
 ```
 
-Đặt `POSTGRES_PASSWORD` và `JWT_SECRET` trong `.env` thành các giá trị ngẫu nhiên riêng. `POSTGRES_PASSWORD` chỉ dùng cho PostgreSQL trong Docker Compose; `DATABASE_URL` cần trỏ đến PostgreSQL bạn dùng khi phát triển cục bộ. Có thể tạo mật khẩu bằng:
+Mở **http://localhost:3000**. Server development của project chạy cả API và Vite; cổng mặc định được cấu hình trong `server.ts` là `3000` (không phải `5173`). Nếu cổng này đang được dùng, chạy ở cổng khác:
+
+```bash
+PORT=3001 npm run dev
+```
+
+Sau đó mở **http://localhost:3001**. Dừng server bằng `Ctrl+C` trong terminal đang chạy app.
+
+Trang web vẫn có thể khởi động khi chưa có PostgreSQL, nhưng các chức năng cần database như admin/CMS sẽ chưa hoạt động. Để dùng đầy đủ, cấu hình PostgreSQL trong `.env` như bên dưới hoặc khởi chạy toàn bộ bằng Docker Compose.
+
+### Cấu hình PostgreSQL cho môi trường local
+
+Đặt `JWT_SECRET` thành giá trị ngẫu nhiên riêng. Nếu dùng Docker Compose, đặt thêm `POSTGRES_PASSWORD`; `DATABASE_URL` cần trỏ đến PostgreSQL bạn dùng khi phát triển cục bộ. Có thể tạo chuỗi ngẫu nhiên bằng:
 ```bash
 openssl rand -hex 32
 ```
 
-Với PostgreSQL cục bộ, cấu hình thông tin kết nối riêng trong `DATABASE_URL`. Tạo tài khoản quản trị đầu tiên bằng cách đặt `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` (tối thiểu 16 ký tự), sau đó chạy migration:
+Với PostgreSQL cục bộ, cấu hình kết nối trong `DATABASE_URL`. Để tạo tài khoản quản trị đầu tiên, đặt `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` (tối thiểu 16 ký tự), sau đó chạy migration:
 ```bash
 npm run db:migrate
 ```
@@ -64,30 +76,27 @@ Chat áp giới hạn theo IP và session (12 lượt/phút, 50 lượt/giờ, 1
 
 Để cải thiện câu trả lời mà không cho bot tự học sai từ hội thoại: khách có thể bấm **Chưa hữu ích**; ADMIN/MANAGER xem câu hỏi và câu trả lời bị gắn cờ trong **Quản trị → Kiến thức AI**, tạo bản nháp, viết câu trả lời đã xác minh, rồi chuyển sang **Đã phê duyệt**. Bot chỉ dùng FAQ đã duyệt; thay đổi được nạp ngay và khôi phục từ database khi app khởi động lại.
 
-Khởi chạy cả PostgreSQL và app bằng Docker Compose:
+### Chạy cả ứng dụng và PostgreSQL bằng Docker
+
+Đảm bảo Docker đang chạy và đã cấu hình `POSTGRES_PASSWORD`, `JWT_SECRET` trong `.env`, sau đó chạy:
 ```bash
 docker compose up --build -d
 ```
 App sẵn sàng tại `http://localhost:3000`; PostgreSQL chỉ truy cập từ máy local tại cổng `5433`. Compose tự chạy migration trước khi khởi động app. Giữ `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` trong `.env` khi khởi tạo database mới; migration không ghi đè mật khẩu của admin đang hoạt động. Sau khi các database đã được khởi tạo và bạn đã lưu mật khẩu admin, có thể xóa `INITIAL_ADMIN_PASSWORD` khỏi `.env`.
 
-Các tài khoản manager/sales mang ID demo cũ sẽ bị vô hiệu hóa.
-
-### 3. Chạy môi trường phát triển (Development)
+Dừng các container bằng:
 ```bash
-npm run dev
+docker compose down
 ```
-Ứng dụng sẽ tự động chạy tại: `http://localhost:5173`
 
-### 4. Đóng gói sản phẩm (Production Build)
+### Build, kiểm tra và test
+
 ```bash
 npm run build
-```
-Kết quả được xuất ra thư mục `dist`, sẵn sàng để deploy.
-
-### 5. Kiểm thử tự động
-```bash
+npm run lint
 npm test
 ```
+Build frontend được xuất ra thư mục `dist`.
 
 ---
 

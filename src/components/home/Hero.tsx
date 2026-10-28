@@ -1,5 +1,5 @@
 import { ArrowRight, Award, PhoneCall, ShieldCheck } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
@@ -103,6 +103,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const heroHeadline = heroHeadlineParts.join(' - ');
   const [slides, setSlides] = useState<any[]>(CAROUSEL_SLIDES);
   const [activeSlide, setActiveSlide] = useState(0);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -131,6 +135,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   }, []);
 
   useEffect(() => {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setPrefersReducedMotion(motionPreference.matches);
+
+    motionPreference.addEventListener('change', updateMotionPreference);
+    return () => motionPreference.removeEventListener('change', updateMotionPreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) heroVideoRef.current?.pause();
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length);
@@ -150,13 +166,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
     <section data-scroll-reveal="off" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-20 pb-10 sm:pt-24 sm:pb-16">
       {/* Background with measured contrast scrim */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/images/vietlabel/hero-banner.webp"
-          alt="Vietlabel Manufacturing Facility & Industrial Fleet"
-          className="w-full h-full object-cover object-center opacity-30 scale-105 transform motion-safe:transition-transform motion-safe:duration-1000"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#071C33] via-[#071C33]/90 to-[#071C33]/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#071C33] via-transparent to-black/30" />
+        <video
+          ref={heroVideoRef}
+          aria-hidden="true"
+          tabIndex={-1}
+          autoPlay={!prefersReducedMotion}
+          loop
+          muted
+          playsInline
+          preload={prefersReducedMotion ? 'none' : 'metadata'}
+          poster="/images/vietlabel/hero-banner.webp"
+          className="h-full w-full scale-105 object-cover object-center opacity-55"
+        >
+          <source src="/videos/vietlabel-hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#071C33]/80 via-[#071C33]/60 to-[#071C33]/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#071C33]/40 via-transparent to-black/15" />
         <div className="hero-light-drift absolute inset-0 opacity-70" />
       </div>
 
