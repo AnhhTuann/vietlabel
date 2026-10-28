@@ -476,6 +476,21 @@ body {
   animation: heroGalleryDown 26s linear infinite;
 }
 
+.hero-gallery-reveal {
+  animation: heroGalleryReveal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroGalleryReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .hero-gallery:hover .hero-gallery-track {
   animation-play-state: paused;
 }

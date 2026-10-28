@@ -104,9 +104,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const [slides, setSlides] = useState<any[]>(CAROUSEL_SLIDES);
   const [activeSlide, setActiveSlide] = useState(0);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  const [heroVisualPhase, setHeroVisualPhase] = useState<'video' | 'transitioning' | 'gallery'>(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'gallery' : 'video',
   );
+
+  const finishVideoIntro = () => {
+    setHeroVisualPhase((phase) => phase === 'video' ? 'transitioning' : phase);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -136,15 +140,28 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updateMotionPreference = () => setPrefersReducedMotion(motionPreference.matches);
+    const updateMotionPreference = () => {
+      if (motionPreference.matches) setHeroVisualPhase('gallery');
+    };
 
     motionPreference.addEventListener('change', updateMotionPreference);
     return () => motionPreference.removeEventListener('change', updateMotionPreference);
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) heroVideoRef.current?.pause();
-  }, [prefersReducedMotion]);
+    if (heroVisualPhase !== 'video' || !heroVideoRef.current) return;
+    void heroVideoRef.current.play().catch(finishVideoIntro);
+  }, [heroVisualPhase]);
+
+  useEffect(() => {
+    if (heroVisualPhase !== 'transitioning') return;
+    const timer = window.setTimeout(() => setHeroVisualPhase('gallery'), 650);
+    return () => window.clearTimeout(timer);
+  }, [heroVisualPhase]);
+
+  useEffect(() => {
+    if (heroVisualPhase !== 'video') heroVideoRef.current?.pause();
+  }, [heroVisualPhase]);
 
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -164,24 +181,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
   return (
     <section data-scroll-reveal="off" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center bg-[#071C33] overflow-hidden pt-20 pb-10 sm:pt-24 sm:pb-16">
-      {/* Background with measured contrast scrim */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={heroVideoRef}
+        <img
+          src="/images/vietlabel/hero-banner.webp"
+          alt=""
           aria-hidden="true"
-          tabIndex={-1}
-          autoPlay={!prefersReducedMotion}
-          loop
-          muted
-          playsInline
-          preload={prefersReducedMotion ? 'none' : 'metadata'}
-          poster="/images/vietlabel/hero-banner.webp"
-          className="h-full w-full scale-105 object-cover object-center opacity-55"
-        >
-          <source src="/videos/vietlabel-hero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#071C33]/80 via-[#071C33]/60 to-[#071C33]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#071C33]/40 via-transparent to-black/15" />
+          className="h-full w-full scale-105 object-cover object-center opacity-30"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#071C33] via-[#071C33]/90 to-[#071C33]/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#071C33] via-transparent to-black/30" />
         <div className="hero-light-drift absolute inset-0 opacity-70" />
       </div>
 
@@ -274,33 +282,65 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
           {/* Right Column: Vertical product gallery */}
           <div className="lg:col-span-7 lg:col-start-6 lg:-mr-10 xl:-mr-20">
-            <div className="hero-gallery relative mx-auto grid h-[300px] w-full max-w-[28rem] grid-cols-1 grid-rows-2 gap-3 overflow-hidden sm:h-[360px] sm:grid-cols-2 sm:grid-rows-1 sm:gap-4 lg:h-[min(78vh,760px)] lg:gap-5">
-              {HERO_GALLERY_COLUMNS.map((column, columnIndex) => (
-                <div
-                  key={columnIndex}
-                  className="overflow-hidden rounded-[1.25rem] border border-white/20 bg-[#0b1b3a]/80 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:rounded-[1.75rem] sm:p-2.5"
-                >
-                  <div className={`hero-gallery-track ${columnIndex === 0 ? 'hero-gallery-track-up' : 'hero-gallery-track-down'}`}>
-                    {[0, 1].map((copy) => (
-                      <div key={copy} className="flex w-max flex-row gap-3 pr-3 sm:w-full sm:flex-col sm:gap-6 sm:pb-6 sm:pr-0 lg:gap-7 lg:pb-7">
-                        {column.map((image) => (
-                          <img
-                            key={`${copy}-${image}`}
-                            src={image}
-                            alt=""
-                            aria-hidden="true"
-                            className="aspect-square w-[118px] shrink-0 rounded-[0.9rem] border border-white/15 object-cover shadow-lg sm:w-full sm:shrink sm:rounded-[1.25rem]"
-                            loading="eager"
-                            decoding="async"
-                          />
-                        ))}
-                      </div>
-                    ))}
+            <div className="relative mx-auto h-[300px] w-full max-w-[42rem] sm:h-[360px] lg:h-[min(78vh,760px)]">
+              {(heroVisualPhase === 'video' || heroVisualPhase === 'transitioning') && (
+                <div className={`absolute inset-0 z-10 flex items-center justify-center transition-[opacity,transform] duration-500 ease-out ${heroVisualPhase === 'video' ? 'scale-100 opacity-100' : 'scale-[0.97] opacity-0'}`}>
+                  <div className="relative aspect-video w-full max-w-[42rem] overflow-hidden rounded-2xl border border-white/20 bg-white shadow-[0_28px_90px_rgba(0,0,0,0.35)] sm:rounded-3xl">
+                    <video
+                      ref={heroVideoRef}
+                      aria-label="Video giới thiệu Vietlabel"
+                      autoPlay
+                      muted
+                      playsInline
+                      preload="auto"
+                      poster="/images/vietlabel/hero-banner.webp"
+                      onEnded={finishVideoIntro}
+                      onError={finishVideoIntro}
+                      className="absolute inset-0 h-full w-full scale-[1.35] object-cover"
+                    >
+                      <source src="/videos/vietlabel-hero.mp4" type="video/mp4" />
+                    </video>
+                    <button
+                      type="button"
+                      onClick={finishVideoIntro}
+                      className="absolute right-3 top-3 rounded-full border border-white/35 bg-[#071C33]/75 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-[#071C33] sm:right-5 sm:top-5"
+                    >
+                      Bỏ qua intro
+                    </button>
                   </div>
                 </div>
-              ))}
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[#071C33]/80 to-transparent sm:h-16" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[#071C33]/80 to-transparent sm:h-16" />
+              )}
+              {(heroVisualPhase === 'transitioning' || heroVisualPhase === 'gallery') && (
+                <div className={`hero-gallery absolute inset-0 mx-auto grid h-full max-w-[28rem] grid-cols-1 grid-rows-2 gap-3 overflow-hidden transition-[opacity,transform] duration-700 ease-out sm:grid-cols-2 sm:grid-rows-1 sm:gap-4 lg:max-w-none lg:gap-5 ${heroVisualPhase === 'gallery' ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-4 scale-[0.97] opacity-0'}`}>
+                {HERO_GALLERY_COLUMNS.map((column, columnIndex) => (
+                  <div
+                    key={columnIndex}
+                    className="hero-gallery-reveal overflow-hidden rounded-[1.25rem] border border-white/20 bg-[#0b1b3a]/80 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:rounded-[1.75rem] sm:p-2.5"
+                    style={{ animationDelay: `${columnIndex * 120}ms` }}
+                  >
+                    <div className={`hero-gallery-track ${columnIndex === 0 ? 'hero-gallery-track-up' : 'hero-gallery-track-down'}`}>
+                      {[0, 1].map((copy) => (
+                        <div key={copy} className="flex w-max flex-row gap-3 pr-3 sm:w-full sm:flex-col sm:gap-6 sm:pb-6 sm:pr-0 lg:gap-7 lg:pb-7">
+                          {column.map((image) => (
+                            <img
+                              key={`${copy}-${image}`}
+                              src={image}
+                              alt=""
+                              aria-hidden="true"
+                              className="aspect-square w-[118px] shrink-0 rounded-[0.9rem] border border-white/15 object-cover shadow-lg sm:w-full sm:shrink sm:rounded-[1.25rem]"
+                              loading="eager"
+                              decoding="async"
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[#071C33]/80 to-transparent sm:h-16" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[#071C33]/80 to-transparent sm:h-16" />
+                </div>
+              )}
             </div>
           </div>
         </div>

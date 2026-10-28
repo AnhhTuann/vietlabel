@@ -38,7 +38,7 @@ export async function generateAdvisorResponse(
   attachments?: Array<{ name: string; url?: string }>
 ): Promise<AdvisorAnalysisResult> {
   const lastUserMessage = [...messages].reverse().find(m => m.role === 'user')?.content || '';
-  const rag = retrieveRelevantKnowledge(lastUserMessage);
+  const rag = await retrieveRelevantKnowledge(lastUserMessage);
 
   const fullSystemInstruction = `${ADVISOR_SYSTEM_PROMPT}
 
@@ -119,17 +119,17 @@ export function parseAdvisorOutput(rawText: string, sources: string[]): AdvisorA
   };
 }
 
-function generateIntelligentFallback(
+async function generateIntelligentFallback(
   latestMessage: string,
   history: ChatMessage[],
   sources: string[],
   attachments?: Array<{ name: string; url?: string }>,
-): AdvisorAnalysisResult {
+): Promise<AdvisorAnalysisResult> {
   const userMessages = history.filter(message => message.role === 'user').map(message => message.content);
   const allCustomerText = userMessages.join('\n');
   const lower = allCustomerText.toLowerCase();
   const latestLower = latestMessage.toLowerCase();
-  const approvedFaq = findApprovedFaqAnswer(latestMessage);
+  const approvedFaq = await findApprovedFaqAnswer(latestMessage);
   const extractedFields: Record<string, any> = {};
   const missingFields: string[] = [];
 

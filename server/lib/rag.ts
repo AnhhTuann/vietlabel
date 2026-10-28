@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export interface KnowledgeChunk {
   id: string;
@@ -9,30 +9,13 @@ export interface KnowledgeChunk {
   keywords: string[];
 }
 
-let cachedChunks: KnowledgeChunk[] | null = null;
-
-export function clearKnowledgeBaseCache(): void {
-  cachedChunks = null;
-}
-
-export function loadKnowledgeBase(): KnowledgeChunk[] {
-  if (cachedChunks) return cachedChunks;
-
-  const knowledgeDir = path.resolve(process.cwd(), 'server/knowledge');
+export function parseKnowledgeDocuments(documents: Array<{ filePath: string; content: string }>): KnowledgeChunk[] {
   const chunks: KnowledgeChunk[] = [];
 
-  if (!fs.existsSync(knowledgeDir)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(knowledgeDir).filter(f => f.endsWith('.md'));
-
-  for (const file of files) {
-    const fullPath = path.join(knowledgeDir, file);
-    const content = fs.readFileSync(fullPath, 'utf-8');
-
+  for (const document of documents) {
+    if (!document.filePath.endsWith('.md')) continue;
     // Split by Markdown headers (## or #)
-    const sections = content.split(/\n(?=##?\s)/);
+    const sections = document.content.split(/\n(?=##?\s)/);
 
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i].trim();
@@ -40,14 +23,13 @@ export function loadKnowledgeBase(): KnowledgeChunk[] {
 
       const lines = section.split('\n');
       const title = lines[0].replace(/^##?\s*/, '').trim();
-      const body = lines.slice(1).join('\n').trim();
 
       const words = section.toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
       const keywords = Array.from(new Set(words.filter(w => w.length > 2)));
 
       chunks.push({
-        id: `${file}-${i}`,
-        source: file,
+        id: `${document.filePath}-${i}`,
+        source: document.filePath,
         title,
         content: section,
         keywords,
@@ -55,12 +37,29 @@ export function loadKnowledgeBase(): KnowledgeChunk[] {
     }
   }
 
-  cachedChunks = chunks;
   return chunks;
 }
 
-export function retrieveRelevantKnowledge(query: string, topK = 4): { text: string; sources: string[] } {
-  const chunks = loadKnowledgeBase();
+async function loadKnowledgeBase(): Promise<KnowledgeChunk[]> {
+  if (!process.env.DATABASE_URL) {
+    const knowledgeDir = path.resolve(process.cwd(), 'server/knowledge');
+    if (!fs.existsSync(knowledgeDir)) return [];
+    const documents = fs.readdirSync(knowledgeDir)
+      .filter(filePath => filePath.endsWith('.md'))
+      .map(filePath => ({
+        filePath,
+        content: fs.readFileSync(path.join(knowledgeDir, filePath), 'utf-8'),
+      }));
+    return parseKnowledgeDocuments(documents);
+  }
+
+  const { db } = await import('../db/store');
+  const documents = await db.kbDocuments.list();
+  return parseKnowledgeDocuments(documents.filter(document => document.status === 'APPROVED'));
+}
+
+export async function retrieveRelevantKnowledge(query: string, topK = 4): Promise<{ text: string; sources: string[] }> {
+  const chunks = await loadKnowledgeBase();
   if (chunks.length === 0) {
     return { text: '', sources: [] };
   }
@@ -105,8 +104,8 @@ export function retrieveRelevantKnowledge(query: string, topK = 4): { text: stri
   return { text, sources };
 }
 
-export function findApprovedFaqAnswer(query: string): { answer: string; source: string } | null {
-  return matchApprovedFaqAnswer(query, loadKnowledgeBase());
+export async function findApprovedFaqAnswer(query: string): Promise<{ answer: string; source: string } | null> {
+  return matchApprovedFaqAnswer(query, await loadKnowledgeBase());
 }
 
 export function matchApprovedFaqAnswer(

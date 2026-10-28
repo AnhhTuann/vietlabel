@@ -1,14 +1,15 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
-import fs from 'node:fs/promises';
+import { del } from '@vercel/blob';
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import {
   decodeBase64File,
-  getUploadPath,
   isSupportedGeneralFile,
   isValidCvFile,
   MAX_CV_SIZE,
   MAX_GENERAL_UPLOAD_SIZE,
   normalizeUploadName,
+  readPrivateUpload,
   savePrivateUpload,
 } from '../lib/privateUploads';
 import { authService, AuthenticatedRequest } from '../services/authService';
@@ -16,6 +17,81 @@ import { authService, AuthenticatedRequest } from '../services/authService';
 export const uploadRouter = Router();
 
 const ALLOWED_EXTENSIONS = new Set(['.ai', '.png', '.jpg', '.jpeg', '.eps', '.cdr', '.svg', '.pdf']);
+const CONTENT_TYPES_BY_EXTENSION: Record<string, string[]> = {
+  '.ai': ['application/postscript', 'application/pdf', 'application/illustrator', 'image/vnd.adobe.illustrator', 'application/octet-stream'],
+  '.png': ['image/png'],
+  '.jpg': ['image/jpeg'],
+  '.jpeg': ['image/jpeg'],
+  '.eps': ['application/postscript', 'application/eps', 'application/octet-stream'],
+  '.cdr': ['application/octet-stream', 'application/x-coreldraw', 'application/x-cdr', 'application/vnd.corel-draw'],
+  '.svg': ['image/svg+xml'],
+  '.pdf': ['application/pdf'],
+  '.doc': ['application/msword', 'application/octet-stream'],
+  '.docx': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/octet-stream'],
+};
+
+uploadRouter.get('/config', (_req: Request, res: Response) => {
+  res.json({ directUpload: process.env.VERCEL === '1' });
+});
+
+uploadRouter.post('/blob', async (req: Request, res: Response) => {
+  if (process.env.VERCEL !== '1') {
+    return res.status(404).json({ error: 'Direct uploads are only available on Vercel.' });
+  }
+
+  try {
+    const body = req.body as HandleUploadBody;
+    const result = await handleUpload({
+      body,
+      request: req,
+      onBeforeGenerateToken: async (pathname, clientPayload) => {
+        const payload = JSON.parse(clientPayload || '{}') as { fileName?: unknown; purpose?: unknown };
+        const fileName = normalizeUploadName(payload.fileName);
+        const uploadId = pathname.match(/^private-uploads\/([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i)?.[1];
+        const extension = fileName ? fileName.slice(fileName.lastIndexOf('.')).toLowerCase() : '';
+        const isCv = payload.purpose === 'cv';
+        const validExtension = isCv
+          ? ['.pdf', '.doc', '.docx'].includes(extension)
+          : payload.purpose === 'design' && ALLOWED_EXTENSIONS.has(extension);
+
+        if (!uploadId || !fileName || !validExtension) {
+          throw new Error('Invalid upload request');
+        }
+
+        return {
+          allowedContentTypes: CONTENT_TYPES_BY_EXTENSION[extension],
+          maximumSizeInBytes: isCv ? MAX_CV_SIZE : MAX_GENERAL_UPLOAD_SIZE,
+          addRandomSuffix: false,
+          tokenPayload: JSON.stringify({ uploadId, fileName, purpose: payload.purpose }),
+        };
+      },
+      onUploadCompleted: async ({ blob, tokenPayload }) => {
+        const payload = JSON.parse(tokenPayload || '{}') as {
+          uploadId?: unknown;
+          fileName?: unknown;
+          purpose?: unknown;
+        };
+        const fileName = normalizeUploadName(payload.fileName);
+        const uploadId = typeof payload.uploadId === 'string' ? payload.uploadId : '';
+        const content = await readPrivateUpload(uploadId);
+        const isCv = payload.purpose === 'cv';
+        const isValid = fileName && (isCv
+          ? content.length <= MAX_CV_SIZE && isValidCvFile(fileName, content)
+          : payload.purpose === 'design' && isSupportedGeneralFile(fileName, content));
+
+        if (!isValid) {
+          await del(blob.pathname);
+          throw new Error('Uploaded file content is invalid');
+        }
+      },
+    });
+
+    return res.json(result);
+  } catch (error) {
+    console.error('Failed to authorize private blob upload:', error);
+    return res.status(400).json({ error: 'Không thể khởi tạo tải file lên. Vui lòng kiểm tra file và thử lại.' });
+  }
+});
 
 uploadRouter.post('/', async (req: Request, res: Response) => {
   const fileName = normalizeUploadName(req.body?.fileName);
@@ -76,14 +152,11 @@ uploadRouter.get(
   async (req: AuthenticatedRequest, res: Response) => {
     const fileName = normalizeUploadName(req.query.name) || 'customer-upload';
     try {
-      const uploadPath = getUploadPath(req.params.id);
-      await fs.access(uploadPath);
-      return res.download(uploadPath, fileName, (error) => {
-        if (error) {
-          console.error('Failed to download uploaded file:', error);
-          if (!res.headersSent) res.status(500).json({ error: 'Không thể tải file.' });
-        }
-      });
+      const content = await readPrivateUpload(req.params.id);
+      if (!isSupportedGeneralFile(fileName, content)) {
+        return res.status(404).json({ error: 'Không tìm thấy file.' });
+      }
+      return res.attachment(fileName).send(content);
     } catch (error) {
       console.error('Uploaded file not found:', error);
       return res.status(404).json({ error: 'Không tìm thấy file.' });

@@ -18,3 +18,21 @@ export function fileToBase64(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+export async function uploadFileToPrivateBlob(file: File, purpose: 'cv' | 'design'): Promise<string | null> {
+  const configResponse = await fetch('/api/upload/config');
+  if (!configResponse.ok) throw new Error('Không thể kiểm tra cấu hình tải file.');
+
+  const config = await configResponse.json() as { directUpload?: boolean };
+  if (!config.directUpload) return null;
+
+  const uploadId = crypto.randomUUID();
+  const { upload } = await import('@vercel/blob/client');
+  await upload(`private-uploads/${uploadId}`, file, {
+    access: 'private',
+    contentType: file.type || 'application/octet-stream',
+    handleUploadUrl: '/api/upload/blob',
+    clientPayload: JSON.stringify({ fileName: file.name, purpose }),
+  });
+  return uploadId;
+}

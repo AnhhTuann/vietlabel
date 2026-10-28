@@ -7,7 +7,7 @@ Website giới thiệu doanh nghiệp tiêu chuẩn công nghiệp B2B dành cho
 ## 🚀 Tính Năng Nổi Bật
 
 - **Trang Chủ B2B Chuyên Nghiệp**:
-  1. **Hero Banner**: Slogan định vị thương hiệu, CTA rõ ràng kèm background công nghiệp ấn tượng.
+  1. **Hero Banner**: Slogan định vị thương hiệu, CTA rõ ràng, video giới thiệu chuyển động mượt sang bộ ảnh nhà máy.
   2. **12 Giải Pháp Tem Nhãn**: Marquee cuộn ngang mượt mà giới thiệu chuyên sâu 12 giải pháp tem nhãn cho các ngành công nghiệp.
   3. **Danh mục sản phẩm**: Lưới 8 phân khúc bao bì chủ lực (Hộp giấy, Túi giấy, Túi bánh mì, Tem nhãn, Khay giấy, Thùng carton, Thẻ cào, POSM).
   4. **Giá trị cốt lõi**: Khối Vertical Tabs tương tác chuyển tab với nội dung 5 cam kết của Vietlabel.
@@ -98,6 +98,27 @@ npm test
 ```
 Build frontend được xuất ra thư mục `dist`.
 
+### Deploy lên Vercel + Neon
+
+Project hỗ trợ deploy cùng một Express API trên Vercel Functions và PostgreSQL trên Neon. File riêng tư được lưu trong Vercel Blob (private); nội dung Knowledge Base được đọc/ghi trực tiếp từ Neon.
+
+1. Tạo database trên Neon, rồi lấy **pooled connection string** từ bảng điều khiển Neon. Bảo vệ connection string như mật khẩu.
+2. Tạo Vercel Blob store với quyền **Private** và kết nối store với project Vercel ở môi trường Production, Preview và Development. Vercel cần cung cấp `BLOB_READ_WRITE_TOKEN` để cấp token upload trực tiếp từ trình duyệt.
+3. Đưa repository lên GitHub và import project tại Vercel. Giữ build command `npm run build`; `vercel.json` đã cấu hình entrypoint Express, bao gồm frontend build và knowledge seed trong function.
+4. Thêm các environment variables trong Vercel cho cả Production, Preview và Development:
+   - `DATABASE_URL`: pooled Neon connection string có SSL (`sslmode=require`).
+   - `JWT_SECRET`: chuỗi ngẫu nhiên tối thiểu 32 bytes; tạo bằng `openssl rand -hex 32`.
+   - `BLOB_READ_WRITE_TOKEN`: token của private Blob store (Vercel thường tự thêm khi kết nối store).
+   - Các biến tích hợp cần dùng như `GEMINI_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `SALES_WEBHOOK_URL`; chỉ thêm nếu bật tính năng tương ứng. Không dùng tiền tố `VITE_` cho secrets.
+5. Chạy migration **một lần** với Neon trước khi dùng app. Trong `.env` cục bộ, đặt Neon URL cùng `INITIAL_ADMIN_EMAIL` và `INITIAL_ADMIN_PASSWORD` (tối thiểu 16 ký tự), rồi chạy:
+   ```bash
+   npm run db:migrate
+   ```
+   Lệnh này tạo schema, nạp nội dung ban đầu và tạo admin. Không cần thêm hai biến khởi tạo admin vào Vercel. Không commit `.env` hoặc dán database URL/token vào chat.
+6. Deploy project. Sau khi hoàn tất, kiểm tra `https://<domain>/api/health`, trang chủ, đăng nhập admin và tải CV/file thử nghiệm.
+
+Các file upload trên Vercel được truyền trực tiếp từ trình duyệt đến private Blob, tránh giới hạn kích thước request của Functions; endpoint ứng dụng vẫn xác thực file trước khi lưu hồ sơ hoặc tải file về. `server.ts` vẫn dùng filesystem local khi chạy ngoài Vercel.
+
 ---
 
 ## 🎨 Hướng Dẫn Tùy Biến Giao Diện
@@ -126,13 +147,8 @@ Nội dung dịch thuật được quản lý tại:
 
 ## 🌐 Triển Khai Lên Máy Chủ (Deploy)
 
-### Deploy lên Vercel / Netlify
-Do sử dụng `Vite`, bạn hoàn toàn có thể triển khai lên các nền tảng đám mây phổ biến như Vercel, Netlify, Cloudflare Pages chỉ trong 1 phút.
-1. Khởi tạo kho lưu trữ GitHub và đẩy code lên.
-2. Tại màn hình tạo dự án của Vercel/Netlify, chọn **Vite Framework**.
-3. Lệnh build mặc định: `npm run build`
-4. Thư mục publish: `dist`
-5. Nhấn **Deploy**.
+### Các nền tảng deploy
+Vercel + Neon cho phiên bản đầy đủ có API, CMS và database; xem hướng dẫn cấu hình ở mục **Deploy lên Vercel + Neon**. Không deploy project như một trang Vite tĩnh nếu cần các chức năng server-side. Các nền tảng tĩnh như Netlify chỉ phù hợp nếu tự cấu hình riêng backend và database.
 
 ---
 

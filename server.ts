@@ -1,20 +1,10 @@
 import 'dotenv/config';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import compression from 'compression';
 import { testConnection } from './server/db/drizzle';
-import { chatRouter } from './server/routes/chat';
-import { leadRouter } from './server/routes/lead';
-import { uploadRouter } from './server/routes/upload';
-import { feedbackRouter } from './server/routes/feedback';
-import { webhookRouter } from './server/routes/webhook';
-import { telegramWebhookRouter } from './server/routes/telegramWebhook';
-import { adminRouter } from './server/routes/admin';
-import { cmsRouter } from './server/routes/cms';
-import { contactRouter } from './server/routes/contact';
-import { applicationsRouter } from './server/routes/applications';
 import { kbService } from './server/services/kbService';
+import { createHttpApp } from './server/httpApp';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,33 +30,7 @@ async function startServer() {
     }
   }
 
-  const app = express();
-
-  // Basic security and parsing middlewares
-  app.use(compression());
-  app.use(express.json({ limit: '15mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '15mb' }));
-
-  // API Routes
-  app.use('/api/chat', chatRouter);
-  app.use('/api/lead', leadRouter);
-  app.use('/api/upload', uploadRouter);
-  app.use('/api/applications', applicationsRouter);
-  app.use('/api/feedback', feedbackRouter);
-  app.use('/api/contact', contactRouter);
-  app.use('/api/webhook', webhookRouter);
-  app.use('/api/telegram/webhook', telegramWebhookRouter);
-  app.use('/api/admin', adminRouter);
-  app.use('/api/cms', cmsRouter);
-
-  // Health check
-  app.get('/api/health', (_req: Request, res: Response) => {
-    res.json({
-      status: 'ok',
-      service: 'Vietlabel AI Advisor API',
-      timestamp: new Date().toISOString(),
-    });
-  });
+  const app = createHttpApp();
 
   if (!isProduction) {
     // Development mode: Vite middleware
@@ -90,12 +54,6 @@ async function startServer() {
       res.sendFile(path.resolve(distPath, 'index.html'));
     });
   }
-
-  // Error handling middleware
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error('Unhandled server error:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  });
 
   app.listen(PORT, () => {
     console.log(`Vietlabel Full-Stack Server running at http://localhost:${PORT}`);

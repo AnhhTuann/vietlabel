@@ -1,9 +1,8 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
-import fs from 'node:fs/promises';
 import { z } from 'zod';
 import { db } from '../db/store';
-import { getUploadPath, isValidCvFile, MAX_CV_SIZE, normalizeUploadName } from '../lib/privateUploads';
+import { isValidCvFile, MAX_CV_SIZE, normalizeUploadName, readPrivateUpload } from '../lib/privateUploads';
 import { authService, AuthenticatedRequest } from '../services/authService';
 
 export const applicationsRouter = Router();
@@ -34,8 +33,7 @@ applicationsRouter.post('/', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Vị trí tuyển dụng này hiện không nhận hồ sơ.' });
     }
 
-    const storagePath = getUploadPath(parsed.data.uploadId);
-    const cv = await fs.readFile(storagePath);
+    const cv = await readPrivateUpload(parsed.data.uploadId);
     if (cv.length > MAX_CV_SIZE || !isValidCvFile(fileName, cv)) {
       return res.status(400).json({ error: 'File CV không hợp lệ hoặc vượt quá 5MB.' });
     }
@@ -90,14 +88,11 @@ applicationsRouter.get(
     try {
       const application = await db.jobApplications.findById(req.params.id);
       if (!application) return res.status(404).json({ error: 'Không tìm thấy hồ sơ ứng tuyển.' });
-      const storagePath = getUploadPath(application.cvStorageKey);
-      await fs.access(storagePath);
-      return res.download(storagePath, application.cvFileName, (error) => {
-        if (error) {
-          console.error('Failed to download application CV:', error);
-          if (!res.headersSent) res.status(500).json({ error: 'Không thể tải file CV.' });
-        }
-      });
+      const cv = await readPrivateUpload(application.cvStorageKey);
+      if (cv.length > MAX_CV_SIZE || !isValidCvFile(application.cvFileName, cv)) {
+        return res.status(404).json({ error: 'Không tìm thấy file CV.' });
+      }
+      return res.attachment(application.cvFileName).send(cv);
     } catch (error) {
       console.error('Failed to locate application CV:', error);
       return res.status(404).json({ error: 'Không tìm thấy file CV.' });

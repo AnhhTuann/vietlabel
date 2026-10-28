@@ -1,5 +1,5 @@
 import { CustomerBrief } from '../config/leadScoring';
-import { fileToBase64 } from './fileEncoding';
+import { fileToBase64, uploadFileToPrivateBlob } from './fileEncoding';
 
 function getStaffAuthHeaders(): HeadersInit {
   const token = localStorage.getItem('vietlabel_admin_token');
@@ -162,24 +162,37 @@ export const chatApi = {
       throw new Error('Dung lượng file tối đa là 10MB');
     }
 
-    const payload = {
-      fileName: file.name,
-      fileBase64: await fileToBase64(file),
-    };
+    let uploadedFile: { id: string; name: string; size: number; url: string };
+    const uploadId = await uploadFileToPrivateBlob(file, 'design');
+    if (uploadId) {
+      uploadedFile = {
+        id: uploadId,
+        name: file.name,
+        size: file.size,
+        url: `/api/upload/${uploadId}?name=${encodeURIComponent(file.name)}`,
+      };
+    } else {
+      const payload = {
+        fileName: file.name,
+        fileBase64: await fileToBase64(file),
+      };
 
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || 'Tải file thất bại');
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Tải file thất bại');
+      }
+
+      const data = await response.json();
+      uploadedFile = data.file;
     }
 
-    const data = await response.json();
-    return data.file;
+    return { name: uploadedFile.name, size: uploadedFile.size, url: uploadedFile.url };
   },
 
   async submitFeedback(payload: { sessionId: string; rating: number | 'like' | 'dislike'; comment?: string }): Promise<void> {

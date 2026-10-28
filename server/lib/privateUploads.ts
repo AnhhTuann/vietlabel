@@ -1,3 +1,4 @@
+import { get, put } from '@vercel/blob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -15,6 +16,11 @@ export function getUploadPath(uploadId: string): string {
     throw new Error('Invalid upload id');
   }
   return path.join(getUploadDirectory(), uploadId);
+}
+
+function getBlobPath(uploadId: string): string {
+  if (!UPLOAD_ID_PATTERN.test(uploadId)) throw new Error('Invalid upload id');
+  return `private-uploads/${uploadId}`;
 }
 
 export function normalizeUploadName(fileName: unknown): string | null {
@@ -67,7 +73,26 @@ export function isSupportedGeneralFile(fileName: string, buffer: Buffer): boolea
 }
 
 export async function savePrivateUpload(uploadId: string, content: Buffer): Promise<void> {
+  if (process.env.VERCEL === '1') {
+    await put(getBlobPath(uploadId), content, {
+      access: 'private',
+      addRandomSuffix: false,
+      allowOverwrite: false,
+    });
+    return;
+  }
+
   const directory = getUploadDirectory();
   await fs.mkdir(directory, { recursive: true, mode: 0o700 });
   await fs.writeFile(getUploadPath(uploadId), content, { flag: 'wx', mode: 0o600 });
+}
+
+export async function readPrivateUpload(uploadId: string): Promise<Buffer> {
+  if (process.env.VERCEL === '1') {
+    const blob = await get(getBlobPath(uploadId), { access: 'private' });
+    if (!blob || blob.statusCode !== 200) throw new Error('Uploaded file not found');
+    return Buffer.from(await new Response(blob.stream).arrayBuffer());
+  }
+
+  return fs.readFile(getUploadPath(uploadId));
 }

@@ -1,4 +1,4 @@
-import { fileToBase64 } from './fileEncoding';
+import { fileToBase64, uploadFileToPrivateBlob } from './fileEncoding';
 
 export interface ContactFormData {
   fullName: string;
@@ -56,17 +56,21 @@ export async function submitJobApplication(
   data: JobApplicationData,
   cvFile: File,
 ): Promise<{ success: boolean; message: string }> {
-  const uploadResponse = await fetch('/api/upload/cv', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      fileName: cvFile.name,
-      fileBase64: await fileToBase64(cvFile),
-    }),
-  });
-  const uploadResult = await uploadResponse.json().catch(() => ({}));
-  if (!uploadResponse.ok) {
-    throw new Error(uploadResult.error || 'Không thể tải CV lên máy chủ.');
+  let uploadId = await uploadFileToPrivateBlob(cvFile, 'cv');
+  if (!uploadId) {
+    const uploadResponse = await fetch('/api/upload/cv', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fileName: cvFile.name,
+        fileBase64: await fileToBase64(cvFile),
+      }),
+    });
+    const uploadResult = await uploadResponse.json().catch(() => ({}));
+    if (!uploadResponse.ok) {
+      throw new Error(uploadResult.error || 'Không thể tải CV lên máy chủ.');
+    }
+    uploadId = uploadResult.uploadId;
   }
 
   const response = await fetch('/api/applications', {
@@ -78,7 +82,7 @@ export async function submitJobApplication(
       email: data.email,
       phone: data.phone,
       coverLetter: data.coverLetter,
-      uploadId: uploadResult.uploadId,
+      uploadId,
       cvFileName: cvFile.name,
     }),
   });
