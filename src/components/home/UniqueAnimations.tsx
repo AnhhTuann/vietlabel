@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'motion/react';
 import { Star, Zap, Sparkles, TrendingUp } from 'lucide-react';
 
 export const UniqueAnimations: React.FC = () => {
@@ -7,6 +7,7 @@ export const UniqueAnimations: React.FC = () => {
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
   const rotate = useTransform(scrollY, [0, 500], [0, 360]);
+  const rotateReverse = useTransform(scrollY, [0, 500], [360, 0]);
   
   const springY1 = useSpring(y1, { stiffness: 100, damping: 30 });
   const springY2 = useSpring(y2, { stiffness: 100, damping: 30 });
@@ -41,14 +42,12 @@ export const UniqueAnimations: React.FC = () => {
         className="absolute top-10 left-10 w-16 h-16 rounded-full bg-gradient-to-br from-[#1e4384]/20 to-[#be1e2d]/20 animate-morph-blob"
       />
       <motion.div
-        style={{ y: springY2, rotate: useTransform(scrollY, [0, 500], [360, 0]) }}
+        style={{ y: springY2, rotate: rotateReverse, animationDelay: '-4s' }}
         className="absolute top-20 right-20 w-20 h-20 rounded-full bg-gradient-to-br from-[#be1e2d]/20 to-[#f59e0b]/20 animate-morph-blob"
-        style={{ animationDelay: '-4s' }}
       />
       <motion.div
-        style={{ y: springY1 }}
+        style={{ y: springY1, animationDelay: '-8s' }}
         className="absolute bottom-10 left-1/3 w-12 h-12 rounded-full bg-gradient-to-br from-[#f59e0b]/20 to-[#1e4384]/20 animate-morph-blob"
-        style={{ animationDelay: '-8s' }}
       />
 
       {/* Floating particles */}
@@ -236,13 +235,10 @@ export const TextReveal: React.FC<{ children: string; className?: string }> = ({
 export const ScrollingNumbers: React.FC<{ end: number; suffix?: string; label: string }> = ({ end, suffix = '', label }) => {
   const [count, setCount] = useState(0);
   const countRef = useRef<HTMLDivElement>(null);
-  const isInView = useScroll({
-    target: countRef,
-    offset: ['start end', 'end start'],
-  });
+  const isInView = useInView(countRef, { once: true, margin: '-50px' });
 
   useEffect(() => {
-    if (isInView.scrollYProgress > 0.5) {
+    if (isInView) {
       let current = 0;
       const increment = end / 50;
       const timer = setInterval(() => {
@@ -256,7 +252,7 @@ export const ScrollingNumbers: React.FC<{ end: number; suffix?: string; label: s
       }, 30);
       return () => clearInterval(timer);
     }
-  }, [isInView.scrollYProgress, end]);
+  }, [isInView, end]);
 
   return (
     <div ref={countRef} className="text-center">

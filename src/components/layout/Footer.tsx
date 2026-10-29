@@ -24,11 +24,11 @@ export const Footer: React.FC = () => {
               </div>
             </Link>
 
-            <p className="text-xs text-slate-300 leading-relaxed [text-wrap:balance]">
+            <p className="text-sm text-slate-300 leading-relaxed [text-wrap:balance]">
               {t('footer.about_text')}
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-400">
+            <div className="pt-2 flex flex-wrap items-center gap-3 text-sm text-slate-400">
               <div className="flex items-center gap-1.5 bg-slate-900/60 px-2.5 py-1.5 rounded border border-slate-800">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span>ISO 9001:2015</span>
@@ -89,11 +89,11 @@ export const Footer: React.FC = () => {
 
           {/* Column 2: Facility & Contact Details (5 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-200">
+            <h4 className="text-base font-bold uppercase tracking-wider text-slate-200">
               {t('footer.contact_col')}
             </h4>
 
-            <div className="space-y-3 text-xs text-slate-300">
+            <div className="space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#BE1E2D] shrink-0 mt-0.5" />
                 <div>
@@ -142,11 +142,11 @@ export const Footer: React.FC = () => {
 
           {/* Column 3: Quick Navigation & Products (3 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-200">
+            <h4 className="text-base font-bold uppercase tracking-wider text-slate-200">
               {t('footer.products_col')}
             </h4>
 
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] text-slate-300">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-slate-300">
               {PRODUCTS_LIST.map((product) => (
                 <li key={product.id}>
                   <Link
@@ -161,7 +161,7 @@ export const Footer: React.FC = () => {
             </ul>
             <Link
               to="/san-pham"
-              className="inline-block text-xs font-semibold text-[#BE1E2D] hover:underline"
+              className="inline-block text-sm font-semibold text-[#BE1E2D] hover:underline"
             >
               {t('products_section.view_all')} →
             </Link>
@@ -169,7 +169,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom copyright & legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
           <div>{t('footer.copyright')}</div>
           <div className="flex items-center gap-4 text-slate-400">
             <Link to="/gioi-thieu" className="hover:text-white transition-colors">

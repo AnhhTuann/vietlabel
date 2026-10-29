@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 import {
   Cpu,
   Layers,
@@ -72,44 +73,125 @@ export const TechnologyPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#1E4384] text-white py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
-            HẠ TẦNG KỸ THUẬT & CÔNG NGHỆ
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]">
+      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-20 text-center">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
+
+        {/* Animated background rings */}
+        <motion.div
+          className="absolute -right-28 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+        />
+        <motion.div
+          className="absolute -left-20 bottom-0 -z-10 h-80 w-80 rounded-full border border-white/10"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${15 + i * 14}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 inline-block">
+              HẠ TẦNG KỸ THUẬT & CÔNG NGHỆ
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
             Trang thiết bị máy móc hiện đại bậc nhất
-          </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]">
+            <motion.span
+              className="mt-3 block h-1.5 w-24 mx-auto rounded-full bg-[#e44b59]"
+              initial={{ width: 0 }}
+              animate={{ width: 96 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            />
+          </motion.h1>
+
+          <motion.p
+            className="mt-5 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
             Hơn 50 thiết bị chuyên dụng nhập khẩu mới 100% từ Đức, Thụy Sĩ, Nhật Bản tạo nên dây chuyền sản xuất tự động hóa đồng bộ từ khâu chế bản đến xuất xưởng.
-          </p>
+          </motion.p>
         </div>
       </section>
 
       {/* Production Stepper */}
       <section className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="QUY TRÌNH SẢN XUẤT"
-            title="Quy trình 6 bước khép kín đạt chuẩn G7 & ISO"
-            subtitle="Mỗi công đoạn đều có quy chuẩn kỹ thuật (SOP) rõ ràng và hồ sơ giám sát chất lượng riêng biệt"
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionTitle
+              kicker="QUY TRÌNH SẢN XUẤT"
+              title="Quy trình 6 bước khép kín đạt chuẩn G7 & ISO"
+              subtitle="Mỗi công đoạn đều có quy chuẩn kỹ thuật (SOP) rõ ràng và hồ sơ giám sát chất lượng riêng biệt"
+            />
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {steps.map((st) => (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+            {steps.map((st, i) => (
+              <motion.div
                 key={st.step}
-                className="relative p-6 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-lg transition-all"
+                className="relative p-6 rounded-2xl bg-[#FAFAFC] border border-slate-200 hover:shadow-xl hover:border-[#1E4384]/30 transition-all duration-300 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ y: -6 }}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl font-black font-mono text-[#BE1E2D] tracking-tight">
+                  <motion.span
+                    className="text-3xl font-black font-mono text-[#BE1E2D] tracking-tight group-hover:scale-110 transition-transform origin-left inline-block"
+                  >
                     {st.step}
-                  </span>
-                  <div className="w-2 h-2 rounded-full bg-[#1E4384]" />
+                  </motion.span>
+                  <motion.div
+                    className="w-2.5 h-2.5 rounded-full bg-[#1E4384]"
+                    animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                  />
                 </div>
-                <h3 className="text-base font-bold text-[#1E4384] mb-2">{st.title}</h3>
+                <h3 className="text-base font-bold text-[#1E4384] mb-2 group-hover:text-[#BE1E2D] transition-colors">
+                  {st.title}
+                </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">{st.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -118,38 +200,56 @@ export const TechnologyPage: React.FC = () => {
       {/* Machinery Fleet Table & Cards */}
       <section className="py-20 bg-[#F5F7FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="DANH MỤC THIẾT BỊ"
-            title="Hệ thống máy móc chủ lực tại nhà máy"
-            subtitle="Nhấp vào hình ảnh để xem chi tiết thông số kỹ thuật và độ phân giải cao"
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionTitle
+              kicker="DANH MỤC THIẾT BỊ"
+              title="Hệ thống máy móc chủ lực tại nhà máy"
+              subtitle="Nhấp vào hình ảnh để xem chi tiết thông số kỹ thuật và độ phân giải cao"
+            />
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
             {MACHINES_LIST.map((m, idx) => (
-              <div
+              <motion.div
                 key={m.id}
-                className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all"
+                className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-2xl hover:border-[#1E4384]/20 transition-all duration-300 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6 }}
               >
                 <div
-                  className="relative aspect-[16/9] bg-slate-900 cursor-pointer group"
+                  className="relative aspect-[16/9] bg-slate-900 cursor-pointer overflow-hidden"
                   onClick={() => {
                     setActiveIdx(idx);
                     setLightboxOpen(true);
                   }}
                 >
-                  <img
+                  <motion.img
                     src={m.image}
                     alt={m.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                     loading="lazy"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.4 }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm text-white group-hover:bg-[#BE1E2D] transition-colors">
+                    <motion.div
+                      className="p-3 rounded-full bg-white/20 backdrop-blur-sm text-white group-hover:bg-[#BE1E2D] transition-colors"
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <ZoomIn className="w-6 h-6" />
-                    </div>
+                    </motion.div>
                   </div>
-                  <div className="absolute top-3 left-3 bg-[#1E4384] text-white text-[10px] font-bold px-2.5 py-1 rounded">
+                  <div className="absolute top-3 left-3 bg-[#1E4384]/90 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded shadow-sm">
                     {m.origin}
                   </div>
                 </div>
@@ -158,7 +258,9 @@ export const TechnologyPage: React.FC = () => {
                   <div className="text-xs font-bold text-[#BE1E2D] uppercase tracking-wider">
                     {currentLang === 'vi' ? m.categoryVi : m.categoryEn}
                   </div>
-                  <h3 className="text-lg font-bold text-[#1E4384] mt-1">{m.name}</h3>
+                  <h3 className="text-lg font-bold text-[#1E4384] mt-1 group-hover:text-[#BE1E2D] transition-colors">
+                    {m.name}
+                  </h3>
                   <div className="mt-2 text-xs font-mono font-semibold text-slate-500">
                     Model: {m.model} | Công suất: {m.capacityVi}
                   </div>
@@ -176,19 +278,26 @@ export const TechnologyPage: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           <div className="mt-16 text-center">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => onOpenQuoteModal()}
-              icon={<ArrowRight className="w-5 h-5" />}
+            <motion.div
+              className="inline-block"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Đặt lịch tham quan nhà máy thực tế
-            </Button>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => onOpenQuoteModal()}
+                icon={<ArrowRight className="w-5 h-5" />}
+                className="shadow-xl shadow-red-950/20"
+              >
+                Đặt lịch tham quan nhà máy thực tế
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>

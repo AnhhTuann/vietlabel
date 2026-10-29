@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 import { Calendar, Clock, ArrowRight, Search, Newspaper } from 'lucide-react';
 import { SEO } from '../lib/seo';
 import { api } from '../services/api';
@@ -85,17 +86,78 @@ export const NewsPage: React.FC = () => {
       />
 
       {/* Header */}
-      <section className="bg-[#1E4384] text-white py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
-            TIN TỨC & GÓC NHÌN CHUYÊN GIA
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]">
+      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-20 text-center">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
+
+        {/* Animated background rings */}
+        <motion.div
+          className="absolute -right-24 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+        />
+        <motion.div
+          className="absolute -left-20 bottom-0 -z-10 h-80 w-80 rounded-full border border-white/10"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${12 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 inline-block">
+              TIN TỨC & GÓC NHÌN CHUYÊN GIA
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
             Thông tin ngành & Hoạt động doanh nghiệp
-          </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <motion.span
+              className="mt-3 block h-1.5 w-24 mx-auto rounded-full bg-[#e44b59]"
+              initial={{ width: 0 }}
+              animate={{ width: 96 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            />
+          </motion.h1>
+
+          <motion.p
+            className="mt-5 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
             Chia sẻ kiến thức kỹ thuật in ấn, cập nhật xu hướng bao bì xanh toàn cầu và các dự án thiết kế tem nhãn tiêu biểu của Vietlabel.
-          </p>
+          </motion.p>
         </div>
       </section>
 
@@ -105,7 +167,7 @@ export const NewsPage: React.FC = () => {
           {/* Functional Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-xl">
             {categories.map((cat) => (
-              <button
+              <motion.button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
@@ -113,9 +175,10 @@ export const NewsPage: React.FC = () => {
                     ? 'bg-white text-[#1E4384] shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
+                whileTap={{ scale: 0.95 }}
               >
                 {currentLang === 'vi' ? cat.labelVi : cat.labelEn}
-              </button>
+              </motion.button>
             ))}
           </div>
 
@@ -126,7 +189,7 @@ export const NewsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm bài viết..."
-              className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-1.5 text-xs focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384]"
+              className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-1.5 text-xs focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] transition-all"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           </div>
@@ -144,22 +207,29 @@ export const NewsPage: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <article
+              {filteredPosts.map((post, idx) => (
+                <motion.article
                   key={post.id}
-                  className="group flex flex-col justify-between rounded-2xl bg-white border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+                  className="group flex flex-col justify-between rounded-2xl bg-white border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
+                  whileHover={{ y: -6 }}
                 >
                   <div>
                     <Link
                       to={`/tin-tuc/${post.slug}`}
                       className="block relative aspect-[16/10] overflow-hidden bg-slate-100"
                     >
-                      <img
+                      <motion.img
                         src={post.image}
                         alt={currentLang === 'vi' ? post.titleVi : post.titleEn}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                         loading="lazy"
+                        whileHover={{ scale: 1.08 }}
+                        transition={{ duration: 0.4 }}
                       />
                       <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider backdrop-blur-xs">
                         {currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}
@@ -194,13 +264,13 @@ export const NewsPage: React.FC = () => {
                   <div className="px-6 pb-6 pt-0">
                     <Link
                       to={`/tin-tuc/${post.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors group/link"
                     >
                       <span>Xem toàn bộ bài viết</span>
-                      <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
                     </Link>
                   </div>
-                </article>
+                </motion.article>
               ))}
             </div>
           )}

@@ -11,6 +11,7 @@ export default defineConfig(() => {
         '@': path.resolve(import.meta.dirname, '.'),
       },
     },
+    clearScreen: false,
     build: {
       rollupOptions: {
         output: {
@@ -31,6 +32,13 @@ export default defineConfig(() => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      // Force no cache
+      fs: {
+        strict: false,
+      },
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react-router-dom', 'motion'],
     },
   };
 });

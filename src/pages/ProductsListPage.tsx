@@ -15,6 +15,7 @@ import { SEO } from '../lib/seo';
 import { PRODUCT_CATEGORIES, PRODUCTS_LIST, type ProductItem } from '../data/products';
 import { LABEL_SOLUTIONS } from '../data/labelSolutions';
 import { Button } from '../components/ui/Button';
+import { motion } from 'motion/react';
 
 export const ProductsListPage: React.FC = () => {
   const { danhMuc } = useParams<{ danhMuc?: string }>();
@@ -74,10 +75,45 @@ export const ProductsListPage: React.FC = () => {
       />
 
       {/* Hero Header */}
-      <section className="bg-[#1E4384] text-white py-14 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-16">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
+
+        {/* Animated background rings */}
+        <motion.div
+          className="absolute -right-24 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${15 + i * 16}%`,
+              top: `${25 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -25, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+            >
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">
                 <Link to="/" className="hover:underline">Trang chủ</Link>
                 <span>/</span>
@@ -96,24 +132,38 @@ export const ProductsListPage: React.FC = () => {
                   ? (currentLang === 'vi' ? currentCategory.nameVi : currentCategory.nameEn)
                   : 'Danh Mục Sản Phẩm Bao Bì Giấy Toàn Diện'}
               </h1>
-              <p className="mt-2 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <motion.span
+                className="mt-2 block h-1 w-20 rounded-full bg-[#e44b59]"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              />
+              <p className="mt-3 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
                 {currentCategory
                   ? (currentLang === 'vi' ? currentCategory.shortDescVi : currentCategory.shortDescEn)
                   : 'Cung ứng trọn gói bao bì hộp giấy, túi giấy, thùng carton, tem nhãn chất lượng cao cho các ngành F&B, Dược mỹ phẩm và Tiêu dùng.'}
               </p>
-            </div>
+            </motion.div>
 
             {/* Quick Quote trigger */}
-            <div className="shrink-0">
+            <motion.div
+              className="shrink-0"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 variant="primary"
                 size="md"
                 onClick={() => onOpenQuoteModal()}
                 icon={<Send className="w-4 h-4" />}
+                className="shadow-lg shadow-blue-950/40"
               >
                 Gửi quy cách nhận báo giá
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -230,18 +280,29 @@ export const ProductsListPage: React.FC = () => {
                     <p className="text-sm text-slate-500 mt-2">12 giải pháp tem nhãn chuyên dụng được thiết kế riêng biệt để đáp ứng tiêu chuẩn khắt khe của từng ngành công nghiệp.</p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {LABEL_SOLUTIONS.map((solution) => (
-                      <div key={solution.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-xl hover:border-[#BE1E2D]/30 transition-all duration-300 group flex flex-col h-full">
-                        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#1E4384] mb-4 group-hover:bg-[#BE1E2D] group-hover:text-white transition-colors">
+                    {LABEL_SOLUTIONS.map((solution, sIdx) => (
+                      <motion.div
+                        key={solution.id}
+                        className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-xl hover:border-[#BE1E2D]/30 transition-all duration-300 group flex flex-col h-full cursor-pointer"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: (sIdx % 3) * 0.08 }}
+                        whileHover={{ y: -6, scale: 1.02 }}
+                      >
+                        <motion.div
+                          className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#1E4384] mb-4 group-hover:bg-[#BE1E2D] group-hover:text-white transition-colors"
+                          whileHover={{ rotate: 12, scale: 1.1 }}
+                        >
                           <solution.icon className="w-5 h-5" />
-                        </div>
+                        </motion.div>
                         <h3 className="text-xs sm:text-sm font-bold text-slate-900 mb-2 leading-snug group-hover:text-[#BE1E2D] transition-colors line-clamp-2">
                           {currentLang === 'vi' ? solution.titleVi : solution.titleEn}
                         </h3>
                         <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed line-clamp-4 mt-auto">
                           {currentLang === 'vi' ? solution.descVi : solution.descEn}
                         </p>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -291,10 +352,15 @@ export const ProductsListPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {paginatedProducts.map((prod) => (
-                    <div
+                  {paginatedProducts.map((prod, pIdx) => (
+                    <motion.div
                       key={prod.id}
-                      className="group flex flex-col justify-between rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                      className="group flex flex-col justify-between rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300"
+                      initial={{ opacity: 0, y: 25 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: (pIdx % 6) * 0.06 }}
+                      whileHover={{ y: -6 }}
                     >
                       <div>
                         {/* Image banner */}
@@ -302,12 +368,14 @@ export const ProductsListPage: React.FC = () => {
                           to={`/san-pham/${prod.categorySlug}/${prod.slug}`}
                           className="block relative aspect-[4/3] bg-slate-100 overflow-hidden"
                         >
-                          <img
+                          <motion.img
                             src={prod.heroImage}
                             alt={currentLang === 'vi' ? prod.nameVi : prod.nameEn}
-                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover object-center"
                             referrerPolicy="no-referrer"
                             loading="lazy"
+                            whileHover={{ scale: 1.08 }}
+                            transition={{ duration: 0.4 }}
                             onError={(e) => {
                               e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
                             }}
@@ -316,9 +384,13 @@ export const ProductsListPage: React.FC = () => {
                             {prod.code}
                           </div>
                           {prod.isFeatured && (
-                            <div className="absolute top-3 right-3 bg-[#BE1E2D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                            <motion.div
+                              className="absolute top-3 right-3 bg-[#BE1E2D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"
+                              animate={{ scale: [1, 1.05, 1] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            >
                               Nổi bật
-                            </div>
+                            </motion.div>
                           )}
                         </Link>
 
@@ -355,21 +427,23 @@ export const ProductsListPage: React.FC = () => {
                       <div className="p-5 pt-0 flex items-center justify-between gap-2">
                         <Link
                           to={`/san-pham/${prod.categorySlug}/${prod.slug}`}
-                          className="text-xs font-bold text-[#1E4384] hover:text-[#BE1E2D] flex items-center gap-1 transition-colors"
+                          className="text-xs font-bold text-[#1E4384] hover:text-[#BE1E2D] flex items-center gap-1 transition-colors group/link"
                         >
                           <span>Chi tiết</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
+                          <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
                         </Link>
 
-                        <Button
-                          variant="primary"
-                          size="sm"
-                          onClick={() => onOpenQuoteModal(prod.nameVi)}
-                        >
-                          Báo giá
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => onOpenQuoteModal(prod.nameVi)}
+                          >
+                            Báo giá
+                          </Button>
+                        </motion.div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               )}

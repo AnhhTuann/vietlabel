@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 import {
   MapPin,
   Phone,
@@ -95,47 +96,114 @@ export const ContactPage: React.FC = () => {
       />
 
       {/* Header */}
-      <section className="bg-[#1E4384] text-white py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
-            KẾT NỐI VỚI CHÚNG TÔI
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]">
+      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-20 text-center">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
+
+        {/* Animated background rings */}
+        <motion.div
+          className="absolute -right-24 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+        />
+        <motion.div
+          className="absolute -left-20 bottom-0 -z-10 h-80 w-80 rounded-full border border-white/10"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${12 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 inline-block">
+              KẾT NỐI VỚI CHÚNG TÔI
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
             Tư vấn giải pháp & Báo giá nhà máy B2B
-          </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <motion.span
+              className="mt-3 block h-1.5 w-24 mx-auto rounded-full bg-[#e44b59]"
+              initial={{ width: 0 }}
+              animate={{ width: 96 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            />
+          </motion.h1>
+
+          <motion.p
+            className="mt-5 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
             Đội ngũ chuyên viên tư vấn bao bì và kỹ sư kết cấu của Vietlabel luôn sẵn sàng đồng hành cùng doanh nghiệp bạn.
-          </p>
+          </motion.p>
         </div>
       </section>
 
       {/* Main Form & Info Section */}
-      <section className="py-16 bg-[#FAFAFC]">
+      <section className="py-20 bg-[#FAFAFC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Info Column (5 cols) */}
-            <div className="lg:col-span-5 space-y-6">
+            <motion.div
+              className="lg:col-span-5 space-y-6"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
                 <h3 className="text-xl font-bold text-[#1E4384]">Trụ sở & Nhà máy sản xuất</h3>
 
                 <div className="space-y-4 text-xs sm:text-sm text-slate-700">
-                  <div className="flex items-start gap-3">
+                  <motion.div className="flex items-start gap-3" whileHover={{ x: 3 }}>
                     <MapPin className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="block text-slate-900 font-semibold">Trụ sở & Nhà máy Vietlabel:</strong>
                       <span>266/6 Lê Thị Riêng, Phường Thới An, TP. Hồ Chí Minh, Việt Nam</span>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-3">
+                  <motion.div className="flex items-start gap-3" whileHover={{ x: 3 }}>
                     <MapPin className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                     <div>
                       <strong className="block text-slate-900 font-semibold">Văn phòng kinh doanh & Dự án:</strong>
                       <span>266/6 Lê Thị Riêng, Phường Thới An, TP. Hồ Chí Minh</span>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-3">
+                  <motion.div className="flex items-start gap-3" whileHover={{ x: 3 }}>
                     <Phone className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="block text-slate-900 font-semibold">Hotline dự toán 24/7:</strong>
@@ -147,9 +215,9 @@ export const ContactPage: React.FC = () => {
                         (028) 3765 8888
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-3">
+                  <motion.div className="flex items-start gap-3" whileHover={{ x: 3 }}>
                     <Mail className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
                       <strong className="block text-slate-900 font-semibold">Email tiếp nhận yêu cầu:</strong>
@@ -161,15 +229,15 @@ export const ContactPage: React.FC = () => {
                         baogia@vietlabel.com.vn
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-3">
+                  <motion.div className="flex items-start gap-3" whileHover={{ x: 3 }}>
                     <Clock className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                     <div>
                       <strong className="block text-slate-900 font-semibold">Giờ làm việc:</strong>
                       <span>Thứ Hai - Thứ Bảy: 8:00 - 17:30 (Chủ Nhật nghỉ)</span>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
@@ -181,23 +249,34 @@ export const ContactPage: React.FC = () => {
                 </h3>
                 <div className="space-y-3 text-xs text-slate-600 divide-y divide-slate-100">
                   {faqs.map((f, i) => (
-                    <div key={i} className="pt-3 first:pt-0">
+                    <motion.div key={i} className="pt-3 first:pt-0" whileHover={{ x: 2 }}>
                       <strong className="block text-slate-800 font-semibold mb-1">{f.q}</strong>
                       <p className="leading-relaxed">{f.a}</p>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Form Column (7 cols) */}
-            <div className="lg:col-span-7">
+            <motion.div
+              className="lg:col-span-7"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="rounded-3xl bg-white border border-slate-200 p-8 sm:p-10 shadow-xl">
                 {submitResult?.success ? (
                   <div className="py-12 text-center">
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 mb-4">
+                    <motion.div
+                      className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 mb-4"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 200 }}
+                    >
                       <CheckCircle2 className="h-10 w-10" />
-                    </div>
+                    </motion.div>
                     <h3 className="text-2xl font-bold text-slate-900">
                       Gửi thông tin thành công!
                     </h3>
@@ -210,9 +289,11 @@ export const ContactPage: React.FC = () => {
                       </div>
                     )}
                     <div className="mt-6">
-                      <Button variant="primary" onClick={() => setSubmitResult(null)}>
-                        Gửi thêm yêu cầu
-                      </Button>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+                        <Button variant="primary" onClick={() => setSubmitResult(null)}>
+                          Gửi thêm yêu cầu
+                        </Button>
+                      </motion.div>
                     </div>
                   </div>
                 ) : (
@@ -372,11 +453,17 @@ export const ContactPage: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Google Maps Iframe */}
-          <div className="mt-16 rounded-3xl overflow-hidden border border-slate-200 shadow-md">
+          <motion.div
+            className="mt-16 rounded-3xl overflow-hidden border border-slate-200 shadow-md"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="bg-[#1E4384] text-white p-4 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#BE1E2D]" />
               <span>Bản đồ vị trí Trụ sở & Nhà máy Vietlabel (Lê Thị Riêng, Q. 12, TP. HCM)</span>
@@ -393,7 +480,7 @@ export const ContactPage: React.FC = () => {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

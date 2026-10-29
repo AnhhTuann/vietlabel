@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Briefcase,
   MapPin,
@@ -189,44 +190,116 @@ export const CareersPage: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="bg-[#1E4384] text-white py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 inline-block">
-            CƠ HỘI NGHỀ NGHIỆP
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]">
+      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-20 text-center">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
+
+        {/* Animated background rings */}
+        <motion.div
+          className="absolute -right-24 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+        />
+        <motion.div
+          className="absolute -left-20 bottom-0 -z-10 h-80 w-80 rounded-full border border-white/10"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${12 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 inline-block">
+              CƠ HỘI NGHỀ NGHIỆP
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight [text-wrap:balance]"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
             Cùng Vietlabel kiến tạo tương lai ngành bao bì & tem nhãn
-          </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <motion.span
+              className="mt-3 block h-1.5 w-24 mx-auto rounded-full bg-[#e44b59]"
+              initial={{ width: 0 }}
+              animate={{ width: 96 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            />
+          </motion.h1>
+
+          <motion.p
+            className="mt-5 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:balance]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
             Chúng tôi luôn tìm kiếm những cộng sự đam mê, tận tâm và không ngừng sáng tạo để cùng mang đến những giải pháp đóng gói đẳng cấp quốc tế.
-          </p>
+          </motion.p>
         </div>
       </section>
 
       {/* Jobs Accordion Section */}
-      <section className="py-16 bg-white border-b border-slate-200">
+      <section className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="VỊ TRÍ TUYỂN DỤNG HIỆN TẠI"
-            title="Các cơ hội nghề nghiệp đang mở"
-            subtitle="Đãi ngộ cạnh tranh, môi trường làm việc chuẩn 5S hiện đại và cơ hội thăng tiến rộng mở"
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionTitle
+              kicker="VỊ TRÍ TUYỂN DỤNG HIỆN TẠI"
+              title="Các cơ hội nghề nghiệp đang mở"
+              subtitle="Đãi ngộ cạnh tranh, môi trường làm việc chuẩn 5S hiện đại và cơ hội thăng tiến rộng mở"
+            />
+          </motion.div>
 
           {jobsList.length === 0 ? (
             <p className="rounded-2xl border border-slate-200 bg-white px-6 py-8 text-center text-sm text-slate-600">
               Hiện chưa có vị trí tuyển dụng đang mở. Vui lòng quay lại sau.
             </p>
-          ) : <div className="space-y-4">
-            {jobsList.map((job) => {
+          ) : <div className="space-y-4 mt-10">
+            {jobsList.map((job, idx) => {
               const isExpanded = expandedJobId === job.id;
               return (
-                <div
+                <motion.div
                   key={job.id}
                   className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                     isExpanded
-                      ? 'border-[#1E4384] bg-white shadow-lg'
-                      : 'border-slate-200 bg-[#FAFAFC] hover:border-slate-300'
+                      ? 'border-[#1E4384] bg-white shadow-xl ring-1 ring-[#1E4384]/15'
+                      : 'border-slate-200 bg-[#FAFAFC] hover:border-slate-300 hover:shadow-md'
                   }`}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: idx * 0.08 }}
                 >
                   {/* Header clickable summary */}
                   <div
@@ -253,73 +326,92 @@ export const CareersPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleApplyClick(job);
-                        }}
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleApplyClick(job);
+                          }}
+                        >
+                          Ứng tuyển
+                        </Button>
+                      </motion.div>
+                      <motion.div
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.25 }}
                       >
-                        Ứng tuyển
-                      </Button>
-                      <ChevronDown
-                        className={`w-5 h-5 text-slate-400 transition-transform ${
-                          isExpanded ? 'rotate-180 text-[#1E4384]' : ''
-                        }`}
-                      />
+                        <ChevronDown
+                          className={`w-5 h-5 ${
+                            isExpanded ? 'text-[#1E4384]' : 'text-slate-400'
+                          }`}
+                        />
+                      </motion.div>
                     </div>
                   </div>
 
                   {/* Expanded details */}
-                  {isExpanded && (
-                    <div className="px-6 pb-6 pt-2 border-t border-slate-100 space-y-5 text-xs sm:text-sm text-slate-700">
-                      <div>
-                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
-                          Mô tả công việc:
-                        </h4>
-                        <ul className="space-y-1.5 list-disc pl-5">
-                          {job.responsibilitiesVi.map((res, idx) => (
-                            <li key={idx}>{res}</li>
-                          ))}
-                        </ul>
-                      </div>
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        className="overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: 'easeInOut' }}
+                      >
+                        <div className="px-6 pb-6 pt-2 border-t border-slate-100 space-y-5 text-xs sm:text-sm text-slate-700">
+                          <div>
+                            <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
+                              Mô tả công việc:
+                            </h4>
+                            <ul className="space-y-1.5 list-disc pl-5">
+                              {job.responsibilitiesVi.map((res, rIdx) => (
+                                <li key={rIdx}>{res}</li>
+                              ))}
+                            </ul>
+                          </div>
 
-                      <div>
-                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
-                          Yêu cầu ứng viên:
-                        </h4>
-                        <ul className="space-y-1.5 list-disc pl-5">
-                          {job.requirementsVi.map((req, idx) => (
-                            <li key={idx}>{req}</li>
-                          ))}
-                        </ul>
-                      </div>
+                          <div>
+                            <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
+                              Yêu cầu ứng viên:
+                            </h4>
+                            <ul className="space-y-1.5 list-disc pl-5">
+                              {job.requirementsVi.map((req, reqIdx) => (
+                                <li key={reqIdx}>{req}</li>
+                              ))}
+                            </ul>
+                          </div>
 
-                      <div>
-                        <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
-                          Quyền lợi được hưởng:
-                        </h4>
-                        <ul className="space-y-1.5 list-disc pl-5">
-                          {job.benefitsVi.map((ben, idx) => (
-                            <li key={idx}>{ben}</li>
-                          ))}
-                        </ul>
-                      </div>
+                          <div>
+                            <h4 className="font-bold text-[#1E4384] uppercase text-xs tracking-wider mb-2">
+                              Quyền lợi được hưởng:
+                            </h4>
+                            <ul className="space-y-1.5 list-disc pl-5">
+                              {job.benefitsVi.map((ben, bIdx) => (
+                                <li key={bIdx}>{ben}</li>
+                              ))}
+                            </ul>
+                          </div>
 
-                      <div className="pt-2 flex items-center justify-between text-xs text-slate-500">
-                        <span>Hạn nộp hồ sơ: <strong>{job.deadline}</strong></span>
-                        <Button
-                          variant="navy"
-                          size="sm"
-                          onClick={() => handleApplyClick(job)}
-                        >
-                          Điền form ứng tuyển vị trí này
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                          <div className="pt-2 flex items-center justify-between text-xs text-slate-500">
+                            <span>Hạn nộp hồ sơ: <strong>{job.deadline}</strong></span>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                              <Button
+                                variant="navy"
+                                size="sm"
+                                onClick={() => handleApplyClick(job)}
+                              >
+                                Điền form ứng tuyển vị trí này
+                              </Button>
+                            </motion.div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               );
             })}
           </div>}
@@ -329,12 +421,28 @@ export const CareersPage: React.FC = () => {
       {/* Online Application Form with CV Upload */}
       <section id="ung-tuyen-form" className="py-20 bg-[#F5F7FA]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-white border border-slate-200 p-8 sm:p-10 shadow-xl">
+          <motion.div
+            className="rounded-3xl bg-white border border-slate-200 p-8 sm:p-10 shadow-xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             {isSuccess ? (
-              <div className="py-8 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 mb-4">
+              <motion.div
+                className="py-8 text-center"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <motion.div
+                  className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 mb-4 shadow-sm"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
+                >
                   <CheckCircle2 className="h-10 w-10" />
-                </div>
+                </motion.div>
                 <h3 className="text-xl font-bold text-slate-900">
                   Nộp hồ sơ ứng tuyển thành công!
                 </h3>
@@ -342,11 +450,13 @@ export const CareersPage: React.FC = () => {
                   Cảm ơn bạn đã quan tâm đến cơ hội nghề nghiệp tại Vietlabel. Bộ phận Tuyển dụng sẽ thẩm định hồ sơ và liên hệ phỏng vấn trong 3-5 ngày làm việc.
                 </p>
                 <div className="mt-6">
-                  <Button variant="primary" onClick={() => setIsSuccess(false)}>
-                    Ứng tuyển vị trí khác
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+                    <Button variant="primary" onClick={() => setIsSuccess(false)}>
+                      Ứng tuyển vị trí khác
+                    </Button>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             ) : (
               <div>
                 <div className="mb-6">
@@ -494,7 +604,7 @@ export const CareersPage: React.FC = () => {
                 </form>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

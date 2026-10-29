@@ -449,49 +449,85 @@ export const AboutPage: React.FC = () => {
 
       <section ref={historyRef} className="border-y border-[#e4eaf3] bg-[#f4f7fb] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 max-w-2xl sm:mb-14">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#be1e2d]">
+          <motion.div 
+            className="mb-10 max-w-2xl sm:mb-14"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.span 
+              className="text-xs font-bold uppercase tracking-[0.2em] text-[#be1e2d]"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
               {t('about_page.history_kicker')}
-            </span>
+            </motion.span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#102d58] [text-wrap:balance] sm:text-4xl">
               {t('about_page.history_title')}
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
               {t('about_page.history_subtitle')}
             </p>
-          </div>
+          </motion.div>
 
-          <div
+          <motion.div
             className="history-timeline relative mx-auto grid max-w-4xl gap-4 sm:gap-5"
             style={{
               '--timeline-progress': `${Math.max(activeMilestone, 0) / Math.max(COMPANY_MILESTONES.length - 1, 1) * 100}%`,
             } as React.CSSProperties}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <div className="history-timeline-track" aria-hidden="true">
-              <span className="history-timeline-progress" />
-              <span className="history-timeline-arrow">
+              <motion.span 
+                className="history-timeline-progress"
+                style={{ height: 'var(--timeline-progress)' }}
+              />
+              <motion.span 
+                className="history-timeline-arrow"
+                animate={{ y: 'var(--timeline-progress)' }}
+                transition={{ duration: 0.5 }}
+              >
                 <ArrowRight className="h-4 w-4" />
-              </span>
+              </motion.span>
             </div>
             {COMPANY_MILESTONES.map((milestone, index) => (
-              <div
+              <motion.div
                 key={milestone.year}
                 className={`history-timeline-item group relative pl-12 ${index <= activeMilestone ? 'is-reached' : ''} ${index === activeMilestone ? 'is-active' : ''}`}
                 style={{ '--milestone-color': milestoneColors[index % milestoneColors.length] } as React.CSSProperties}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <span className="history-timeline-node" aria-hidden="true">
+                <motion.span 
+                  className="history-timeline-node" 
+                  aria-hidden="true"
+                  animate={index === activeMilestone ? { scale: [1, 1.25, 1] } : {}}
+                  transition={{ duration: 0.5 }}
+                >
                   <span />
-                </span>
-                <button
+                </motion.span>
+                <motion.button
                   type="button"
                   onClick={() => setActiveMilestone(index)}
                   aria-pressed={index === activeMilestone}
                   className="history-timeline-card w-full rounded-2xl border border-[#e0e7f1] bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e4384] focus-visible:ring-offset-2 sm:p-6"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="history-timeline-year text-lg font-extrabold tracking-tight sm:text-xl">
+                    <motion.span 
+                      className="history-timeline-year text-lg font-extrabold tracking-tight sm:text-xl"
+                      animate={index === activeMilestone ? { scale: [1, 1.1, 1] } : {}}
+                      transition={{ duration: 0.3 }}
+                    >
                       {milestone.year}
-                    </span>
+                    </motion.span>
                     <h3 className="text-sm font-bold leading-relaxed text-[#1e4384] sm:text-base">
                       {currentLang === 'vi' ? milestone.titleVi : milestone.titleEn}
                     </h3>
@@ -499,46 +535,64 @@ export const AboutPage: React.FC = () => {
                   <p className="mt-3 text-sm leading-7 text-slate-600">
                     {currentLang === 'vi' ? milestone.descVi : milestone.descEn}
                   </p>
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       <section id="doi-ngu" className="bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="BAN ĐIỀU HÀNH"
-            title="Đội ngũ lãnh đạo giàu kinh nghiệm"
-            subtitle="Hội tụ các chuyên gia đầu ngành trong lĩnh vực in ấn, quản trị chuỗi cung ứng và kỹ thuật bao bì công nghiệp"
-            className="mb-9 max-w-2xl sm:mb-12"
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionTitle
+              kicker="BAN ĐIỀU HÀNH"
+              title="Đội ngũ lãnh đạo giàu kinh nghiệm"
+              subtitle="Hội tụ các chuyên gia đầu ngành trong lĩnh vực in ấn, quản trị chuỗi cung ứng và kỹ thuật bao bì công nghiệp"
+              className="mb-9 max-w-2xl sm:mb-12"
+            />
+          </motion.div>
 
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
-            {LEADERSHIP_TEAM.map((member) => (
-              <article
+            {LEADERSHIP_TEAM.map((member, index) => (
+              <motion.article
                 key={member.name}
                 className="about-card group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-center shadow-[0_4px_16px_rgba(16,35,61,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1e4384]/25 hover:shadow-[0_12px_28px_rgba(30,67,132,0.12)]"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-200">
-                  <img
+                  <motion.img
                     src={member.avatar}
                     alt={member.name}
-                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                     loading="lazy"
                     decoding="async"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.4 }}
                   />
                 </div>
                 <div className="px-4 py-4 sm:px-5 sm:py-5">
-                  <h3 className="text-sm font-extrabold uppercase leading-snug tracking-wide text-[#1e4384] transition-colors group-hover:text-[#be1e2d] sm:text-base">
+                  <motion.h3 
+                    className="text-sm font-extrabold uppercase leading-snug tracking-wide text-[#1e4384] transition-colors group-hover:text-[#be1e2d] sm:text-base"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     {member.name}
-                  </h3>
+                  </motion.h3>
                   <p className="mt-1.5 text-xs font-semibold leading-snug text-[#be1e2d] sm:text-sm">
                     {currentLang === 'vi' ? member.roleVi : member.roleEn}
                   </p>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
@@ -546,16 +600,23 @@ export const AboutPage: React.FC = () => {
 
       <section id="chung-nhan" className="bg-[#f6f8fc] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            kicker="CHỨNG NHẬN QUỐC TẾ"
-            title="Minh chứng cho chất lượng và uy tín"
-            subtitle="Hệ thống quản lý chất lượng và môi trường được kiểm định bởi các tổ chức uy tín hàng đầu thế giới"
-            className="mb-9 sm:mb-12"
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionTitle
+              kicker="CHỨNG NHẬN QUỐC TẾ"
+              title="Minh chứng cho chất lượng và uy tín"
+              subtitle="Hệ thống quản lý chất lượng và môi trường được kiểm định bởi các tổ chức uy tín hàng đầu thế giới"
+              className="mb-9 sm:mb-12"
+            />
+          </motion.div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {CERTIFICATES.map((certificate, index) => (
-              <button
+              <motion.button
                 key={certificate.id}
                 type="button"
                 onClick={() => {
@@ -564,10 +625,20 @@ export const AboutPage: React.FC = () => {
                 }}
                 className="about-card group relative flex min-h-52 flex-col items-start rounded-2xl border border-[#dfe7f3] bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1e4384]/25 hover:shadow-xl hover:shadow-blue-950/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e4384] focus-visible:ring-offset-2"
                 aria-label={`${certificate.name} — ${certificate.descriptionVi}`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#fbe9ec] text-[#be1e2d] transition-all duration-300 group-hover:bg-[#be1e2d] group-hover:text-white">
+                <motion.span 
+                  className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#fbe9ec] text-[#be1e2d] transition-all duration-300 group-hover:bg-[#be1e2d] group-hover:text-white"
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <Award className="h-5 w-5" aria-hidden="true" />
-                </span>
+                </motion.span>
                 <span className="text-sm font-extrabold leading-snug text-[#1e4384]">
                   {certificate.name}
                 </span>
@@ -577,22 +648,45 @@ export const AboutPage: React.FC = () => {
                 <span className="mt-3 line-clamp-2 text-xs leading-5 text-slate-600">
                   {certificate.descriptionVi}
                 </span>
-                <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-[#be1e2d] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden="true" />
-              </button>
+                <motion.div 
+                  className="absolute bottom-5 right-5"
+                  initial={{ x: -10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                >
+                  <ArrowRight className="h-4 w-4 text-[#be1e2d] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" aria-hidden="true" />
+                </motion.div>
+              </motion.button>
             ))}
           </div>
 
-          <div
+          <motion.div
             id="ho-so-nang-luc"
             className="relative mt-12 overflow-hidden rounded-3xl bg-[#102d58] p-6 text-white shadow-xl shadow-blue-950/15 sm:mt-16 sm:p-10 lg:p-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <div className="absolute -right-16 -top-28 h-80 w-80 rounded-full border border-white/10" />
-            <div className="absolute -right-3 -top-16 h-56 w-56 rounded-full border border-white/10" />
+            <motion.div 
+              className="absolute -right-16 -top-28 h-80 w-80 rounded-full border border-white/10"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div 
+              className="absolute -right-3 -top-16 h-56 w-56 rounded-full border border-white/10"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            />
             <div className="relative flex flex-col items-start justify-between gap-7 md:flex-row md:items-center">
               <div className="max-w-2xl">
-                <span className="text-xs font-bold uppercase tracking-[0.18em] text-amber-300">
+                <motion.span 
+                  className="text-xs font-bold uppercase tracking-[0.18em] text-amber-300"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
                   TÀI LIỆU NĂNG LỰC DOANH NGHIỆP
-                </span>
+                </motion.span>
                 <h2 className="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-white [text-wrap:balance] sm:text-3xl">
                   Tải về Hồ sơ năng lực Vietlabel (Company Profile 2026)
                 </h2>
@@ -600,17 +694,22 @@ export const AboutPage: React.FC = () => {
                   Bao gồm chi tiết danh mục máy móc thiết bị, năng lực sản xuất theo ca, bảng thông số kỹ thuật và danh sách đối tác chiến lược.
                 </p>
               </div>
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={handleDownloadProfile}
-                icon={<Download className="h-5 w-5" />}
-                className="shrink-0 bg-white text-[#15386e] shadow-lg hover:bg-blue-50"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Tải hồ sơ PDF
-              </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={handleDownloadProfile}
+                  icon={<Download className="h-5 w-5" />}
+                  className="shrink-0 bg-white text-[#15386e] shadow-lg hover:bg-blue-50"
+                >
+                  Tải hồ sơ PDF
+                </Button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 

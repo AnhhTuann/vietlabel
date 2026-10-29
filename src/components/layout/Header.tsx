@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { PRODUCT_CATEGORIES } from '../../data/products';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
@@ -42,32 +43,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
   const getNavLinkClass = (active: boolean, hasDropdown = false) =>
     cn(
-      'relative px-[clamp(10px,0.8vw,16px)] py-2.5 text-[clamp(14px,0.9vw,16px)] font-semibold transition-colors duration-200 whitespace-nowrap tracking-[-0.01em]',
-      hasDropdown && 'flex items-center gap-1',
+      'relative px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
+      hasDropdown && 'flex items-center gap-1.5',
       active
         ? isLightHeader
-          ? 'text-[#1E4384] font-bold before:absolute before:bottom-0 before:left-2 before:right-2 before:h-[2.5px] before:rounded-full before:bg-[#BE1E2D]'
-          : 'text-white font-bold before:absolute before:bottom-0 before:left-2 before:right-2 before:h-[2.5px] before:rounded-full before:bg-[#BE1E2D]'
+          ? 'text-[#1E4384] font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gradient-to-r after:from-[#BE1E2D] after:to-[#1E4384]'
+          : 'text-white font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gradient-to-r after:from-[#BE1E2D] after:to-[#1E4384]'
         : isLightHeader
-          ? 'text-slate-600 hover:text-[#1E4384]'
-          : 'text-slate-200 hover:text-white',
+          ? 'text-slate-600 hover:text-[#1E4384] hover:bg-slate-50 rounded-lg'
+          : 'text-slate-200 hover:text-white hover:bg-white/10 rounded-lg',
     );
 
-  const getMobileNavLinkClass = (active: boolean) =>
-    cn(
-      'block px-3.5 py-2.5 text-sm font-medium rounded-lg transition-colors',
-      active
-        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
-        : 'text-slate-800 hover:text-[#1E4384] hover:bg-slate-50',
-    );
 
-  const getMobileSubNavLinkClass = (active: boolean) =>
-    cn(
-      'block px-3 py-1.5 text-xs rounded transition-colors',
-      active
-        ? 'text-[#BE1E2D] font-bold bg-red-50/70'
-        : 'text-slate-600 hover:text-[#1E4384] hover:bg-slate-50',
-    );
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === 'vi' ? 'en' : 'vi';
@@ -82,36 +69,39 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
         className={cn(
           'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
           scrolledPast || !isHome
-            ? 'bg-white/90 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)] border-b border-slate-200/80 py-4'
-            : 'bg-[#05172d] backdrop-blur-md border-b border-[#1a2d4d]/80 py-4 text-white',
+            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 py-3'
+            : 'bg-gradient-to-b from-[#0a1f38] to-[#05172d] backdrop-blur-sm border-b border-white/10 py-3 text-white',
         )}
       >
-        <div className="mx-auto w-full max-w-[1920px] px-6 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between gap-4 xl:gap-6">
-            <Link
-              to="/"
-              className="flex flex-shrink-0 items-center justify-center py-1 px-2 ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4384] rounded-xl transition-transform hover:scale-[1.02]"
+        <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-6">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              <img
-                src={scrolledPast || !isHome ? '/images/vietlabel/logo.png' : '/images/vietlabel/logo-white.png'}
-                alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
-                className="h-[50px] sm:h-[56px] lg:h-[64px] w-auto object-contain max-w-[200px] sm:max-w-[240px] lg:max-w-[280px] transition-all duration-300"
-                onError={(e) => {
-                  e.currentTarget.src = '/images/vietlabel/logo.png';
-                }}
-              />
-            </Link>
-
-            <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-center gap-1 xl:gap-2 2xl:gap-3 px-2">
               <Link
                 to="/"
-                className={getNavLinkClass(location.pathname === '/')}
+                className="flex flex-shrink-0 items-center"
               >
-                {t('nav.home')}
+                <motion.img
+                  src={scrolledPast || !isHome ? '/images/vietlabel/logo.png' : '/images/vietlabel/logo-white.png'}
+                  alt="Vietlabel"
+                  className="h-10 sm:h-12 w-auto object-contain transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/vietlabel/logo.png';
+                  }}
+                />
               </Link>
+            </motion.div>
 
-              {/* About dropdown */}
-              <div
+            <nav className="hidden lg:flex flex-1 items-center justify-center gap-1">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
                 className="relative"
                 onMouseEnter={() => handleMouseEnter('about')}
                 onMouseLeave={handleMouseLeave}
@@ -120,57 +110,72 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                   className={getNavLinkClass(location.pathname.startsWith('/gioi-thieu'), true)}
                 >
                   <span>{t('nav.about')}</span>
-                  <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+                  <motion.div
+                    animate={openDropdown === 'about' ? { rotate: 180 } : { rotate: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="w-4 h-4 opacity-60" />
+                  </motion.div>
                 </button>
 
-                {openDropdown === 'about' && (
-                  <div className="absolute top-full left-0 w-64 pt-2 shadow-xl animate-in fade-in-50 duration-150">
-                    <div className="bg-white rounded-xl shadow-lg border border-slate-200 py-2 text-slate-800">
-                      <Link
-                        to="/gioi-thieu"
-                        className={cn(
-                          'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
-                          location.pathname === '/gioi-thieu'
-                            ? 'bg-[#EEF3FF] text-[#1E4384] font-semibold'
-                            : 'hover:bg-[#EEF3FF] hover:text-[#1E4384] text-slate-700',
-                        )}
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        <Building className="w-4 h-4 text-[#1E4384]" />
-                        <span>{t('nav.about_overview')}</span>
-                      </Link>
-                      <Link
-                        to="/gioi-thieu#doi-ngu"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#EEF3FF] hover:text-[#1E4384] transition-colors"
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        <Users className="w-4 h-4 text-[#1E4384]" />
-                        <span>{t('nav.about_team')}</span>
-                      </Link>
-                      <Link
-                        to="/gioi-thieu#chung-nhan"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#EEF3FF] hover:text-[#1E4384] transition-colors"
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        <Award className="w-4 h-4 text-[#1E4384]" />
-                        <span>{t('nav.about_certifications')}</span>
-                      </Link>
-                      <Link
-                        to="/gioi-thieu#ho-so-nang-luc"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#EEF3FF] hover:text-[#1E4384] transition-colors"
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        <FileText className="w-4 h-4 text-[#1E4384]" />
-                        <span>{t('nav.about_profile')}</span>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
+                <AnimatePresence>
+                  {openDropdown === 'about' && (
+                    <motion.div
+                      className="absolute top-full left-0 w-56 pt-2 z-50"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="bg-white rounded-lg shadow-xl border border-slate-200 py-2 overflow-hidden">
+                        <Link
+                          to="/gioi-thieu"
+                          className={cn(
+                            'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                            location.pathname === '/gioi-thieu'
+                              ? 'bg-[#EEF3FF] text-[#1E4384] font-semibold'
+                              : 'hover:bg-slate-50 text-slate-700',
+                          )}
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <Building className="w-4 h-4 text-[#1E4384]" />
+                          <span>{t('nav.about_overview')}</span>
+                        </Link>
+                        <Link
+                          to="/gioi-thieu#doi-ngu"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-slate-50 text-slate-700 transition-colors"
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <Users className="w-4 h-4 text-[#1E4384]" />
+                          <span>{t('nav.about_team')}</span>
+                        </Link>
+                        <Link
+                          to="/gioi-thieu#chung-nhan"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-slate-50 text-slate-700 transition-colors"
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <Award className="w-4 h-4 text-[#1E4384]" />
+                          <span>{t('nav.about_certifications')}</span>
+                        </Link>
+                        <Link
+                          to="/gioi-thieu#ho-so-nang-luc"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-slate-50 text-slate-700 transition-colors"
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <FileText className="w-4 h-4 text-[#1E4384]" />
+                          <span>{t('nav.about_profile')}</span>
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-              {/* Products Mega Dropdown */}
-              <div
+              <motion.div
                 className="relative"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.05 }}
                 onMouseEnter={() => handleMouseEnter('products')}
                 onMouseLeave={handleMouseLeave}
               >
@@ -179,242 +184,317 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                   className={getNavLinkClass(location.pathname.startsWith('/san-pham'), true)}
                 >
                   <span>{t('nav.products')}</span>
-                  <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+                  <motion.div
+                    animate={openDropdown === 'products' ? { rotate: 180 } : { rotate: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="w-4 h-4 opacity-60" />
+                  </motion.div>
                 </Link>
 
-                {openDropdown === 'products' && (
-                  <div className="absolute top-full -left-20 w-[680px] pt-2 shadow-2xl animate-in fade-in-50 duration-150">
-                    <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 text-slate-800">
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-                        <div className="flex items-center gap-2">
-                          <Package className="w-5 h-5 text-[#1E4384]" />
-                          <h4 className="font-bold text-[#1E4384] text-sm uppercase tracking-wide">
-                            Danh mục bao bì công nghiệp B2B
-                          </h4>
-                        </div>
-                        <Link
-                          to="/san-pham"
-                          className="text-xs text-[#BE1E2D] hover:underline font-semibold flex items-center gap-1"
-                          onClick={() => setOpenDropdown(null)}
-                        >
-                          Tất cả sản phẩm <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        {PRODUCT_CATEGORIES.map((cat) => (
+                <AnimatePresence>
+                  {openDropdown === 'products' && (
+                    <motion.div
+                      className="absolute top-full -left-32 w-[600px] pt-2 z-50"
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="bg-white rounded-xl shadow-2xl border border-slate-200 p-5 overflow-hidden">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                          <div className="flex items-center gap-2">
+                            <Package className="w-4 h-4 text-[#1E4384]" />
+                            <h4 className="font-bold text-[#1E4384] text-xs uppercase tracking-wide">
+                              Danh mục sản phẩm
+                            </h4>
+                          </div>
                           <Link
-                            key={cat.id}
-                            to={`/san-pham/${cat.slug}`}
-                            className={cn(
-                              'group p-3 rounded-xl transition-all border',
-                              location.pathname === `/san-pham/${cat.slug}`
-                                ? 'bg-[#EEF3FF] border-[#1E4384]/30'
-                                : 'hover:bg-slate-50 border-transparent hover:border-slate-200',
-                            )}
+                            to="/san-pham"
+                            className="text-xs text-[#BE1E2D] hover:underline font-semibold flex items-center gap-1"
                             onClick={() => setOpenDropdown(null)}
                           >
-                            <div className="font-semibold text-xs text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors flex items-center justify-between">
-                              <span>{currentLang === 'vi' ? cat.nameVi : cat.nameEn}</span>
-                              <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                            <p className="text-[11px] text-slate-500 mt-1 line-clamp-1 leading-normal">
-                              {currentLang === 'vi' ? cat.shortDescVi : cat.shortDescEn}
-                            </p>
+                            Xem tất cả <ArrowRight className="w-3 h-3" />
                           </Link>
-                        ))}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          {PRODUCT_CATEGORIES.map((cat) => (
+                            <Link
+                              key={cat.id}
+                              to={`/san-pham/${cat.slug}`}
+                              className={cn(
+                                'group p-3 rounded-lg transition-all border',
+                                location.pathname === `/san-pham/${cat.slug}`
+                                  ? 'bg-[#EEF3FF] border-[#1E4384]/30'
+                                  : 'hover:bg-slate-50 border-transparent hover:border-slate-200',
+                              )}
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              <div className="font-semibold text-xs text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors flex items-center justify-between">
+                                <span>{currentLang === 'vi' ? cat.nameVi : cat.nameEn}</span>
+                                <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                              <p className="text-[11px] text-slate-500 mt-1 line-clamp-1 leading-normal">
+                                {currentLang === 'vi' ? cat.shortDescVi : cat.shortDescEn}
+                              </p>
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-              <Link
-                to="/nang-luc"
-                className={getNavLinkClass(location.pathname.startsWith('/nang-luc'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
               >
-                {t('nav.capabilities')}
-              </Link>
+                <Link
+                  to="/nang-luc"
+                  className={getNavLinkClass(location.pathname.startsWith('/nang-luc'))}
+                >
+                  {t('nav.capabilities')}
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/phat-trien-ben-vung"
-                className={getNavLinkClass(location.pathname.startsWith('/phat-trien-ben-vung'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.15 }}
               >
-                {t('nav.sustainability')}
-              </Link>
+                <Link
+                  to="/phat-trien-ben-vung"
+                  className={getNavLinkClass(location.pathname.startsWith('/phat-trien-ben-vung'))}
+                >
+                  {t('nav.sustainability')}
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/cong-nghe"
-                className={getNavLinkClass(location.pathname.startsWith('/cong-nghe'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
               >
-                {t('nav.technology')}
-              </Link>
+                <Link
+                  to="/cong-nghe"
+                  className={getNavLinkClass(location.pathname.startsWith('/cong-nghe'))}
+                >
+                  {t('nav.technology')}
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/tin-tuc"
-                className={getNavLinkClass(location.pathname.startsWith('/tin-tuc'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.25 }}
               >
-                {t('nav.news')}
-              </Link>
+                <Link
+                  to="/tin-tuc"
+                  className={getNavLinkClass(location.pathname.startsWith('/tin-tuc'))}
+                >
+                  {t('nav.news')}
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/tuyen-dung"
-                className={getNavLinkClass(location.pathname.startsWith('/tuyen-dung'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
               >
-                {t('nav.careers')}
-              </Link>
+                <Link
+                  to="/tuyen-dung"
+                  className={getNavLinkClass(location.pathname.startsWith('/tuyen-dung'))}
+                >
+                  {t('nav.careers')}
+                </Link>
+              </motion.div>
 
-              <Link
-                to="/lien-he"
-                className={getNavLinkClass(location.pathname.startsWith('/lien-he'))}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.35 }}
               >
-                {t('nav.contact')}
-              </Link>
+                <Link
+                  to="/lien-he"
+                  className={getNavLinkClass(location.pathname.startsWith('/lien-he'))}
+                >
+                  {t('nav.contact')}
+                </Link>
+              </motion.div>
             </nav>
 
-            {/* Zone 3: Actions (Language toggle + Quote Request button) */}
-            <div
-              className={cn(
-                'flex shrink-0 items-center gap-3 sm:gap-4 pl-4 sm:pl-6 border-l transition-colors duration-200',
-                scrolledPast || !isHome ? 'border-slate-200' : 'border-white/15',
-              )}
+            {/* Zone 3: Actions */}
+            <motion.div
+              className="flex shrink-0 items-center gap-3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              {/* Language toggle button */}
+              {/* Language toggle */}
               <div
                 className="relative hidden sm:block"
                 onMouseEnter={() => handleMouseEnter('lang')}
                 onMouseLeave={handleMouseLeave}
               >
-                <button
+                <motion.button
                   className={cn(
-                    'flex shrink-0 items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-full border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E11D2E] leading-none cursor-pointer',
+                    'flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all',
                     scrolledPast || !isHome
-                      ? 'border-slate-200 text-slate-700 hover:border-[#E11D2E] hover:text-[#E11D2E] bg-white/80 shadow-xs'
-                      : 'border-white/20 text-slate-100 hover:border-white/40 hover:bg-white/10 bg-white/5 backdrop-blur-sm',
+                      ? 'border-slate-200 text-slate-600 hover:border-[#BE1E2D] hover:text-[#BE1E2D] bg-white'
+                      : 'border-white/20 text-slate-200 hover:border-white/40 hover:bg-white/10',
                   )}
                   aria-label="Chọn ngôn ngữ"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Globe className="w-4 h-4" />
+                  <Globe className="w-3.5 h-3.5" />
                   <span>{currentLang === 'vi' ? 'VI' : 'EN'}</span>
-                </button>
+                </motion.button>
 
-                {openDropdown === 'lang' && (
-                  <div className="absolute top-full right-0 pt-3 z-50">
-                    <div className="bg-[#0B1B3A] rounded-xl shadow-lg border border-white/10 p-1.5 animate-in fade-in slide-in-from-bottom-1 duration-200 min-w-[110px]">
-                      <button
-                        onClick={() => {
-                          i18n.changeLanguage('vi');
-                          setOpenDropdown(null);
-                        }}
-                        className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer',
-                          currentLang === 'vi'
-                            ? 'bg-white/10 text-[#E11D2E]'
-                            : 'text-white/80 hover:bg-white/5 hover:text-white',
-                        )}
-                      >
-                        Tiếng Việt
-                      </button>
-                      <button
-                        onClick={() => {
-                          i18n.changeLanguage('en');
-                          setOpenDropdown(null);
-                        }}
-                        className={cn(
-                          'w-full text-left px-3 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer',
-                          currentLang === 'en'
-                            ? 'bg-white/10 text-[#E11D2E]'
-                            : 'text-white/80 hover:bg-white/5 hover:text-white',
-                        )}
-                      >
-                        English
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <AnimatePresence>
+                  {openDropdown === 'lang' && (
+                    <motion.div
+                      className="absolute top-full right-0 pt-2 z-50"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="bg-white rounded-lg shadow-xl border border-slate-200 py-1.5 min-w-[100px]">
+                        <button
+                          onClick={() => {
+                            i18n.changeLanguage('vi');
+                            setOpenDropdown(null);
+                          }}
+                          className={cn(
+                            'w-full text-left px-3 py-2 text-xs font-medium transition-colors',
+                            currentLang === 'vi'
+                              ? 'bg-[#EEF3FF] text-[#1E4384]'
+                              : 'text-slate-700 hover:bg-slate-50',
+                          )}
+                        >
+                          Tiếng Việt
+                        </button>
+                        <button
+                          onClick={() => {
+                            i18n.changeLanguage('en');
+                            setOpenDropdown(null);
+                          }}
+                          className={cn(
+                            'w-full text-left px-3 py-2 text-xs font-medium transition-colors',
+                            currentLang === 'en'
+                              ? 'bg-[#EEF3FF] text-[#1E4384]'
+                              : 'text-slate-700 hover:bg-slate-50',
+                          )}
+                        >
+                          English
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
-              {/* Quick Quote Button */}
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => onOpenQuoteModal()}
-                className="hidden sm:inline-flex shrink-0 whitespace-nowrap rounded-full hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(225,29,46,0.4)] transition-all duration-200 bg-[#BE1E2D] hover:bg-[#d92b3c] border-none px-5 py-2.5 text-[13px] sm:text-[14px] font-semibold leading-none shadow-xs cursor-pointer"
+              {/* Quote Button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               >
-                {t('nav.quote')}
-              </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => onOpenQuoteModal()}
+                  className="hidden sm:inline-flex px-4 py-2 text-xs font-semibold rounded-lg bg-[#BE1E2D] hover:bg-[#d92b3c]"
+                >
+                  {t('nav.quote')}
+                </Button>
+              </motion.div>
 
               {/* Mobile menu trigger */}
-              <button
+              <motion.button
                 onClick={() => setMobileMenuOpen(true)}
                 className={cn(
-                  'xl:hidden p-2.5 rounded-lg transition-colors cursor-pointer',
+                  'lg:hidden p-2 rounded-lg transition-colors',
                   scrolledPast || !isHome
                     ? 'text-slate-700 hover:bg-slate-100'
                     : 'text-white hover:bg-white/10',
                 )}
-                aria-label="Mở menu điều hướng"
+                aria-label="Mở menu"
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
               >
-                <Menu className="w-7 h-7" />
-              </button>
-            </div>
+                <Menu className="w-5 h-5" />
+              </motion.button>
+            </motion.div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer (Accordion style) */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 lg:hidden flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in"
+          className="fixed inset-0 z-50 lg:hidden flex justify-end bg-black/50 backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <div
-            className="w-full max-w-xs sm:max-w-sm h-full bg-white text-slate-800 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl"
+          <motion.div
+            className="w-full max-w-sm h-full bg-white flex flex-col shadow-2xl"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div>
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div className="p-4 border-b border-slate-200">
+              <div className="flex items-center justify-between">
                 <Link
                   to="/"
-                  className="flex items-center gap-2"
+                  className="flex items-center"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <img
                     src="/images/vietlabel/logo.png"
                     alt="Vietlabel"
-                    className="h-10 w-auto object-contain max-w-[200px]"
-                    onError={(e) => {
-                      e.currentTarget.src = '/images/vietlabel/logo.png';
-                    }}
+                    className="h-8 w-auto object-contain"
                   />
                 </Link>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                  className="p-2 text-slate-500 hover:text-slate-700 rounded-lg hover:bg-slate-100"
                   aria-label="Đóng menu"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
+            </div>
 
-              <div className="mt-4 flex items-center justify-between pb-3 border-b border-slate-100">
-                <span className="text-xs text-slate-500 font-medium">Ngôn ngữ / Language</span>
+            <div className="p-4 flex-1 overflow-y-auto">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <span className="text-xs text-slate-500 font-medium">Ngôn ngữ</span>
                 <button
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-md text-xs font-semibold text-slate-800"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-lg text-xs font-semibold text-slate-700"
                 >
-                  <Globe className="w-3 h-3 text-[#1E4384]" />
-                  <span>{currentLang === 'vi' ? 'Tiếng Việt (VI)' : 'English (EN)'}</span>
+                  <Globe className="w-3.5 h-3.5 text-[#1E4384]" />
+                  <span>{currentLang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
                 </button>
               </div>
 
-              {/* Navigation links accordion */}
-              <nav className="mt-4 space-y-1">
+              <nav className="space-y-1">
                 <Link
                   to="/"
-                  className={getMobileNavLinkClass(location.pathname === '/')}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname === '/'
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.home')}
@@ -424,40 +504,45 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 <details className="group" open={location.pathname.startsWith('/gioi-thieu')}>
                   <summary
                     className={cn(
-                      'flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
+                      'flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
                       location.pathname.startsWith('/gioi-thieu')
-                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
-                        : 'text-slate-800 hover:bg-slate-50',
+                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                        : 'text-slate-700 hover:bg-slate-50',
                     )}
                   >
                     <span>{t('nav.about')}</span>
                     <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="pl-4 pr-2 py-1 space-y-1">
+                  <div className="pl-4 py-1 space-y-1">
                     <Link
                       to="/gioi-thieu"
-                      className={getMobileSubNavLinkClass(location.pathname === '/gioi-thieu')}
+                      className={cn(
+                        'block px-3 py-2 text-xs rounded-md transition-colors',
+                        location.pathname === '/gioi-thieu'
+                          ? 'text-[#BE1E2D] font-bold bg-red-50'
+                          : 'text-slate-600 hover:bg-slate-50',
+                      )}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_overview')}
                     </Link>
                     <Link
                       to="/gioi-thieu#doi-ngu"
-                      className={getMobileSubNavLinkClass(false)}
+                      className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 rounded-md transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_team')}
                     </Link>
                     <Link
                       to="/gioi-thieu#chung-nhan"
-                      className={getMobileSubNavLinkClass(false)}
+                      className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 rounded-md transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_certifications')}
                     </Link>
                     <Link
                       to="/gioi-thieu#ho-so-nang-luc"
-                      className={getMobileSubNavLinkClass(false)}
+                      className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 rounded-md transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t('nav.about_profile')}
@@ -469,19 +554,24 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 <details className="group" open={location.pathname.startsWith('/san-pham')}>
                   <summary
                     className={cn(
-                      'flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
+                      'flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-lg cursor-pointer list-none transition-colors',
                       location.pathname.startsWith('/san-pham')
-                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold border-l-4 border-[#BE1E2D]'
-                        : 'text-slate-800 hover:bg-slate-50',
+                        ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                        : 'text-slate-700 hover:bg-slate-50',
                     )}
                   >
                     <span>{t('nav.products')}</span>
                     <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="pl-4 pr-2 py-1 space-y-1">
+                  <div className="pl-4 py-1 space-y-1">
                     <Link
                       to="/san-pham"
-                      className={getMobileSubNavLinkClass(location.pathname === '/san-pham')}
+                      className={cn(
+                        'block px-3 py-2 text-xs rounded-md transition-colors',
+                        location.pathname === '/san-pham'
+                          ? 'text-[#BE1E2D] font-bold bg-red-50'
+                          : 'text-slate-600 hover:bg-slate-50',
+                      )}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Tất cả sản phẩm
@@ -490,7 +580,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                       <Link
                         key={cat.id}
                         to={`/san-pham/${cat.slug}`}
-                        className={getMobileSubNavLinkClass(location.pathname === `/san-pham/${cat.slug}`)}
+                        className={cn(
+                          'block px-3 py-2 text-xs rounded-md transition-colors',
+                          location.pathname === `/san-pham/${cat.slug}`
+                            ? 'text-[#BE1E2D] font-bold bg-red-50'
+                            : 'text-slate-600 hover:bg-slate-50',
+                        )}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {currentLang === 'vi' ? cat.nameVi : cat.nameEn}
@@ -501,7 +596,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/nang-luc"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/nang-luc'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/nang-luc')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.capabilities')}
@@ -509,7 +609,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/phat-trien-ben-vung"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/phat-trien-ben-vung'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/phat-trien-ben-vung')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.sustainability')}
@@ -517,7 +622,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/cong-nghe"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/cong-nghe'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/cong-nghe')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.technology')}
@@ -525,7 +635,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/tin-tuc"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/tin-tuc'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/tin-tuc')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.news')}
@@ -533,7 +648,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/tuyen-dung"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/tuyen-dung'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/tuyen-dung')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.careers')}
@@ -541,7 +661,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
                 <Link
                   to="/lien-he"
-                  className={getMobileNavLinkClass(location.pathname.startsWith('/lien-he'))}
+                  className={cn(
+                    'block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                    location.pathname.startsWith('/lien-he')
+                      ? 'bg-[#EEF3FF] text-[#1E4384] font-bold'
+                      : 'text-slate-700 hover:bg-slate-50',
+                  )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('nav.contact')}
@@ -549,27 +674,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               </nav>
             </div>
 
-            <div className="pt-6 border-t border-slate-100 space-y-3">
+            <div className="p-4 border-t border-slate-200">
               <Button
                 variant="primary"
-                size="md"
-                className="w-full"
+                size="lg"
                 onClick={() => {
-                  setMobileMenuOpen(false);
                   onOpenQuoteModal();
+                  setMobileMenuOpen(false);
                 }}
+                className="w-full"
               >
                 {t('nav.quote')}
               </Button>
-
-              <div className="text-center text-xs text-slate-500">
-                Hotline hỗ trợ:{' '}
-                <a href="tel:0868968089" className="text-[#1E4384] font-bold hover:text-[#BE1E2D]">
-                  086 896 8089
-                </a>
-              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </>
