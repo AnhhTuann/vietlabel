@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
 
   const getNavLinkClass = (active: boolean, hasDropdown = false) =>
     cn(
-      'relative px-[clamp(7px,0.6vw,12px)] py-2 text-[clamp(12px,0.75vw,13.5px)] font-semibold transition-colors duration-200 whitespace-nowrap tracking-[-0.01em]',
+      'relative px-[clamp(10px,0.8vw,16px)] py-2.5 text-[clamp(14px,0.9vw,16px)] font-semibold transition-colors duration-200 whitespace-nowrap tracking-[-0.01em]',
       hasDropdown && 'flex items-center gap-1',
       active
         ? isLightHeader
@@ -82,19 +82,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
         className={cn(
           'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
           scrolledPast || !isHome
-            ? 'bg-white/90 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)] border-b border-slate-200/80 py-3'
-            : 'bg-[#05172d] backdrop-blur-md border-b border-[#1a2d4d]/80 py-3 text-white',
+            ? 'bg-white/90 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)] border-b border-slate-200/80 py-4'
+            : 'bg-[#05172d] backdrop-blur-md border-b border-[#1a2d4d]/80 py-4 text-white',
         )}
       >
-        <div className="mx-auto w-[min(calc(100%-48px),1440px)] max-w-[1440px] px-0">
-          <div
-            className={cn(
-              'flex items-center justify-between gap-2 xl:gap-3 rounded-[20px] border px-2 sm:px-3 py-1.5 transition-all duration-300',
-              scrolledPast || !isHome
-                ? 'border-slate-200/80 bg-white/90 shadow-[0_12px_30px_rgba(15,23,42,0.08)]'
-                : 'border-white/10 bg-[#0b2343]/95 shadow-[0_18px_35px_rgba(2,6,23,0.35)]',
-            )}
-          >
+        <div className="mx-auto w-full max-w-[1920px] px-6 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between gap-4 xl:gap-6">
             <Link
               to="/"
               className="flex flex-shrink-0 items-center justify-center py-1 px-2 ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4384] rounded-xl transition-transform hover:scale-[1.02]"
@@ -102,14 +95,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <img
                 src={scrolledPast || !isHome ? '/images/vietlabel/logo.png' : '/images/vietlabel/logo-white.png'}
                 alt="Vietlabel - Công ty Cổ phần Sản xuất Thương mại Vietlabel"
-                className="h-[38px] sm:h-[42px] w-auto object-contain max-w-[160px] sm:max-w-[190px] lg:max-w-[210px] transition-all duration-300"
+                className="h-[50px] sm:h-[56px] lg:h-[64px] w-auto object-contain max-w-[200px] sm:max-w-[240px] lg:max-w-[280px] transition-all duration-300"
                 onError={(e) => {
                   e.currentTarget.src = '/images/vietlabel/logo.png';
                 }}
               />
             </Link>
 
-            <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-center gap-0.5 xl:gap-1 2xl:gap-1.5 px-1">
+            <nav className="hidden xl:flex flex-1 min-w-0 items-center justify-center gap-1 xl:gap-2 2xl:gap-3 px-2">
               <Link
                 to="/"
                 className={getNavLinkClass(location.pathname === '/')}
@@ -282,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
             {/* Zone 3: Actions (Language toggle + Quote Request button) */}
             <div
               className={cn(
-                'flex shrink-0 items-center gap-2 sm:gap-3 pl-2.5 sm:pl-3.5 border-l transition-colors duration-200 pr-1',
+                'flex shrink-0 items-center gap-3 sm:gap-4 pl-4 sm:pl-6 border-l transition-colors duration-200',
                 scrolledPast || !isHome ? 'border-slate-200' : 'border-white/15',
               )}
             >
@@ -294,14 +287,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               >
                 <button
                   className={cn(
-                    'flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold rounded-full border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E11D2E] leading-none cursor-pointer',
+                    'flex shrink-0 items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-full border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E11D2E] leading-none cursor-pointer',
                     scrolledPast || !isHome
                       ? 'border-slate-200 text-slate-700 hover:border-[#E11D2E] hover:text-[#E11D2E] bg-white/80 shadow-xs'
                       : 'border-white/20 text-slate-100 hover:border-white/40 hover:bg-white/10 bg-white/5 backdrop-blur-sm',
                   )}
                   aria-label="Chọn ngôn ngữ"
                 >
-                  <Globe className="w-3.5 h-3.5" />
+                  <Globe className="w-4 h-4" />
                   <span>{currentLang === 'vi' ? 'VI' : 'EN'}</span>
                 </button>
 
@@ -346,7 +339,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 variant="primary"
                 size="sm"
                 onClick={() => onOpenQuoteModal()}
-                className="hidden sm:inline-flex shrink-0 whitespace-nowrap rounded-full hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(225,29,46,0.4)] transition-all duration-200 bg-[#BE1E2D] hover:bg-[#d92b3c] border-none px-3.5 sm:px-4 py-2 text-[12px] sm:text-[13px] font-semibold leading-none shadow-xs cursor-pointer"
+                className="hidden sm:inline-flex shrink-0 whitespace-nowrap rounded-full hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(225,29,46,0.4)] transition-all duration-200 bg-[#BE1E2D] hover:bg-[#d92b3c] border-none px-5 py-2.5 text-[13px] sm:text-[14px] font-semibold leading-none shadow-xs cursor-pointer"
               >
                 {t('nav.quote')}
               </Button>
@@ -355,14 +348,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <button
                 onClick={() => setMobileMenuOpen(true)}
                 className={cn(
-                  'xl:hidden p-2 rounded-lg transition-colors cursor-pointer',
+                  'xl:hidden p-2.5 rounded-lg transition-colors cursor-pointer',
                   scrolledPast || !isHome
                     ? 'text-slate-700 hover:bg-slate-100'
                     : 'text-white hover:bg-white/10',
                 )}
                 aria-label="Mở menu điều hướng"
               >
-                <Menu className="w-6 h-6" />
+                <Menu className="w-7 h-7" />
               </button>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 import {
   Sparkles,
   ShieldCheck,
@@ -103,24 +104,31 @@ export const ValueTabs: React.FC = () => {
             {VALUES.map((val, idx) => {
               const isSelected = idx === activeTab;
               return (
-                <button
+                <motion.button
                   key={val.id}
                   onClick={() => setActiveTab(idx)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className={`w-full p-4 rounded-xl text-left transition-all duration-200 flex items-start gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                     isSelected
                       ? 'bg-white text-[#1E4384] shadow-xl translate-x-1'
                       : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
                   }`}
                 >
-                  <div
+                  <motion.div
                     className={`p-2.5 rounded-lg shrink-0 transition-colors ${
                       isSelected
                         ? 'bg-[#BE1E2D] text-white'
                         : 'bg-white/10 text-slate-300'
                     }`}
+                    animate={isSelected ? { rotate: [0, -10, 10, -10, 0] } : {}}
+                    transition={{ duration: 0.5 }}
                   >
                     {val.icon}
-                  </div>
+                  </motion.div>
 
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
@@ -128,40 +136,71 @@ export const ValueTabs: React.FC = () => {
                         {t(val.titleKey)}
                       </h4>
                       {isSelected && (
-                        <ArrowRight className="w-4 h-4 text-[#BE1E2D] shrink-0 hidden sm:block" />
+                        <motion.div
+                          initial={{ x: -10, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ArrowRight className="w-4 h-4 text-[#BE1E2D] shrink-0 hidden sm:block" />
+                        </motion.div>
                       )}
                     </div>
                     {/* On mobile, show short description inside accordion card if selected */}
                     <div className="lg:hidden mt-2">
                       {isSelected && (
-                        <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                        <motion.p
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          className="text-xs text-slate-600 mt-2 leading-relaxed"
+                        >
                           {t(val.descKey)}
-                        </p>
+                        </motion.p>
                       )}
                     </div>
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
 
           {/* Detailed Content Panel (7 cols) */}
           <div className="lg:col-span-7 hidden lg:block">
-            <div className="h-full rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md p-8 flex flex-col justify-between shadow-2xl">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="h-full rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md p-8 flex flex-col justify-between shadow-2xl"
+            >
               <div>
-                <div className="flex items-center gap-3 text-xs font-semibold tracking-wider text-amber-400 uppercase mb-3">
-                  <span>GIẢI PHÁP TRỌN GÓI</span>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center gap-3 text-xs font-semibold tracking-wider text-amber-400 uppercase mb-3"
+                >
+                  <span className="animate-pulse">GIẢI PHÁP TRỌN GÓI</span>
                   <span>·</span>
                   <span className="text-slate-300 font-normal">CAM KẾT VIETLABEL</span>
-                </div>
+                </motion.div>
 
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <motion.h3
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-2xl font-bold text-white mb-4"
+                >
                   {t(activeValue.titleKey)}
-                </h3>
+                </motion.h3>
 
-                <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-sm text-slate-300 leading-relaxed mb-6"
+                >
                   {t(activeValue.descKey)}
-                </p>
+                </motion.p>
 
                 {/* Key bullets */}
                 <div className="space-y-3 mb-6">
@@ -170,21 +209,33 @@ export const ValueTabs: React.FC = () => {
               </div>
 
               {/* Showcase Image */}
-              <div className="relative rounded-xl overflow-hidden aspect-[21/9] bg-slate-900 border border-white/10 mt-4">
-                <img
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="relative rounded-xl overflow-hidden aspect-[21/9] bg-slate-900 border border-white/10 mt-4 group"
+              >
+                <motion.img
                   src={activeValue.image}
                   alt={t(activeValue.titleKey)}
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
                   loading="lazy"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4"
+                >
                   <span className="text-xs font-semibold text-slate-200">
                     Cơ sở vật chất đạt chứng nhận ISO 9001:2015 & FSC CoC
                   </span>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>

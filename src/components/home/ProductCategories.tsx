@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Button } from '../ui/Button';
 
 export interface LabelSolutionItem {
@@ -143,48 +144,62 @@ export const ProductCategories: React.FC = () => {
         </div>
 
         {/* Big White Container Frame */}
-        <div className="rounded-[28px] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(30,67,132,0.04)] p-6 sm:p-8 lg:p-10">
+        <div className="rounded-[28px] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(26,58,124,0.04)] p-6 sm:p-8 lg:p-10">
           {/* 3 cols x 4 rows = 12 cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {SOLUTIONS_12_ITEMS.map((item) => (
-              <Link
+            {SOLUTIONS_12_ITEMS.map((item, index) => (
+              <motion.div
                 key={item.id}
-                to={item.link}
-                className="group relative flex flex-col justify-between p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-[#1E4384]/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left h-full"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
               >
-                <div>
-                  {/* Top Image Banner (Aspect 16/7 matching artwork) */}
-                  <div className="w-full aspect-[16/7] rounded-xl overflow-hidden bg-slate-50 border border-slate-100 mb-4 relative">
-                    <img
-                      src={item.image}
-                      alt={currentLang === 'vi' ? item.titleVi : item.titleEn}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <Link
+                  to={item.link}
+                  className="group relative flex flex-col justify-between p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-[#1e4384]/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left h-full"
+                >
+                  <div>
+                    {/* Top Image Banner (Aspect 16/7 matching artwork) */}
+                    <div className="w-full aspect-[16/7] rounded-xl overflow-hidden bg-slate-50 border border-slate-100 mb-4 relative">
+                      <motion.img
+                        src={item.image}
+                        alt={currentLang === 'vi' ? item.titleVi : item.titleEn}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    </div>
+
+                    {/* Title with standardized height so descriptions align perfectly */}
+                    <div className="min-h-[40px] flex items-start mb-2">
+                      <h3 className="text-[13px] sm:text-[14px] font-bold text-[#1e4384] group-hover:text-[#be1e2d] uppercase tracking-wide leading-snug transition-colors line-clamp-2">
+                        {currentLang === 'vi' ? item.titleVi : item.titleEn}
+                      </h3>
+                    </div>
+
+                    {/* Description with standardized height */}
+                    <div className="min-h-[42px]">
+                      <p className="text-xs sm:text-[13px] text-slate-500 leading-relaxed line-clamp-2">
+                        {currentLang === 'vi' ? item.descVi : item.descEn}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Title with standardized height so descriptions align perfectly */}
-                  <div className="min-h-[40px] flex items-start mb-2">
-                    <h3 className="text-[13px] sm:text-[14px] font-bold text-[#1E4384] group-hover:text-[#BE1E2D] uppercase tracking-wide leading-snug transition-colors line-clamp-2">
-                      {currentLang === 'vi' ? item.titleVi : item.titleEn}
-                    </h3>
+                  {/* Bottom link pinned to bottom */}
+                  <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#1e4384] group-hover:text-[#be1e2d] transition-colors">
+                    <span>{t('products_section.learn_more')}</span>
+                    <motion.div
+                      whileHover={{ x: 6 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ArrowRight className="w-3.5 h-3.5 text-[#1e4384] group-hover:text-[#be1e2d]" />
+                    </motion.div>
                   </div>
-
-                  {/* Description with standardized height */}
-                  <div className="min-h-[42px]">
-                    <p className="text-xs sm:text-[13px] text-slate-500 leading-relaxed line-clamp-2">
-                      {currentLang === 'vi' ? item.descVi : item.descEn}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Bottom link pinned to bottom */}
-                <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors">
-                  <span>{t('products_section.learn_more')}</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform text-[#1E4384] group-hover:text-[#BE1E2D]" />
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>

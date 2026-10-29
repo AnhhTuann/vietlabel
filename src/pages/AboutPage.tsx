@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 import {
   ArrowDown,
   ArrowRight,
@@ -10,6 +11,11 @@ import {
   Eye,
   HeartHandshake,
   Sparkles,
+  Zap,
+  Target,
+  Shield,
+  Users,
+  TrendingUp,
 } from 'lucide-react';
 import { SEO } from '../lib/seo';
 import { SectionTitle } from '../components/ui/SectionTitle';
@@ -131,27 +137,98 @@ export const AboutPage: React.FC = () => {
         className="relative isolate overflow-hidden bg-[#081b35] text-white"
       >
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
-        <div className="absolute -right-32 top-0 -z-10 h-[26rem] w-[26rem] rounded-full border border-white/10 about-orbit sm:h-[36rem] sm:w-[36rem]" />
-        <div className="absolute -right-12 top-16 -z-10 h-[20rem] w-[20rem] rounded-full border border-white/10 about-orbit about-orbit-delay sm:h-[28rem] sm:w-[28rem]" />
+        
+        {/* Animated background elements */}
+        <motion.div 
+          className="absolute -right-32 top-0 -z-10 h-[26rem] w-[26rem] rounded-full border border-white/10 about-orbit sm:h-[36rem] sm:w-[36rem]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div 
+          className="absolute -right-12 top-16 -z-10 h-[20rem] w-[20rem] rounded-full border border-white/10 about-orbit about-orbit-delay sm:h-[28rem] sm:w-[28rem]"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        />
+        
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-white/20"
+            style={{
+              left: `${10 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3,
+            }}
+          />
+        ))}
 
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14 lg:px-8 lg:py-24">
-          <div className="about-hero-copy relative z-10">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3.5 py-2 text-xs font-semibold tracking-wide text-blue-100 backdrop-blur">
-              <Sparkles className="h-4 w-4 text-amber-300" aria-hidden="true" />
+          <motion.div 
+            className="about-hero-copy relative z-10"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div 
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3.5 py-2 text-xs font-semibold tracking-wide text-blue-100 backdrop-blur"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <Sparkles className="h-4 w-4 text-amber-300" aria-hidden="true" />
+              </motion.div>
               <span>{t('about_page.title')}</span>
-            </div>
-            <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.12] tracking-tight text-white [text-wrap:balance] sm:text-5xl lg:text-6xl">
+            </motion.div>
+            <motion.h1 
+              className="max-w-3xl text-4xl font-extrabold leading-[1.12] tracking-tight text-white [text-wrap:balance] sm:text-5xl lg:text-6xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               {t('about_page.title')}
-              <span className="mt-2 block h-1.5 w-20 rounded-full bg-[#e44b59]" />
-            </h1>
-            <p className="mt-7 max-w-2xl text-sm leading-7 text-blue-100/90 [text-wrap:pretty] sm:text-base sm:leading-8">
+              <motion.span 
+                className="mt-2 block h-1.5 w-20 rounded-full bg-[#e44b59]"
+                initial={{ width: 0 }}
+                animate={{ width: 80 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              />
+            </motion.h1>
+            <motion.p 
+              className="mt-7 max-w-2xl text-sm leading-7 text-blue-100/90 [text-wrap:pretty] sm:text-base sm:leading-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
               {t('about_page.intro')}
-            </p>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-blue-100/75 [text-wrap:pretty] sm:text-base sm:leading-8">
+            </motion.p>
+            <motion.p 
+              className="mt-4 max-w-2xl text-sm leading-7 text-blue-100/75 [text-wrap:pretty] sm:text-base sm:leading-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
               {t('about_page.approach')}
-            </p>
+            </motion.p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <motion.div 
+              className="mt-8 flex flex-wrap gap-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
               <Button
                 variant="primary"
                 size="md"
@@ -170,40 +247,64 @@ export const AboutPage: React.FC = () => {
               >
                 {t('about_page.contact')}
               </Button>
-            </div>
+            </motion.div>
 
-            <a
+            <motion.a
               href="#tam-nhin"
               className="mt-9 inline-flex items-center gap-2 text-xs font-semibold text-blue-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <ArrowDown className="h-4 w-4" aria-hidden="true" />
               {t('about_page.vision_title')}
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
 
-          <div className="about-hero-visual relative mx-auto w-full max-w-2xl lg:ml-auto">
-            <div className="absolute -inset-3 rounded-[2rem] border border-white/10 sm:-inset-5" />
+          <motion.div 
+            className="about-hero-visual relative mx-auto w-full max-w-2xl lg:ml-auto"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <motion.div 
+              className="absolute -inset-3 rounded-[2rem] border border-white/10 sm:-inset-5"
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            />
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-[#163965] shadow-2xl shadow-black/30 sm:rounded-[2rem]">
-              <img
+              <motion.img
                 src="/images/vietlabel/factory-machine1.jpg"
                 alt=""
                 className="about-image-drift h-full w-full object-cover"
                 fetchPriority="high"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#06162d]/80 via-transparent to-[#06162d]/10" />
-              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-[#be1e2d] via-[#f1b347] to-[#8cb6ee]" />
+              <motion.div 
+                className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-[#be1e2d] via-[#f1b347] to-[#8cb6ee]"
+                animate={{ 
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                style={{ backgroundSize: '200% 200%' }}
+              />
               <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 sm:bottom-7 sm:left-7 sm:right-7">
                 <img
                   src="/images/vietlabel/logo-white.png"
                   alt="Vietlabel"
                   className="h-8 w-auto max-w-[150px] object-contain object-left sm:h-10"
                 />
-                <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md">
+                <motion.span 
+                  className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
                   {COMPANY_MILESTONES[0]?.year}
-                </span>
+                </motion.span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
       </section>
@@ -211,25 +312,55 @@ export const AboutPage: React.FC = () => {
       <section id="tam-nhin" className="bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
-            <article className="about-card group relative overflow-hidden rounded-3xl border border-[#dfe7f3] bg-[#f7f9fd] p-6 sm:p-8">
-              <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1e4384] text-white shadow-lg shadow-blue-900/15 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+            <motion.article 
+              className="about-card group relative overflow-hidden rounded-3xl border border-[#dfe7f3] bg-[#f7f9fd] p-6 sm:p-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              whileHover={{ y: -8 }}
+            >
+              <motion.div 
+                className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1e4384] text-white shadow-lg shadow-blue-900/15"
+                whileHover={{ rotate: -15, scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+              >
                 <Eye className="h-5 w-5" aria-hidden="true" />
-              </div>
+              </motion.div>
               <h2 className="text-xl font-extrabold tracking-tight text-[#102d58] sm:text-2xl">
                 {t('about_page.vision_title')}
               </h2>
               <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
                 {t('about_page.vision_text')}
               </p>
-              <span className="pointer-events-none absolute -bottom-10 -right-8 h-36 w-36 rounded-full border-[20px] border-[#1e4384]/[0.04] transition-transform duration-500 group-hover:scale-125" />
-            </article>
+              <motion.span 
+                className="pointer-events-none absolute -bottom-10 -right-8 h-36 w-36 rounded-full border-[20px] border-[#1e4384]/[0.04]"
+                animate={{ scale: [1, 1.25, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+            </motion.article>
 
-            <article className="about-card group relative overflow-hidden rounded-3xl bg-[#1e4384] p-6 text-white shadow-xl shadow-blue-950/15 sm:p-8">
-              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/10 transition-transform duration-700 group-hover:scale-110" />
+            <motion.article 
+              className="about-card group relative overflow-hidden rounded-3xl bg-[#1e4384] p-6 text-white shadow-xl shadow-blue-950/15 sm:p-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ y: -8 }}
+            >
+              <motion.div 
+                className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/10"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 4, repeat: Infinity }}
+              />
               <div className="relative">
-                <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-blue-100 ring-1 ring-white/15 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
+                <motion.div 
+                  className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-blue-100 ring-1 ring-white/15"
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <HeartHandshake className="h-5 w-5" aria-hidden="true" />
-                </div>
+                </motion.div>
                 <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
                   {t('about_page.mission_title')}
                 </h2>
@@ -237,46 +368,82 @@ export const AboutPage: React.FC = () => {
                   {t('about_page.mission_text')}
                 </p>
               </div>
-            </article>
+            </motion.article>
 
           </div>
 
-          <section
+          <motion.section
             ref={coreValuesRef}
             data-values-visible={coreValuesVisible}
             className="core-values-panel relative mt-5 overflow-hidden rounded-[2rem] bg-[#102d58] p-6 text-white shadow-xl shadow-blue-950/10 sm:p-9 lg:p-11"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="pointer-events-none absolute -right-24 -top-36 h-96 w-96 rounded-full border border-white/[0.08]" />
-            <div className="pointer-events-none absolute -right-5 -top-20 h-64 w-64 rounded-full border border-white/[0.08]" />
+            <motion.div 
+              className="pointer-events-none absolute -right-24 -top-36 h-96 w-96 rounded-full border border-white/[0.08]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div 
+              className="pointer-events-none absolute -right-5 -top-20 h-64 w-64 rounded-full border border-white/[0.08]"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            />
             <div className="relative grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14">
-              <div className="core-values-heading">
-                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-rose-200 ring-1 ring-white/15">
+              <motion.div 
+                className="core-values-heading"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <motion.span 
+                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-rose-200 ring-1 ring-white/15"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
                   <Compass className="h-5 w-5" aria-hidden="true" />
-                </span>
+                </motion.span>
                 <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
                   {t('about_page.values_title')}
                 </h2>
-                <span className="mt-4 block h-1 w-14 rounded-full bg-[#e44b59]" />
-              </div>
+                <motion.span 
+                  className="mt-4 block h-1 w-14 rounded-full bg-[#e44b59]"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 56 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                />
+              </motion.div>
 
               <ul className="grid gap-3 sm:grid-cols-2">
                 {Array.from({ length: 6 }, (_, index) => (
-                  <li
+                  <motion.li
                     key={index}
                     style={{ '--core-value-index': index } as React.CSSProperties}
                     className="core-value-item group/item flex min-h-[72px] items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 transition-all duration-300 hover:border-white/30 hover:bg-white/[0.12] active:scale-[0.98] sm:px-5"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ x: 5 }}
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-xs font-extrabold tracking-wider text-rose-200 transition-all duration-300 group-hover/item:rotate-[-6deg] group-hover/item:bg-[#be1e2d] group-hover/item:text-white">
+                    <motion.span 
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-xs font-extrabold tracking-wider text-rose-200 transition-all duration-300 group-hover/item:rotate-[-6deg] group-hover/item:bg-[#be1e2d] group-hover/item:text-white"
+                      whileHover={{ rotate: -6, scale: 1.1 }}
+                    >
                       0{index + 1}
-                    </span>
+                    </motion.span>
                     <span className="text-sm font-semibold leading-6 text-blue-50 sm:text-base">
                       {t(`about_page.value_${index + 1}`)}
                     </span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
-          </section>
+          </motion.section>
         </div>
       </section>
 

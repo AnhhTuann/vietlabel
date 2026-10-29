@@ -1,5 +1,6 @@
 import compression from 'compression';
 import express, { NextFunction, Request, Response } from 'express';
+// import helmet from 'helmet'; // TODO: Install helmet when npm is working
 import { adminRouter } from './routes/admin.js';
 import { applicationsRouter } from './routes/applications.js';
 import { chatRouter } from './routes/chat.js';
@@ -13,6 +14,33 @@ import { webhookRouter } from './routes/webhook.js';
 
 export function createHttpApp() {
   const app = express();
+
+  // Security headers (helmet - temporarily disabled due to npm issues)
+  // app.use(helmet({
+  //   contentSecurityPolicy: {
+  //     directives: {
+  //       defaultSrc: ["'self'"],
+  //       styleSrc: ["'self'", "'unsafe-inline'"],
+  //       scriptSrc: ["'self'"],
+  //       imgSrc: ["'self'", "data:", "https:"],
+  //       connectSrc: ["'self'"],
+  //       fontSrc: ["'self'"],
+  //       objectSrc: ["'none'"],
+  //       mediaSrc: ["'self'"],
+  //       frameSrc: ["'none'"],
+  //     },
+  //   },
+  //   crossOriginEmbedderPolicy: false,
+  // }));
+
+  // Manual security headers
+  app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
 
   app.use(compression());
   app.use(express.json({ limit: '15mb' }));

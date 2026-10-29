@@ -12,6 +12,11 @@ const TOKEN_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
 
+// Simple in-memory rate limiter for login attempts
+const loginAttempts = new Map<string, { count: number; resetTime: number }>();
+const LOGIN_RATE_LIMIT = 10; // Max 10 attempts per window
+const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 minutes window
+
 export interface AuthTokenPayload {
   userId: string;
   email: string;
@@ -71,7 +76,23 @@ export const authService = {
   },
 
   async login(email: string, password: string): Promise<{ token: string; user: Omit<User, 'passwordHash'> }> {
-    const user = await db.users.findByEmail(email);
+    // Rate limiting check
+    const now = Date.now();
+    const normalizedEmail = email.toLowerCase().trim();
+    const attempts = loginAttempts.get(normalizedEmail);
+    
+    if (attempts && attempts.count >= LOGIN_RATE_LIMIT && now < attempts.resetTime) {
+      const remainingSeconds = Math.ceil((attempts.resetTime - now) / 1000);
+      throw new Error(`Quá nhiều lần đăng nhập thất bại. Vui lòng thử lại sau ${remainingSeconds} giây.`);
+    }
+    
+    if (!attempts || now >= attempts.resetTime) {
+      loginAttempts.set(normalizedEmail, { count: 1, resetTime: now + LOGIN_WINDOW_MS });
+    } else {
+      attempts.count++;
+    }
+
+    const user = await db.users.findByEmail(normalizedEmail);
     if (!user) {
       throw new Error('Email hoặc mật khẩu không chính xác.');
     }
@@ -113,12 +134,15 @@ export const authService = {
       lockedUntil: undefined,
     });
 
+    // Clear rate limiter on successful login
+    loginAttempts.delete(normalizedEmail);
+
     const token = this.signToken(user);
     const { passwordHash: _, ...safeUser } = user;
     return { token, user: safeUser };
   },
 
-  middleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  async middleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     let token = '';
 
     // Check Authorization header Bearer token
@@ -140,16 +164,17 @@ export const authService = {
       return res.status(401).json({ error: 'Phiên đăng nhập đã hết hạn hoặc không hợp lệ.' });
     }
 
-    // Async user lookup
-    db.users.findById(payload.userId).then((user) => {
+    // Async user lookup - properly awaited
+    try {
+      const user = await db.users.findById(payload.userId);
       if (!user || !user.active) {
         return res.status(401).json({ error: 'Người dùng không tồn tại hoặc đã bị vô hiệu hóa.' });
       }
       req.user = user;
       next();
-    }).catch(() => {
+    } catch (err) {
       return res.status(500).json({ error: 'Lỗi xác thực, vui lòng thử lại.' });
-    });
+    }
   },
 
   requireRole(allowedRoles: UserRole[]) {

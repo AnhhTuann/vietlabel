@@ -12,6 +12,7 @@ import { Certificates } from '../components/home/Certificates';
 import { Machines } from '../components/home/Machines';
 import { FeaturedPosts } from '../components/home/FeaturedPosts';
 import { ContactSection } from '../components/home/ContactSection';
+import { UniqueAnimations } from '../components/home/UniqueAnimations';
 
 export const HomePage: React.FC = () => {
   const { onOpenQuoteModal } = useOutletContext<{ onOpenQuoteModal: (prod?: string) => void }>();
@@ -24,6 +25,7 @@ export const HomePage: React.FC = () => {
       />
 
       <Hero onOpenQuoteModal={() => onOpenQuoteModal()} />
+      <UniqueAnimations />
       <Stats />
       <ProductCategories />
       <ValueTabs />
