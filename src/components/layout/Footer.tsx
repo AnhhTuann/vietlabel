@@ -2,7 +2,7 @@ import { ArrowUpRight, Clock, Mail, MapPin, Phone, ShieldCheck } from 'lucide-re
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { PRODUCTS_LIST } from '../../data/products';
+import { PRODUCTS_LIST, PRODUCT_CATEGORIES } from '../../data/products';
 
 export const Footer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -140,20 +140,20 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 3: Quick Navigation & Products (3 cols) */}
+          {/* Column 3: Packaging Categories (3 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-base font-bold uppercase tracking-wider text-slate-200">
-              {t('footer.products_col')}
+              DANH MỤC BAO BÌ
             </h4>
 
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-slate-300">
-              {PRODUCTS_LIST.map((product) => (
-                <li key={product.id}>
+              {PRODUCT_CATEGORIES.map((category) => (
+                <li key={category.id}>
                   <Link
-                    to={`/san-pham/${product.categorySlug}/${product.slug}`}
+                    to={`/san-pham/${category.slug}`}
                     className="hover:text-amber-400 transition-colors flex items-center justify-between group"
                   >
-                    <span>{currentLang === 'vi' ? product.nameVi : product.nameEn}</span>
+                    <span>{currentLang === 'vi' ? category.nameVi : category.nameEn}</span>
                     <ArrowUpRight className="ml-1 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
               to="/san-pham"
               className="inline-block text-sm font-semibold text-[#BE1E2D] hover:underline"
             >
-              {t('products_section.view_all')} →
+              Xem tất cả →
             </Link>
           </div>
         </div>
