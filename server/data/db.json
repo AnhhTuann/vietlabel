@@ -1907,5 +1907,680 @@
       "createdAt": "2026-04-01T08:00:00.000Z",
       "updatedAt": "2026-04-01T08:00:00.000Z"
     }
+  ],
+  "products": [
+    {
+      "id": "prod-01",
+      "categoryId": "hop-giay",
+      "name": "Hộp cứng nắp nam châm bồi giấy mỹ thuật",
+      "slug": "hop-cung-qua-tang-sang-trong-nam-cham",
+      "description": "Dòng hộp cứng nắp gập gắn nam châm ẩn giấu tinh xảo. Sử dụng cốt carton lạnh tỉ trọng cao 2.5mm bọc ngoài bằng giấy mỹ thuật gân ánh ngọc trai, bên trong lót khay EVA định hình bọc nhung cao cấp.",
+      "images": [
+        "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1000&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Carton lạnh 2.5mm bồi giấy mỹ thuật Ý 150gsm, lót mút EVA phủ nhung",
+        "Kích thước": "280 x 200 x 70 mm (Tùy biến theo kích cỡ sản phẩm)",
+        "Kỹ thuật in": "In Offset 4 màu UV sắc nét, độ chính xác hạt trâm cao",
+        "Gia công": "Ép kim nhũ vàng 24K, dập nổi 3D đa tầng logo thương hiệu",
+        "Số lượng tối thiểu": "500 chiếc / lô",
+        "Thời gian sản xuất": "7 - 10 ngày làm việc sau khi duyệt mẫu"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.945Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-02",
+      "categoryId": "tui-giay",
+      "name": "Túi giấy Kraft nâu quai xoắn đạt chuẩn FSC",
+      "slug": "tui-giay-kraft-quai-xoan-fsc",
+      "description": "Túi giấy Kraft nâu Nhật Bản định lượng 160gsm dẻo dai, đáy túi gia cố lót cứng chịu tải 7-10kg. Quai giấy xoắn cơ học chắc chắn, 100% tái chế sinh học không tạo rác thải vi nhựa.",
+      "images": [
+        "https://images.unsplash.com/photo-1574634534894-89d7576c8259?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy Kraft nâu Nhật Bản 160 - 200gsm, 100% sợi gỗ nguyên sinh FSC",
+        "Kích thước": "320 x 260 x 120 mm (Ngang x Cao x Hông)",
+        "Kỹ thuật in": "In Flexo hoặc Offset 1-4 màu mực gốc đậu nành an toàn (Soy Ink)",
+        "Gia công": "Cắt dán máy tự động, quai giấy xoắn dán keo nhiệt Hotmelt siêu bền",
+        "Số lượng tối thiểu": "1,000 chiếc / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-03",
+      "categoryId": "hop-giay",
+      "name": "Hộp mỹ phẩm màng Metallized phủ UV định hình",
+      "slug": "hop-my-pham-ivory-can-mang-metallized",
+      "description": "Hộp mềm chất liệu giấy Ivory 350gsm bồi màng kim loại Metallized tán xạ ánh sáng 7 màu. Kỹ thuật in phủ UV cát nhám kết hợp UV bóng định vị tạo độ tương phản xúc giác mạnh mẽ.",
+      "images": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy Ivory 350gsm nhập khẩu bồi màng Metallized tráng gương",
+        "Kích thước": "80 x 80 x 140 mm",
+        "Kỹ thuật in": "In Offset UV chuyên dụng trên màng nhôm kim loại",
+        "Gia công": "Cán màng mờ, dập nổi vi tính, phủ UV định vị 3D, bế răng cưa",
+        "Số lượng tối thiểu": "2,000 chiếc / lô",
+        "Thời gian sản xuất": "7 - 9 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-04",
+      "categoryId": "thung-carton",
+      "name": "Thùng carton sóng 5 lớp in Offset xuất khẩu",
+      "slug": "thung-carton-song-5-lop-in-offset",
+      "description": "Thùng carton kết cấu sóng BC hoặc BE 5 lớp, mặt ngoài bồi giấy Duplex in Offset 4 màu cán màng bóng chống thấm nước. Đảm bảo độ bền nén khi xếp chồng 8-10 tầng trong kho hàng logistics.",
+      "images": [
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy mặt Duplex 250gsm bồi sóng 5 lớp giấy Kraff định lượng 150/140/140/150",
+        "Kích thước": "600 x 400 x 400 mm (Tiêu chuẩn pallet chuẩn)",
+        "Kỹ thuật in": "In Offset khổ lớn máy KBA Rapida 106 6 màu công suất cao",
+        "Gia công": "Cán màng bóng BOPP chống thấm nước, bế dán tự động, đóng ghim đồng",
+        "Số lượng tối thiểu": "500 thùng / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-05",
+      "categoryId": "tui-banh-mi",
+      "name": "Túi giấy bánh mì baguette chống thấm dầu HACCP",
+      "slug": "tui-giay-banh-mi-chong-dau-haccp",
+      "description": "Sản xuất từ giấy thấm dầu trắng MG thực phẩm định lượng 40 - 50gsm, không huỳnh quang gây hại, thoáng khí giữ vỏ bánh giòn lâu mà không bị ỉu do đọng hơi nước.",
+      "images": [
+        "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy MG chuyên dụng thực phẩm 45gsm nhập khẩu Thụy Điển",
+        "Kích thước": "120 x 280 x 40 mm (hoặc theo kích thước ổ bánh)",
+        "Kỹ thuật in": "In Flexo tốc độ cao 2 màu mực gốc nước an toàn thực phẩm",
+        "Gia công": "Gấp dán ống tự động liên hoàn bằng keo tinh bột ngô hữu cơ",
+        "Số lượng tối thiểu": "10,000 túi / lô",
+        "Thời gian sản xuất": "4 - 6 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-06",
+      "categoryId": "posm",
+      "name": "Kệ giấy sàn trưng bày siêu thị (Floor Display 4 tầng)",
+      "slug": "ke-giay-trung-bay-posm-sieu-thi",
+      "description": "Kệ trưng bày chất liệu sóng carton tăng cường chịu lực 25kg mỗi tầng. In ấn offset rực rỡ thu hút ánh nhìn tại điểm bán lẻ, thiết kế module gấp phẳng tiết kiệm 70% chi phí vận chuyển phân phối.",
+      "images": [
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy Duplex 350gsm bồi sóng đôi EB gia cường thanh đỡ kim loại phụ",
+        "Kích thước": "600 x 450 x 1650 mm (Rộng x Sâu x Cao có Header)",
+        "Kỹ thuật in": "In Offset khổ đại 4 màu CMYK phủ màng bóng bảo vệ",
+        "Gia công": "Bế khuôn răng cưa lắp ráp mộng gài không cần keo dán phức tạp",
+        "Số lượng tối thiểu": "50 bộ / lô",
+        "Thời gian sản xuất": "7 - 10 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-07",
+      "categoryId": "tem-nhan",
+      "name": "In tem nhãn Decal cuộn chuyên dụng ngành Dầu nhớt & Hóa chất",
+      "slug": "in-tem-nhan-decal-cuon-nganh-dau-nhot",
+      "description": "Dòng tem nhãn decal nhựa tổng hợp PP/PE hoặc màng xi kim loại kháng dầu nhớt, chịu hóa chất tẩy rửa, bám dính chắc chắn trên bề mặt can nhựa HDPE và thùng phi kim loại mà không bị phồng rộp.",
+      "images": [
+        "/images/vietlabel/label-dau-nhot.webp",
+        "/images/vietlabel/factory-machine1.jpg",
+        "/images/vietlabel/products/Dau-nhot-2-1024x891.png",
+        "/images/vietlabel/products/dau-nhot-2.png",
+        "/images/vietlabel/products/chuyen-san-xuat-tem-nhan-dau-nhot-2-scaled.webp",
+        "/images/vietlabel/products/He-thong-tieu-chuan-GHS-quy-dinh-nhung-gi.webp",
+        "/images/vietlabel/products/Quy-trinh-in-nhan-hoa-chat-dau-nhot-chuyen-nghiep-tai-VietLabel.webp",
+        "/images/vietlabel/products/Quy-trinh-in-nhan-dau-nhot-chuyen-nghiep-tai-VietLabel.webp"
+      ],
+      "specs": {
+        "Chất liệu": "Decal nhựa PP/PE tổng hợp, keo dán cao su acrylic bám dính cao",
+        "Kích thước": "Theo quy cách can nhớt 0.8L, 1L, 4L, 18L và thùng phi 200L",
+        "Kỹ thuật in": "In Flexo cuộn công nghiệp lên tới 8 màu mực UV bền sáng",
+        "Gia công": "Cán màng bóng kháng nước hóa chất, bế cuộn theo chiều máy dán tự động",
+        "Số lượng tối thiểu": "2,000 nhãn / cuộn",
+        "Thời gian sản xuất": "3 - 5 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-08",
+      "categoryId": "tem-nhan",
+      "name": "In tem nhãn Pop-up gập mở đa tầng mở rộng diện tích thông tin",
+      "slug": "in-tem-nhan-pop-up-gap-mo-thong-minh",
+      "description": "Giải pháp tem nhãn dạng cuốn sổ nhỏ (Booklet label / Pop-up) tích hợp trên bao bì nhỏ. Giúp nhà sản xuất in đầy đủ hướng dẫn sử dụng đa ngôn ngữ, thành phần y tế hoặc chương trình khuyến mại trúng thưởng mà không cần tăng kích thước bao bì.",
+      "images": [
+        "/images/vietlabel/label-popup.webp",
+        "/images/vietlabel/label-duoc-pham.webp",
+        "/images/vietlabel/products/nen-2.png",
+        "/images/vietlabel/products/Gioi-thieu-5-1024x576.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-20.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-21.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-22.png",
+        "/images/vietlabel/products/popup-1.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy hoặc màng nhựa kết hợp lớp gập mở nhiều trang",
+        "Kích thước": "Tùy biến theo kích thước chai lọ mỹ phẩm, dược phẩm hoặc nông dược",
+        "Kỹ thuật in": "In Flexo kết hợp kỹ thuật số đa tầng mực UV sắc nét",
+        "Gia công": "Bế khuôn gấp nếp Z-fold, keo đóng mở nhiều lần không rách giấy",
+        "Số lượng tối thiểu": "3,000 nhãn / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-09",
+      "categoryId": "tem-nhan",
+      "name": "Tem nhãn thực phẩm và đồ uống",
+      "slug": "tem-nhan-thuc-pham-do-uong",
+      "description": "Tem nhãn cho thực phẩm đóng gói, nước giải khát và sản phẩm chế biến. Tùy chọn decal giấy hoặc màng nhựa, thiết kế phù hợp với bề mặt bao bì và điều kiện bảo quản.",
+      "images": [
+        "/images/vietlabel/hero-gallery/hop-kimchi-bibigo.webp",
+        "/images/vietlabel/label-cafe-ocop.webp",
+        "/images/vietlabel/products/Gioi-thieu-5-1024x576.png",
+        "/images/vietlabel/products/sec422.png",
+        "/images/vietlabel/products/nhan-thuc-pham.png",
+        "/images/vietlabel/products/nhan-thuc-pham-1.png",
+        "/images/vietlabel/products/nhan-thuc-pham-6-300x200.png",
+        "/images/vietlabel/products/nhan-thuc-pham-5-300x200.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy, PP hoặc PE theo bề mặt bao bì",
+        "Kích thước": "Tùy chỉnh theo chai, lọ, hộp hoặc túi sản phẩm",
+        "Kỹ thuật in": "In Flexo cuộn hoặc Offset theo thiết kế",
+        "Gia công": "Cán màng và bế demi theo quy cách dán thủ công hoặc tự động",
+        "Số lượng tối thiểu": "Theo quy cách đơn hàng",
+        "Thời gian sản xuất": "Trao đổi theo quy cách và số lượng"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-10",
+      "categoryId": "tem-nhan",
+      "name": "Tem nhãn dược phẩm",
+      "slug": "tem-nhan-duoc-pham",
+      "description": "Tem nhãn cho chai lọ, hộp thuốc và sản phẩm chăm sóc sức khỏe. Bố cục chú trọng độ rõ của thông tin, số lô, hạn sử dụng và mã nhận diện theo nội dung khách hàng cung cấp.",
+      "images": [
+        "/images/vietlabel/label-duoc-pham.webp",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/duoc-pham.png",
+        "/images/vietlabel/products/duoc-pham-1-300x300.png",
+        "/images/vietlabel/products/duoc-pham-2-300x300.png",
+        "/images/vietlabel/products/duoc-pham-3-300x300.png",
+        "/images/vietlabel/products/duoc-pham-4-1024x267.png",
+        "/images/vietlabel/products/in-ve-su-kien-13.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy hoặc decal nhựa phù hợp bề mặt chai lọ",
+        "Kích thước": "Tùy chỉnh theo bao bì và vùng dán nhãn",
+        "Kỹ thuật in": "In Flexo hoặc Offset với nội dung chữ và mã rõ nét",
+        "Gia công": "Bế demi chính xác, cung cấp dạng cuộn hoặc tờ",
+        "Số lượng tối thiểu": "Theo quy cách đơn hàng",
+        "Thời gian sản xuất": "Trao đổi theo quy cách và số lượng"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-11",
+      "categoryId": "tem-nhan",
+      "name": "Tem nhãn mỹ phẩm cao cấp",
+      "slug": "tem-nhan-my-pham",
+      "description": "Tem nhãn mỹ phẩm được thiết kế theo nhận diện thương hiệu và hình dáng bao bì. Có thể kết hợp decal trong, decal xi kim, cán màng và hiệu ứng hoàn thiện theo yêu cầu.",
+      "images": [
+        "/images/vietlabel/label-my-pham.webp",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/VL12-6-809x1024.png",
+        "/images/vietlabel/products/sec21.png",
+        "/images/vietlabel/products/anh-5-300x180.png",
+        "/images/vietlabel/products/anh-4-300x180.png",
+        "/images/vietlabel/products/anh-3-300x180.png",
+        "/images/vietlabel/products/anh-2-300x180.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy, decal trong hoặc decal xi kim",
+        "Kích thước": "Tùy chỉnh theo chai, lọ, tuýp hoặc hộp mỹ phẩm",
+        "Kỹ thuật in": "In Flexo hoặc Offset, phối hợp màu theo thiết kế",
+        "Gia công": "Cán màng, ép kim hoặc phủ UV định vị theo yêu cầu",
+        "Số lượng tối thiểu": "Theo quy cách đơn hàng",
+        "Thời gian sản xuất": "Trao đổi theo quy cách và số lượng"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-12",
+      "categoryId": "tem-nhan",
+      "name": "Tem chống giả và tem bảo hành",
+      "slug": "tem-chong-gia-bao-hanh",
+      "description": "Tem niêm phong và tem bảo hành hỗ trợ nhận diện sản phẩm, kiểm soát tình trạng mở seal và cung cấp mã xác thực theo thiết kế. Cấu trúc tem được lựa chọn theo bề mặt và mục đích sử dụng.",
+      "images": [
+        "/images/vietlabel/label-popup.webp",
+        "/images/vietlabel/label-duoc-pham.webp"
+      ],
+      "specs": {
+        "Chất liệu": "Decal vỡ, decal xi kim hoặc vật liệu bảo an theo yêu cầu",
+        "Kích thước": "Tùy chỉnh theo vị trí dán và quy cách sản phẩm",
+        "Kỹ thuật in": "In Offset, Flexo hoặc kỹ thuật số theo dữ liệu thiết kế",
+        "Gia công": "Bế demi, đánh số hoặc in mã biến đổi theo yêu cầu",
+        "Số lượng tối thiểu": "Theo quy cách đơn hàng",
+        "Thời gian sản xuất": "Trao đổi theo quy cách và số lượng"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-13",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Dược Phẩm GMP",
+      "slug": "tem-duoc-pham-gmp",
+      "description": "Tem nhãn dược phẩm đạt chuẩn GMP, chịu nhiệt, chống nước, độ bám dính cao. In số lô, hạn sử dụng, thông tin thuốc theo quy định Bộ Y Tế.",
+      "images": [
+        "/images/vietlabel/labels/duoc-pham-1.png",
+        "/images/vietlabel/labels/duoc-pham-2.png",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/duoc-pham.png",
+        "/images/vietlabel/products/duoc-pham-1-300x300.png",
+        "/images/vietlabel/products/duoc-pham-2-300x300.png",
+        "/images/vietlabel/products/duoc-pham-3-300x300.png",
+        "/images/vietlabel/products/duoc-pham-4-1024x267.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy 70gsm, decal nhựa PE, decal trong suốt PET",
+        "Kích thước": "20 x 40mm - 100 x 100mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo/Offset 4 màu CMYK, in số lô biến đổi",
+        "Gia công": "Cán màng bóng/mờ, die-cut bế, UV cục bộ",
+        "Số lượng tối thiểu": "10,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-14",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Hóa Mỹ Phẩm Cao Cấp",
+      "slug": "tem-hoa-my-pham-cao-cap",
+      "description": "Tem nhãn mỹ phẩm cao cấp, mịn, in sắc nét. Phù hợp cho chai lọ dạng thủy tinh và nhựa, chịu nước, chống trầy xước.",
+      "images": [
+        "/images/vietlabel/labels/hoa-my-pham-2.png",
+        "/images/vietlabel/labels/hoa-my-pham-3.png",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/In-dau-nhot.png",
+        "/images/vietlabel/products/4-5.png",
+        "/images/vietlabel/products/hoa-my-pham.png",
+        "/images/vietlabel/products/hoa-my-pham-1.png",
+        "/images/vietlabel/products/hoa-my-pham-2.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy mỹ thuật 80gsm, decal nhựa PP, decal trong suốt",
+        "Kích thước": "30 x 50mm - 80 x 120mm (Tùy biến)",
+        "Kỹ thuật in": "In Offset 6 màu CMYK + Pantone, ép kim",
+        "Gia công": "Cán màng matt/gloss, dập nổi, UV cục bộ",
+        "Số lượng tối thiểu": "5,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-17",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Dữ Liệu Biến Đổi QR",
+      "slug": "tem-du-lieu-bien-doi-qr",
+      "description": "Tem in dữ liệu biến đổi, QR code, barcode, số serial dùng cho quản lý kho và chống hàng giả. In nhanh, chính xác từng tem.",
+      "images": [
+        "/images/vietlabel/labels/tem-du-lieu-bien-doi-hero.jpg",
+        "/images/vietlabel/products/584493865_847396837692668_7098477587277216618_n.webp",
+        "/images/vietlabel/products/sec12.png",
+        "/images/vietlabel/products/sec13.png",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/shea-body-and-lip-butter-set-new-v-1164474365-1-e1689497913772-1024x636.jpg",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-24.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-23.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy 70gsm, decal nhựa PET, decal bảo mật",
+        "Kích thước": "25 x 50mm - 60 x 90mm (Tùy biến)",
+        "Kỹ thuật in": "In kỹ thuật số 1-4 màu, in QR code biến đổi",
+        "Gia công": "Die-cut bế, cán màng chống nước",
+        "Số lượng tối thiểu": "1,000 tem / lô",
+        "Thời gian sản xuất": "3 - 5 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-16",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Pop-up 3D",
+      "slug": "tem-pop-up-3d",
+      "description": "Tem nhãn dạng pop-up nổi, 3D, thu hút sự chú ý, dùng cho quảng cáo và khuyến mãi. Hiệu ứng thị giác mạnh mẽ.",
+      "images": [
+        "/images/vietlabel/labels/tem-pop-up-hero.jpg",
+        "/images/vietlabel/products/nen-2.png",
+        "/images/vietlabel/products/Gioi-thieu-5-1024x576.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-20.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-21.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-22.png",
+        "/images/vietlabel/products/popup-1.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-15.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal nhựa PET, decal PVC, decal kim loại",
+        "Kích thước": "40 x 60mm - 100 x 150mm (Tùy biến)",
+        "Kỹ thuật in": "In Offset 4-6 màu, cán màng lenticular 3D",
+        "Gia công": "Die-cut bế hình độc đáo, UV bóng",
+        "Số lượng tối thiểu": "5,000 tem / lô",
+        "Thời gian sản xuất": "7 - 10 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-18",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn May Mặc Care Label",
+      "slug": "tem-may-mac-care-label",
+      "description": "Tem nhãn quần áo, mác treo, size tag, care label chịu nhiệt và ma sát tốt. Đạt chuẩn xuất khẩu.",
+      "images": [
+        "/images/vietlabel/labels/tem-may-mac-hero.jpg",
+        "/images/vietlabel/products/nhan-du-lieu-6.png",
+        "/images/vietlabel/products/584493865_847396837692668_7098477587277216618_n.webp",
+        "/images/vietlabel/products/sec12.png",
+        "/images/vietlabel/products/sec13.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-33.png",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/sec42.png"
+      ],
+      "specs": {
+        "Chất liệu": "Taffeta nylon, satin, decal chịu nhiệt",
+        "Kích thước": "30 x 50mm - 100 x 150mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo 1-4 màu, in nhiệt chuyển",
+        "Gia công": "Cắt hình, xỏ mắt ngỗng, dây dù",
+        "Số lượng tối thiểu": "2,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-19",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Rượu Bia Chống Nước",
+      "slug": "tem-ruou-bia-chong-nuoc",
+      "description": "Tem nhãn rượu, bia chịu nước, chịu lạnh, độ bám dính tuyệt đối trong môi trường ẩm. Phù hợp cho chai thủy tinh.",
+      "images": [
+        "/images/vietlabel/labels/tem-ruou-bia-hero.jpg",
+        "/images/vietlabel/products/chuyen-san-xuat-tem-nhan-dau-nhot-2-scaled.webp",
+        "/images/vietlabel/products/TEM-NHAN-POP-UP-VIETLABEL-scaled.webp",
+        "/images/vietlabel/products/GIAI-PHAP-TEM-NHAN-DUOC-PHAM-TU-VIETLABEL-t5-scaled.webp",
+        "/images/vietlabel/products/Dich-vu-in-tem-nhan-decal-tai-Binh-Tan.webp",
+        "/images/vietlabel/products/Dich-vu-in-tem-nhan-decal-tai-Binh-Thanh.webp",
+        "/images/vietlabel/products/Vietlabel-tu-hao-dong-hanh-cung-TH-Milk.webp",
+        "/images/vietlabel/products/Van-hoa-Vietlabel-Chuc-mung-sinh-nhat-cac-thanh-vien-thang-1.webp"
+      ],
+      "specs": {
+        "Chất liệu": "Decal chịu nước, decal PET, decal can màng",
+        "Kích thước": "50 x 80mm - 120 x 180mm (Tùy biến)",
+        "Kỹ thuật in": "In Offset 4-6 màu, cán màng chống nước",
+        "Gia công": "Die-cut bế, ép kim, UV bóng",
+        "Số lượng tối thiểu": "3,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-21",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Thủy Sản Chịu Lạnh",
+      "slug": "tem-thuy-san-chiu-lanh",
+      "description": "Tem nhãn thủy sản chịu lạnh, truy xuất nguồn gốc, in thông tin nhạy cảm. Phù hợp cho môi trường đông lạnh.",
+      "images": [
+        "/images/vietlabel/labels/tem-thuy-san-hero.jpg",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/thuy-san-14-1.png",
+        "/images/vietlabel/products/Thuy-san-9-712x1024.png",
+        "/images/vietlabel/products/Thuy-san-5-712x1024.png",
+        "/images/vietlabel/products/Thuy-san-6-712x1024.png",
+        "/images/vietlabel/products/Thuy-san-7-712x1024.png",
+        "/images/vietlabel/products/thuy-san-10.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal chịu lạnh -20°C, decal PE, decal bảo mật",
+        "Kích thước": "40 x 60mm - 100 x 150mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo 1-4 màu, in mã QR, barcode",
+        "Gia công": "Cán màng chống nước, die-cut bế",
+        "Số lượng tối thiểu": "5,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-22",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Dầu Nhớt Chịu Dầu",
+      "slug": "tem-dau-nhot-chiu-dau",
+      "description": "Tem nhãn dầu nhớt chịu dầu, chịu nhiệt, chống bong tróc trong môi trường công nghiệp. Phù hợp cho can nhựa, thùng.",
+      "images": [
+        "/images/vietlabel/labels/tem-dau-nhot-hero.jpg",
+        "/images/vietlabel/products/Dau-nhot-2-1024x891.png",
+        "/images/vietlabel/products/dau-nhot-2.png",
+        "/images/vietlabel/products/chuyen-san-xuat-tem-nhan-dau-nhot-2-scaled.webp",
+        "/images/vietlabel/products/He-thong-tieu-chuan-GHS-quy-dinh-nhung-gi.webp",
+        "/images/vietlabel/products/Quy-trinh-in-nhan-hoa-chat-dau-nhot-chuyen-nghiep-tai-VietLabel.webp",
+        "/images/vietlabel/products/Quy-trinh-in-nhan-dau-nhot-chuyen-nghiep-tai-VietLabel.webp",
+        "/images/vietlabel/products/dau-nhot-3-300x217.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal chịu dầu, decal PP, decal kim loại",
+        "Kích thước": "60 x 90mm - 150 x 200mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo 1-4 màu, cán màng chịu dầu",
+        "Gia công": "Die-cut bế, UV chống trầy",
+        "Số lượng tối thiểu": "3,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-23",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Thực Phẩm FDA",
+      "slug": "tem-thuc-pham-fda",
+      "description": "Tem nhãn thực phẩm an toàn, đạt chuẩn FDA, chịu nhiệt và ẩm, in thông tin dinh dưỡng. Phù hợp cho bao bì thực phẩm.",
+      "images": [
+        "/images/vietlabel/labels/tem-thuc-pham-hero.jpg",
+        "/images/vietlabel/products/Gioi-thieu-5-1024x576.png",
+        "/images/vietlabel/products/sec422.png",
+        "/images/vietlabel/products/nhan-thuc-pham.png",
+        "/images/vietlabel/products/nhan-thuc-pham-1.png",
+        "/images/vietlabel/products/nhan-thuc-pham-6-300x200.png",
+        "/images/vietlabel/products/nhan-thuc-pham-5-300x200.png",
+        "/images/vietlabel/products/nhan-thuc-pham-4-e1688741785260-300x181.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal an toàn thực phẩm FDA, decal giấy chịu dầu",
+        "Kích thước": "40 x 60mm - 100 x 150mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo 1-4 màu, in thông tin dinh dưỡng",
+        "Gia công": "Cán màng bảo vệ, die-cut bế",
+        "Số lượng tối thiểu": "5,000 tem / lô",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-24",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Bế Trắng Die-cut",
+      "slug": "tem-be-trang-die-cut",
+      "description": "Tem nhãn bế trắng đa dạng hình dáng, kích thước tùy chỉnh theo yêu cầu khách hàng. Die-cut chính xác, sắc nét.",
+      "images": [
+        "/images/vietlabel/labels/tem-be-trang-hero.jpg",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/in-nhan-be-trang-1.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-27.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-28.png",
+        "/images/vietlabel/products/in-nhan-be-trang-2.png",
+        "/images/vietlabel/products/in-nhan-be-trang-3.png",
+        "/images/vietlabel/products/in-nhan-be-trang-4.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy 70gsm, decal nhựa PP, decal trong suốt",
+        "Kích thước": "20 x 20mm - 200 x 200mm (Tùy biến)",
+        "Kỹ thuật in": "In Flexo/Offset 1-6 màu, die-cut tùy chỉnh",
+        "Gia công": "Die-cut bế hình tùy chỉnh, cán màng",
+        "Số lượng tối thiểu": "1,000 tem / lô",
+        "Thời gian sản xuất": "3 - 5 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-25",
+      "categoryId": "tem-nhan",
+      "name": "Nhãn Khử Keo (Zone/Pattern Adhesive Label)",
+      "slug": "nhan-khu-keo",
+      "description": "Tem nhãn khử keo một phần bằng công nghệ bế phủ vô hiệu hóa lớp keo, giúp tạo phần gập mở tiện lợi mà không dính bẩn vào sản phẩm hay tay người dùng.",
+      "images": [
+        "/images/vietlabel/products/anh-6.png",
+        "/images/vietlabel/products/khu-keo-1.png",
+        "/images/vietlabel/products/bo-suu-tap-5.png",
+        "/images/vietlabel/products/bo-suu-tap-4.png",
+        "/images/vietlabel/products/bo-suu-tap-3.png",
+        "/images/vietlabel/products/bo-suu-tap-2.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal giấy bóng, Decal nhựa PP trắng sữa / trong suốt",
+        "Kích thước": "Tùy biến theo khuôn bế của khách hàng",
+        "Kỹ thuật in": "In Flexo UV nhiều màu, bế khử keo định vị chính xác",
+        "Gia công": "Cán màng bóng/mờ, khử keo mặt sau, cuộn hoặc tờ",
+        "Số lượng tối thiểu": "5,000 nhãn / đơn hàng",
+        "Thời gian sản xuất": "4 - 6 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-26",
+      "categoryId": "tem-nhan",
+      "name": "Nhãn Phủ Cào Dạng Cuộn (Scratch-Off Roll Label)",
+      "slug": "nhan-phu-cao-dang-cuon",
+      "description": "Tem nhãn phủ cào bảo mật cao cấp dạng cuộn, dán tự động lên sản phẩm, bao phủ mã PIN, mã trúng thưởng hoặc QR xác thực nguồn gốc.",
+      "images": [
+        "/images/vietlabel/products/584493865_847396837692668_7098477587277216618_n.webp",
+        "/images/vietlabel/products/anh-6.png",
+        "/images/vietlabel/products/anh-7.png",
+        "/images/vietlabel/products/anh-8.png",
+        "/images/vietlabel/products/anh-9.png",
+        "/images/vietlabel/products/anh-10-300x300.png"
+      ],
+      "specs": {
+        "Chất liệu": "Decal vỡ chống bóc, decal bạc, decal giấy Couche",
+        "Kích thước": "20 x 40mm, 25 x 50mm hoặc tùy biến",
+        "Kỹ thuật in": "In dữ liệu biến đổi (Variable Data) + Phủ cào bạc UV chuyên dụng",
+        "Gia công": "Cán màng bảo vệ, phủ lớp chống soi đèn hồng ngoại, bế cuộn",
+        "Số lượng tối thiểu": "10,000 nhãn / đơn hàng",
+        "Thời gian sản xuất": "5 - 7 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-27",
+      "categoryId": "tem-nhan",
+      "name": "Tem Nhãn Điện Tử & Bo Mạch (Electronics & PCB Labels)",
+      "slug": "tem-nhan-dien-tu",
+      "description": "Tem nhãn chuyên dụng cho linh kiện điện tử, bo mạch vi xử lý chịu nhiệt độ hàn nhúng sóng lên tới 300°C, chống tĩnh điện ESD và bền hóa chất tẩy rửa.",
+      "images": [
+        "/images/vietlabel/products/nen-3.png",
+        "/images/vietlabel/products/sec422.png",
+        "/images/vietlabel/products/in-ve-su-kien-13.png",
+        "/images/vietlabel/products/Thiet-ke-chua-co-ten-21.png",
+        "/images/vietlabel/products/in-ve-su-kien-14.png",
+        "/images/vietlabel/products/in-ve-su-kien-17.png"
+      ],
+      "specs": {
+        "Chất liệu": "Polyimide (Kapton) trắng/hổ phách, Polyester chịu nhiệt, Decal bạc mờ",
+        "Kích thước": "5 x 5mm, 10 x 10mm, 15 x 30mm hoặc tùy biến siêu nhỏ",
+        "Kỹ thuật in": "In truyền nhiệt độ phân giải cao 600 DPI, in mực Resin siêu bền",
+        "Gia công": "Bế khuôn chính xác siêu nhỏ cho máy dán tự động SMT",
+        "Số lượng tối thiểu": "5,000 nhãn / cuộn",
+        "Thời gian sản xuất": "3 - 5 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    },
+    {
+      "id": "prod-28",
+      "categoryId": "the-cao",
+      "name": "Vé Mời & Vé Sự Kiện Chống Giả (Security Event Tickets)",
+      "slug": "in-ve-moi-ve-su-kien",
+      "description": "Giải pháp in vé mời cao cấp, vé sự kiện tích hợp công nghệ chống giả bảo mật, dập nổi kim loại, in số nhảy tự động và đường cấn xé tiện dụng.",
+      "images": [
+        "/images/vietlabel/products/in-ve-su-kien.png",
+        "/images/vietlabel/products/in-ve-su-kien-1.png",
+        "/images/vietlabel/products/33-1024x140.jpg",
+        "/images/vietlabel/products/in-ve-su-kien-2.png",
+        "/images/vietlabel/products/in-ve-su-kien-3.png",
+        "/images/vietlabel/products/in-ve-su-kien-5.png"
+      ],
+      "specs": {
+        "Chất liệu": "Giấy Couche 250 - 350gsm, Giấy mỹ thuật ánh kim cao cấp",
+        "Kích thước": "70 x 180mm, 80 x 200mm, 100 x 210mm hoặc tùy biến",
+        "Kỹ thuật in": "In Offset 4 màu sắc nét + In số nhảy liên tục không trùng lặp",
+        "Gia công": "Ép kim Hologram 3D, cấn 1-2 đường xé, cán màng mờ nhung",
+        "Số lượng tối thiểu": "1,000 vé / sự kiện",
+        "Thời gian sản xuất": "3 - 5 ngày làm việc"
+      },
+      "isActive": true,
+      "createdAt": "2026-10-30T13:00:08.946Z",
+      "updatedAt": "2026-10-30T13:00:08.946Z"
+    }
   ]
 }

@@ -323,15 +323,24 @@ export const NewsPage: React.FC = () => {
                         >
                           {currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}
                         </motion.div>
+                        <motion.div 
+                          className="absolute top-4 right-4 bg-white/95 backdrop-blur-md text-[#1E4384] text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-lg border border-slate-200"
+                          initial={{ x: 20, opacity: 0 }}
+                          whileInView={{ x: 0, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: 0.25 }}
+                        >
+                          {post.date}
+                        </motion.div>
                       </Link>
 
                       <div className="p-6 flex-grow">
                         <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
                           <motion.span 
-                            className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-lg"
+                            className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-lg font-medium"
                             whileHover={{ scale: 1.05 }}
                           >
-                            <Calendar className="w-3.5 h-3.5" />
+                            <Calendar className="w-3.5 h-3.5 text-[#BE1E2D]" />
                             {post.date}
                           </motion.span>
                           <span aria-hidden="true" className="text-slate-300">·</span>

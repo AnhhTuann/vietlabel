@@ -362,6 +362,33 @@ export const ProductDetailPage: React.FC = () => {
         </div>
       </motion.section>
 
+      {/* Detailed Content & Real Showcase */}
+      {product.contentHtml && (
+        <section className="py-16 bg-white border-t border-slate-200">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-extrabold text-[#1E4384] mb-8 pb-4 border-b border-slate-200 flex items-center gap-2">
+              <FileCheck className="w-6 h-6 text-[#BE1E2D]" />
+              Giới thiệu chuyên sâu & Hình ảnh thực tế
+            </h2>
+            <div
+              className="article-content max-w-none text-slate-700 leading-relaxed space-y-4
+                [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-[#1E4384] [&>h2]:mt-8 [&>h2]:mb-4
+                [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-[#1E4384] [&>h3]:mt-6 [&>h3]:mb-3
+                [&>h4]:text-lg [&>h4]:font-bold [&>h4]:text-[#1E4384] [&>h4]:mt-4 [&>h4]:mb-2
+                [&>p]:my-4 [&>p]:leading-relaxed
+                [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:my-4 [&>ul]:space-y-2
+                [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:my-4 [&>ol]:space-y-2
+                [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto
+                [&_strong]:text-slate-900 [&_strong]:font-semibold
+                [&>table]:w-full [&>table]:border-collapse [&>table]:my-6
+                [&_th]:bg-slate-100 [&_th]:p-3 [&_th]:border [&_th]:border-slate-200 [&_th]:text-left
+                [&_td]:p-3 [&_td]:border [&_td]:border-slate-200"
+              dangerouslySetInnerHTML={{ __html: product.contentHtml }}
+            />
+          </div>
+        </section>
+      )}
+
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <motion.section 
