@@ -31,6 +31,16 @@ export const NewsDetailPage: React.FC = () => {
         if (res.data && Array.isArray(res.data)) {
           const found = res.data.find((p: any) => p.slug === slug && p.status === 'PUBLISHED');
           if (found) {
+            let displayDate = undefined;
+            if (found.createdAt) {
+              const d = new Date(found.createdAt);
+              if (!isNaN(d.getTime())) {
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                displayDate = `${day} Tháng ${month}, ${year}`;
+              }
+            }
             setCmsPost({
               id: found.id,
               slug: found.slug,
@@ -42,12 +52,13 @@ export const NewsDetailPage: React.FC = () => {
               summaryVi: found.summary,
               summaryEn: found.summary,
               image: found.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-              date: new Date(found.createdAt).toLocaleDateString('vi-VN'),
+              date: displayDate || 'Vừa cập nhật',
               readTimeVi: '5 phút đọc',
               readTimeEn: '5 min read',
               author: found.author || 'Ban biên tập Vietlabel',
               contentVi: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
               contentEn: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
+              contentHtml: found.contentHtml,
             });
           }
         }

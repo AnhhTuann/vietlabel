@@ -23,23 +23,39 @@ export const NewsPage: React.FC = () => {
         if (isMounted && res.data && Array.isArray(res.data) && res.data.length > 0) {
           const mapped = res.data
             .filter((p: any) => p.status === 'PUBLISHED')
-            .map((p: any) => ({
-              id: p.id,
-              slug: p.slug,
-              category: p.category || 'nganh-bao-bi',
-              titleVi: p.title,
-              titleEn: p.title,
-              summaryVi: p.summary,
-              summaryEn: p.summary,
-              image: p.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-              categoryNameVi: p.category || 'Tin tức',
-              categoryNameEn: p.category || 'News',
-              date: new Date(p.createdAt).toLocaleDateString('vi-VN'),
-              readTimeVi: '5 phút đọc',
-              readTimeEn: '5 min read',
-              status: p.status
-            }));
+            .map((p: any) => {
+              const staticPost = POSTS_LIST.find((s) => s.slug === p.slug);
+              let displayDate = staticPost?.date;
+              if (!displayDate && p.createdAt) {
+                const d = new Date(p.createdAt);
+                if (!isNaN(d.getTime())) {
+                  const day = String(d.getDate()).padStart(2, '0');
+                  const month = String(d.getMonth() + 1).padStart(2, '0');
+                  const year = d.getFullYear();
+                  displayDate = `${day} Tháng ${month}, ${year}`;
+                }
+              }
+              return {
+                id: p.id,
+                slug: p.slug,
+                category: p.category || staticPost?.category || 'nganh-bao-bi',
+                titleVi: p.title || staticPost?.titleVi,
+                titleEn: p.title || staticPost?.titleEn,
+                summaryVi: p.summary || staticPost?.summaryVi,
+                summaryEn: p.summary || staticPost?.summaryEn,
+                image: p.imageUrl || staticPost?.image || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+                categoryNameVi: staticPost?.categoryNameVi || p.category || 'Tin tức',
+                categoryNameEn: staticPost?.categoryNameEn || p.category || 'News',
+                date: displayDate || 'Vừa cập nhật',
+                readTimeVi: staticPost?.readTimeVi || '5 phút đọc',
+                readTimeEn: staticPost?.readTimeEn || '5 min read',
+                contentHtml: p.contentHtml || staticPost?.contentHtml,
+                status: p.status,
+                createdAt: p.createdAt,
+              };
+            });
           if (mapped.length > 0) {
+            mapped.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
             // Merge CMS posts with static POSTS_LIST so crawled posts are never lost
             const combined = [
               ...mapped,
