@@ -197,9 +197,27 @@ export const NewsDetailPage: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {paragraphs.map((p, idx) => (
-              <p key={idx}>{p}</p>
-            ))}
+            {post.contentHtml ? (
+              <div
+                className="article-content max-w-none text-slate-700 leading-relaxed space-y-4
+                  [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-[#1E4384] [&>h2]:mt-8 [&>h2]:mb-4
+                  [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-[#1E4384] [&>h3]:mt-6 [&>h3]:mb-3
+                  [&>h4]:text-lg [&>h4]:font-bold [&>h4]:text-[#1E4384] [&>h4]:mt-4 [&>h4]:mb-2
+                  [&>p]:my-4 [&>p]:leading-relaxed
+                  [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:my-4 [&>ul]:space-y-2
+                  [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:my-4 [&>ol]:space-y-2
+                  [&_img]:rounded-xl [&_img]:shadow-md [&_img]:my-6 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto
+                  [&_strong]:text-slate-900 [&_strong]:font-semibold
+                  [&>table]:w-full [&>table]:border-collapse [&>table]:my-6
+                  [&_th]:bg-slate-100 [&_th]:p-3 [&_th]:border [&_th]:border-slate-200 [&_th]:text-left
+                  [&_td]:p-3 [&_td]:border [&_td]:border-slate-200"
+                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+              />
+            ) : (
+              paragraphs.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))
+            )}
 
             <motion.div
               className="p-6 rounded-2xl bg-[#1E4384] text-white my-8 space-y-3 shadow-lg"
