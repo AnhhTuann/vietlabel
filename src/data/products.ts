@@ -887,7 +887,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-11',
+    id: 'prod-13',
     slug: 'tem-duoc-pham-gmp',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -921,7 +921,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-12',
+    id: 'prod-14',
     slug: 'tem-hoa-my-pham-cao-cap',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -955,7 +955,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-13',
+    id: 'prod-17',
     slug: 'tem-du-lieu-bien-doi-qr',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -989,7 +989,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-14',
+    id: 'prod-16',
     slug: 'tem-pop-up-3d',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1023,7 +1023,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-15',
+    id: 'prod-18',
     slug: 'tem-may-mac-care-label',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1057,7 +1057,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-16',
+    id: 'prod-19',
     slug: 'tem-ruou-bia-chong-nuoc',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1091,7 +1091,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-17',
+    id: 'prod-21',
     slug: 'tem-thuy-san-chiu-lanh',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1125,7 +1125,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-18',
+    id: 'prod-22',
     slug: 'tem-dau-nhot-chiu-dau',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1159,7 +1159,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-19',
+    id: 'prod-23',
     slug: 'tem-thuc-pham-fda',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',
@@ -1193,7 +1193,7 @@ export const PRODUCTS_LIST: ProductItem[] = [
     isFeatured: true,
   },
   {
-    id: 'prod-20',
+    id: 'prod-24',
     slug: 'tem-be-trang-die-cut',
     categoryId: 'tem-nhan',
     categorySlug: 'tem-nhan',

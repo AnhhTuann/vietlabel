@@ -75,70 +75,93 @@ export const ProductsListPage: React.FC = () => {
       />
 
       {/* Hero Header */}
-      <section className="relative isolate overflow-hidden bg-[#081b35] text-white py-16">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_35%,rgba(63,112,190,0.3),transparent_38%),linear-gradient(120deg,#081b35_0%,#102e58_56%,#1e4384_100%)]" />
-
-        {/* Animated background rings */}
-        <motion.div
-          className="absolute -right-24 top-0 -z-10 h-96 w-96 rounded-full border border-white/10"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
-        />
+      <motion.section 
+        className="relative isolate overflow-hidden bg-gradient-to-br from-[#1E4384] via-[#0a2342] to-[#05172d] text-white py-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Animated background */}
+        <div className="absolute inset-0 -z-10">
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: `${300 + i * 100}px`,
+                height: `${300 + i * 100}px`,
+                left: `${-10 + i * 20}%`,
+                top: `${-10 + i * 20}%`,
+                background: 'radial-gradient(circle, rgba(190,30,45,0.1) 0%, transparent 70%)',
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 10 + i * 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          ))}
+        </div>
 
         {/* Floating particles */}
-        {[...Array(5)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 rounded-full bg-white/20"
+            className="absolute w-2 h-2 rounded-full bg-white/30"
             style={{
-              left: `${15 + i * 16}%`,
-              top: `${25 + (i % 3) * 25}%`,
+              left: `${10 + i * 12}%`,
+              top: `${20 + (i % 4) * 20}%`,
             }}
             animate={{
-              y: [0, -25, 0],
-              opacity: [0.2, 0.6, 0.2],
+              y: [0, -30, 0],
+              opacity: [0.1, 0.5, 0.1],
+              scale: [1, 1.5, 1],
             }}
             transition={{
-              duration: 4 + i * 0.5,
+              duration: 4 + i * 0.3,
               repeat: Infinity,
               ease: 'easeInOut',
-              delay: i * 0.3,
+              delay: i * 0.2,
             }}
           />
         ))}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">
-                <Link to="/" className="hover:underline">Trang chủ</Link>
-                <span>/</span>
-                <Link to="/san-pham" className="hover:underline">Sản phẩm</Link>
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400 mb-3">
+                <Link to="/" className="hover:text-white transition-colors">Trang chủ</Link>
+                <span className="text-white/50">/</span>
+                <Link to="/san-pham" className="hover:text-white transition-colors">Sản phẩm</Link>
                 {currentCategory && (
                   <>
-                    <span>/</span>
+                    <span className="text-white/50">/</span>
                     <span className="text-white">
                       {currentLang === 'vi' ? currentCategory.nameVi : currentCategory.nameEn}
                     </span>
                   </>
                 )}
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
                 {currentCategory
                   ? (currentLang === 'vi' ? currentCategory.nameVi : currentCategory.nameEn)
                   : 'Danh Mục Sản Phẩm Bao Bì Giấy Toàn Diện'}
               </h1>
-              <motion.span
-                className="mt-2 block h-1 w-20 rounded-full bg-[#e44b59]"
+              <motion.div
+                className="mt-4 h-1 w-32 rounded-full bg-gradient-to-r from-[#BE1E2D] to-[#1E4384]"
                 initial={{ width: 0 }}
-                animate={{ width: 80 }}
+                animate={{ width: 128 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               />
-              <p className="mt-3 text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <p className="mt-4 text-sm sm:text-base text-slate-200 max-w-2xl leading-relaxed">
                 {currentCategory
                   ? (currentLang === 'vi' ? currentCategory.shortDescVi : currentCategory.shortDescEn)
                   : 'Cung ứng trọn gói bao bì hộp giấy, túi giấy, thùng carton, tem nhãn chất lượng cao cho các ngành F&B, Dược mỹ phẩm và Tiêu dùng.'}
@@ -148,25 +171,25 @@ export const ProductsListPage: React.FC = () => {
             {/* Quick Quote trigger */}
             <motion.div
               className="shrink-0"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Button
                 variant="primary"
-                size="md"
+                size="lg"
                 onClick={() => onOpenQuoteModal()}
-                icon={<Send className="w-4 h-4" />}
-                className="shadow-lg shadow-blue-950/40"
+                icon={<Send className="w-5 h-5" />}
+                className="shadow-2xl shadow-blue-950/50"
               >
-                Gửi quy cách nhận báo giá
+                Nhận báo giá nhanh
               </Button>
             </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Main Catalog View with 2-level Sidebar */}
       <section className="py-12 bg-[#FAFAFC]">
@@ -324,70 +347,102 @@ export const ProductsListPage: React.FC = () => {
 
               {/* Grid of Product Cards */}
               {paginatedProducts.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
-                  <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <motion.div 
+                  className="bg-white rounded-2xl border border-slate-200 p-12 text-center"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                  </motion.div>
                   <h3 className="text-base font-bold text-slate-800">Không tìm thấy sản phẩm phù hợp</h3>
                   <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
                     Hãy thử xóa từ khóa tìm kiếm hoặc chọn danh mục khác, hoặc gửi quy cách trực tiếp cho Vietlabel để thiết kế mẫu riêng.
                   </p>
                   <div className="mt-6 flex justify-center gap-3">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSelectedSubcategory('all');
-                      }}
-                    >
-                      Xóa bộ lọc
-                    </Button>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={() => onOpenQuoteModal()}
-                    >
-                      Yêu cầu thiết kế riêng
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setSelectedSubcategory('all');
+                        }}
+                      >
+                        Xóa bộ lọc
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => onOpenQuoteModal()}
+                      >
+                        Yêu cầu thiết kế riêng
+                      </Button>
+                    </motion.div>
                   </div>
-                </div>
+                </motion.div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {paginatedProducts.map((prod, pIdx) => (
                     <motion.div
                       key={prod.id}
-                      className="group flex flex-col justify-between rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300"
-                      initial={{ opacity: 0, y: 25 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                      className="group flex flex-col h-full rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-2xl hover:border-[#BE1E2D]/50 transition-all duration-400"
+                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.45, delay: (pIdx % 6) * 0.06 }}
-                      whileHover={{ y: -6 }}
+                      transition={{ duration: 0.5, delay: (pIdx % 6) * 0.08 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      <div>
+                      <div className="flex flex-col h-full">
                         {/* Image banner */}
                         <Link
                           to={`/san-pham/${prod.categorySlug}/${prod.slug}`}
-                          className="block relative aspect-[4/3] bg-slate-100 overflow-hidden"
+                          className="block relative aspect-[4/3] bg-slate-100 overflow-hidden group flex-shrink-0"
                         >
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-t from-[#1E4384]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
                           <motion.img
                             src={prod.heroImage}
                             alt={currentLang === 'vi' ? prod.nameVi : prod.nameEn}
                             className="w-full h-full object-cover object-center"
                             referrerPolicy="no-referrer"
                             loading="lazy"
-                            whileHover={{ scale: 1.08 }}
-                            transition={{ duration: 0.4 }}
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.5 }}
                             onError={(e) => {
                               e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
                             }}
                           />
-                          <div className="absolute top-3 left-3 bg-[#1E4384]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs font-mono">
+                          <motion.div
+                            className="absolute top-3 left-3 bg-[#1E4384]/95 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm font-mono shadow-lg"
+                            initial={{ x: -20, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
+                          >
                             {prod.code}
-                          </div>
+                          </motion.div>
                           {prod.isFeatured && (
                             <motion.div
-                              className="absolute top-3 right-3 bg-[#BE1E2D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider"
-                              animate={{ scale: [1, 1.05, 1] }}
-                              transition={{ duration: 2, repeat: Infinity }}
+                              className="absolute top-3 right-3 bg-[#BE1E2D] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-lg"
+                              animate={{ 
+                                scale: [1, 1.1, 1],
+                                rotate: [0, -5, 5, -5, 0]
+                              }}
+                              transition={{ 
+                                duration: 2, 
+                                repeat: Infinity,
+                                repeatDelay: 3
+                              }}
                             >
                               Nổi bật
                             </motion.div>
@@ -395,10 +450,16 @@ export const ProductsListPage: React.FC = () => {
                         </Link>
 
                         {/* Info */}
-                        <div className="p-5">
-                          <span className="text-[11px] font-semibold text-[#BE1E2D] uppercase tracking-wider">
+                        <div className="p-5 flex flex-col flex-grow">
+                          <motion.span 
+                            className="text-[11px] font-semibold text-[#BE1E2D] uppercase tracking-wider inline-block"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3 }}
+                          >
                             {currentLang === 'vi' ? prod.categoryNameVi : prod.categoryNameEn}
-                          </span>
+                          </motion.span>
 
                           <h3 className="text-sm sm:text-base font-bold text-[#1E4384] group-hover:text-[#BE1E2D] transition-colors line-clamp-2 mt-1 leading-snug">
                             <Link to={`/san-pham/${prod.categorySlug}/${prod.slug}`}>
@@ -406,7 +467,7 @@ export const ProductsListPage: React.FC = () => {
                             </Link>
                           </h3>
 
-                          <p className="mt-2 text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                          <p className="mt-2 text-xs text-slate-500 line-clamp-2 leading-relaxed min-h-[2.5rem]">
                             {currentLang === 'vi' ? prod.descriptionVi : prod.descriptionEn}
                           </p>
 
@@ -424,7 +485,7 @@ export const ProductsListPage: React.FC = () => {
                       </div>
 
                       {/* Actions footer */}
-                      <div className="p-5 pt-0 flex items-center justify-between gap-2">
+                      <div className="p-5 pt-0 flex items-center justify-between gap-2 flex-shrink-0">
                         <Link
                           to={`/san-pham/${prod.categorySlug}/${prod.slug}`}
                           className="text-xs font-bold text-[#1E4384] hover:text-[#BE1E2D] flex items-center gap-1 transition-colors group/link"
