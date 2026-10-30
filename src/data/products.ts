@@ -916,8 +916,8 @@ export const PRODUCTS_LIST: ProductItem[] = [
     featuresEn: ['GMP pharmaceutical safety compliant', 'Heat resistant up to 120°C, waterproof 24h', 'Strong adhesion on glass and plastic containers', 'Sharp printing for easy readability'],
     applicationsVi: ['Thuốc kê đơn', 'Thực phẩm chức năng', 'Dược phẩm nhập khẩu', 'Vitamin & khoáng chất'],
     applicationsEn: ['Prescription drugs', 'Nutraceuticals', 'Imported pharmaceuticals', 'Vitamins & minerals'],
-    heroImage: 'https://vietlabel.com.vn/wp-content/uploads/2023/06/duoc-pham.png',
-    gallery: ['https://vietlabel.com.vn/wp-content/uploads/2023/06/duoc-pham-1-300x300.png', 'https://vietlabel.com.vn/wp-content/uploads/2023/06/duoc-pham-2-300x300.png'],
+    heroImage: '/images/vietlabel/labels/duoc-pham.png',
+    gallery: ['/images/vietlabel/labels/duoc-pham-1.png', '/images/vietlabel/labels/duoc-pham-2.png'],
     isFeatured: true,
   },
   {
@@ -950,8 +950,8 @@ export const PRODUCTS_LIST: ProductItem[] = [
     featuresEn: ['Premium matte or glossy finish', 'Hot foil stamping for luxury appeal', 'Waterproof and scratch-resistant', 'Excellent adhesion on all surfaces'],
     applicationsVi: ['Serum dưỡng da', 'Kem chống nắng', 'Nước hoa', 'Dầu gội & conditioner'],
     applicationsEn: ['Facial serums', 'Sunscreen', 'Perfumes', 'Shampoo & conditioner'],
-    heroImage: 'https://vietlabel.com.vn/wp-content/uploads/2023/07/hoa-my-pham-1.png',
-    gallery: ['https://vietlabel.com.vn/wp-content/uploads/2023/07/hoa-my-pham-2.png', 'https://vietlabel.com.vn/wp-content/uploads/2023/07/hoa-my-pham-3.png'],
+    heroImage: '/images/vietlabel/labels/hoa-my-pham-1.png',
+    gallery: ['/images/vietlabel/labels/hoa-my-pham-2.png', '/images/vietlabel/labels/hoa-my-pham-3.png'],
     isFeatured: true,
   },
   {
