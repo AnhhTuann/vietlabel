@@ -61,28 +61,6 @@ export const ProductDetailPage: React.FC = () => {
         ogType="product"
       />
 
-      {/* Breadcrumb Header */}
-      <section className="bg-slate-100 py-4 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="flex items-center gap-2 text-xs text-slate-600"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Link to="/" className="hover:text-[#BE1E2D]">Trang chủ</Link>
-            <span>/</span>
-            <Link to="/san-pham" className="hover:text-[#BE1E2D]">Sản phẩm</Link>
-            <span>/</span>
-            <Link to={`/san-pham/${product.categorySlug}`} className="hover:text-[#BE1E2D]">
-              {currentLang === 'vi' ? product.categoryNameVi : product.categoryNameEn}
-            </Link>
-            <span>/</span>
-            <span className="text-slate-900 font-semibold truncate max-w-xs">{productName}</span>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Main Product Showcase */}
       <motion.section 
         className="py-16 bg-gradient-to-b from-white to-[#FAFAFC]"
