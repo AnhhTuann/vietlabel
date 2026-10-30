@@ -26,7 +26,7 @@ export const ProductsListPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const itemsPerPage = 9;
 
   // Current category if URL param present
   const currentCategory = useMemo(() => {
@@ -137,19 +137,6 @@ export const ProductsListPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400 mb-3">
-                <Link to="/" className="hover:text-white transition-colors">Trang chủ</Link>
-                <span className="text-white/50">/</span>
-                <Link to="/san-pham" className="hover:text-white transition-colors">Sản phẩm</Link>
-                {currentCategory && (
-                  <>
-                    <span className="text-white/50">/</span>
-                    <span className="text-white">
-                      {currentLang === 'vi' ? currentCategory.nameVi : currentCategory.nameEn}
-                    </span>
-                  </>
-                )}
-              </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
                 {currentCategory
                   ? (currentLang === 'vi' ? currentCategory.nameVi : currentCategory.nameEn)
