@@ -48,6 +48,7 @@ export interface ProductItem {
   applicationsEn: string[];
   heroImage: string;
   gallery: string[];
+  contentHtml?: string;
   isFeatured?: boolean;
 }
 

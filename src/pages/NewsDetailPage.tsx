@@ -92,22 +92,25 @@ export const NewsDetailPage: React.FC = () => {
       />
 
       {/* Breadcrumb Header */}
-      <section className="bg-slate-100 py-4 border-b border-slate-200">
+      <motion.section 
+        className="bg-gradient-to-r from-slate-100 to-white py-5 border-b border-slate-200"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="flex items-center gap-2 text-xs text-slate-600"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            animate={{ opacity: 1 }}
           >
-            <Link to="/" className="hover:text-[#BE1E2D]">Trang chủ</Link>
-            <span>/</span>
-            <Link to="/tin-tuc" className="hover:text-[#BE1E2D]">Tin tức</Link>
-            <span>/</span>
+            <Link to="/" className="hover:text-[#BE1E2D] transition-colors">Trang chủ</Link>
+            <span className="text-slate-400">/</span>
+            <Link to="/tin-tuc" className="hover:text-[#BE1E2D] transition-colors">Tin tức</Link>
+            <span className="text-slate-400">/</span>
             <span className="text-slate-900 font-semibold truncate max-w-sm">{title}</span>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Main Article Container */}
       <article className="py-12 bg-white">
