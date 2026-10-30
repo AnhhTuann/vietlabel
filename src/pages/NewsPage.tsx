@@ -13,7 +13,7 @@ export const NewsPage: React.FC = () => {
   const [postsList, setPostsList] = useState<any[]>(POSTS_LIST);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const POSTS_PER_PAGE = 10;
+  const POSTS_PER_PAGE = 9;
 
   useEffect(() => {
     let isMounted = true;
