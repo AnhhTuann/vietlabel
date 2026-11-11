@@ -13,6 +13,8 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  Upload,
+  Loader2,
 } from 'lucide-react';
 import { api } from '../../services/api';
 
@@ -52,6 +54,7 @@ export const AdminNewsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPost, setCurrentPost] = useState<Partial<Post> | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchPosts = async () => {
     try {
@@ -124,6 +127,46 @@ export const AdminNewsPage: React.FC = () => {
       fetchPosts();
     } catch (err) {
       alert('Lỗi khi lưu bài viết');
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Chỉ chấp file ảnh PNG, JPG, JPEG, WEBP');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Kích thước file không được vượt quá 5MB');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        const response = await api.post('/upload', {
+          fileName: file.name,
+          fileBase64: base64,
+        });
+        
+        if (response.data?.file?.url) {
+          setCurrentPost({ ...currentPost, imageUrl: response.data.file.url });
+        }
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Lỗi khi upload ảnh. Vui lòng thử lại.');
+      setUploading(false);
     }
   };
 
@@ -343,11 +386,29 @@ export const AdminNewsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Image URL & Preview */}
+              {/* Image Upload */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Đường dẫn ảnh đại diện (Image URL)
+                  Ảnh đại diện bài viết <span className="text-rose-500">*</span>
                 </label>
+                
+                {/* Upload Button */}
+                <div className="flex gap-2 mb-2">
+                  <label className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-slate-300 rounded-xl hover:border-[#1E4384] hover:bg-slate-50 transition-colors cursor-pointer text-xs text-slate-600">
+                    <Upload className="w-4 h-4" />
+                    <span>{uploading ? 'Đang upload...' : 'Chọn file ảnh'}</span>
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/webp"
+                      onChange={handleImageUpload}
+                      disabled={uploading}
+                      className="hidden"
+                    />
+                  </label>
+                  {uploading && <Loader2 className="w-4 h-4 animate-spin text-[#1E4384]" />}
+                </div>
+
+                {/* Image URL Input */}
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -357,18 +418,19 @@ export const AdminNewsPage: React.FC = () => {
                     onChange={(e) => setCurrentPost({ ...currentPost, imageUrl: e.target.value })}
                   />
                   {currentPost?.imageUrl && (
-                    <div className="w-10 h-9 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                    <div className="w-16 h-12 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                       <img
                         src={currentPost.imageUrl}
                         alt="Preview"
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.src = '/images/vietlabel/label-cafe-ocop.webp';
                         }}
                       />
                     </div>
                   )}
                 </div>
+                
                 {/* Image presets */}
                 <div className="mt-1.5 flex flex-wrap gap-1.5 text-[11px] text-slate-500">
                   <span className="font-medium text-slate-600">Gợi ý ảnh:</span>
