@@ -109,11 +109,11 @@ export const AdminLoginPage: React.FC = () => {
             type="submit"
             variant="primary"
             size="lg"
-            disabled={isLoading}
+            isLoading={isLoading}
+            icon={<ArrowRight className="w-4 h-4" />}
             className="w-full bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-sm shadow-md"
           >
-            <span>{isLoading ? 'Đang xác thực...' : 'Đăng nhập vào hệ thống'}</span>
-            <ArrowRight className="w-4 h-4 ml-1" />
+            {isLoading ? 'Đang xác thực...' : 'Đăng nhập vào hệ thống'}
           </Button>
         </form>
 
