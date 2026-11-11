@@ -10,9 +10,9 @@ import {
   Users,
   X,
 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { PRODUCT_CATEGORIES } from '../../data/products';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
@@ -54,8 +54,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
           : 'text-slate-200 hover:text-white hover:bg-white/10 rounded-lg',
     );
 
-
-
   const toggleLanguage = () => {
     const nextLang = i18n.language === 'vi' ? 'en' : 'vi';
     i18n.changeLanguage(nextLang);
@@ -80,14 +78,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <Link
-                to="/"
-                className="flex flex-shrink-0 items-center"
-              >
+              <Link to="/" className="flex flex-shrink-0 items-center">
                 <motion.img
-                  src={scrolledPast || !isHome ? '/images/vietlabel/logo.png' : '/images/vietlabel/logo-white.png'}
+                  src={
+                    scrolledPast || !isHome
+                      ? '/images/vietlabel/logo.png'
+                      : '/images/vietlabel/logo-white.png'
+                  }
                   alt="Vietlabel"
-                  className="h-10 sm:h-12 w-auto object-contain transition-all duration-300"
+                  className="h-12 sm:h-14 w-auto object-contain transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                   onError={(e) => {
@@ -97,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               </Link>
             </motion.div>
 
-            <nav className="hidden lg:flex flex-1 items-center justify-center gap-1">
+            <nav className="hidden xl:flex flex-1 items-center justify-center gap-1">
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -419,7 +418,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <motion.button
                 onClick={() => setMobileMenuOpen(true)}
                 className={cn(
-                  'lg:hidden p-2 rounded-lg transition-colors',
+                  'xl:hidden p-2 rounded-lg transition-colors',
                   scrolledPast || !isHome
                     ? 'text-slate-700 hover:bg-slate-100'
                     : 'text-white hover:bg-white/10',
@@ -440,7 +439,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 lg:hidden flex justify-end bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 xl:hidden flex justify-end bg-black/50 backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         >
           <motion.div
@@ -453,15 +452,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
           >
             <div className="p-4 border-b border-slate-200">
               <div className="flex items-center justify-between">
-                <Link
-                  to="/"
-                  className="flex items-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link to="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
                   <img
                     src="/images/vietlabel/logo.png"
                     alt="Vietlabel"
-                    className="h-8 w-auto object-contain"
+                    className="h-9 sm:h-10 w-auto object-contain"
                   />
                 </Link>
                 <button
