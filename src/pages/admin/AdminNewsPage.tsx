@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import {
-  Newspaper,
-  Plus,
-  Edit2,
-  Trash2,
-  Search,
-  X,
-  ExternalLink,
-  Image,
-  Eye,
   CheckCircle2,
   Clock,
-  Sparkles,
-  Upload,
+  Edit2,
+  ExternalLink,
   Loader2,
+  Newspaper,
+  Plus,
+  Search,
+  Trash2,
+  Upload,
+  X,
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { api } from '../../services/api';
 
 interface Post {
@@ -149,23 +146,23 @@ export const AdminNewsPage: React.FC = () => {
 
     setUploading(true);
     try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const base64 = reader.result as string;
-        const response = await api.post('/upload', {
-          fileName: file.name,
-          fileBase64: base64,
-        });
-        
-        if (response.data?.file?.url) {
-          setCurrentPost({ ...currentPost, imageUrl: response.data.file.url });
-        }
-        setUploading(false);
-      };
-      reader.readAsDataURL(file);
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () =>
+          typeof reader.result === 'string'
+            ? resolve(reader.result)
+            : reject(new Error('Không đọc được ảnh đã chọn.'));
+        reader.onerror = () => reject(reader.error || new Error('Không đọc được ảnh đã chọn.'));
+        reader.readAsDataURL(file);
+      });
+      const response = await api.post('/upload', { fileName: file.name, fileBase64: base64 });
+      if (response.data?.file?.url) {
+        setCurrentPost((post) => ({ ...post, imageUrl: response.data.file.url }));
+      }
     } catch (err) {
       console.error('Upload error:', err);
       alert('Lỗi khi upload ảnh. Vui lòng thử lại.');
+    } finally {
       setUploading(false);
     }
   };
@@ -190,7 +187,8 @@ export const AdminNewsPage: React.FC = () => {
             Quản lý Bài viết & Tin tức
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Các bài viết có trạng thái <strong>PUBLISHED</strong> sẽ tự động hiển thị ở Slider trang chủ và trang Tin tức.
+            Các bài viết có trạng thái <strong>PUBLISHED</strong> sẽ tự động hiển thị ở Slider trang
+            chủ và trang Tin tức.
           </p>
         </div>
         <button
@@ -243,7 +241,8 @@ export const AdminNewsPage: React.FC = () => {
               ) : filtered.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="p-8 text-center text-slate-400">
-                    Không tìm thấy bài viết nào. Bấm nút <strong>"Đăng bài viết mới"</strong> để thêm bài.
+                    Không tìm thấy bài viết nào. Bấm nút <strong>"Đăng bài viết mới"</strong> để
+                    thêm bài.
                   </td>
                 </tr>
               ) : (
@@ -262,14 +261,18 @@ export const AdminNewsPage: React.FC = () => {
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="font-bold text-slate-800 text-sm line-clamp-1">{post.title}</div>
+                      <div className="font-bold text-slate-800 text-sm line-clamp-1">
+                        {post.title}
+                      </div>
                       <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate max-w-md">
                         /tin-tuc/{post.slug}
                       </div>
                     </td>
                     <td className="p-4">
                       <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700">
-                        {CATEGORY_OPTIONS.find((c) => c.value === post.category)?.label || post.category || 'Tin tức'}
+                        {CATEGORY_OPTIONS.find((c) => c.value === post.category)?.label ||
+                          post.category ||
+                          'Tin tức'}
                       </span>
                     </td>
                     <td className="p-4">
@@ -371,7 +374,9 @@ export const AdminNewsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Chuyên mục</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Chuyên mục
+                  </label>
                   <select
                     className="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-xl focus:border-[#1E4384] focus:outline-none focus:ring-1 focus:ring-[#1E4384] bg-white cursor-pointer"
                     value={currentPost?.category || 'du-an-noi-bat'}
@@ -391,7 +396,7 @@ export const AdminNewsPage: React.FC = () => {
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Ảnh đại diện bài viết <span className="text-rose-500">*</span>
                 </label>
-                
+
                 {/* Upload Button */}
                 <div className="flex gap-2 mb-2">
                   <label className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-slate-300 rounded-xl hover:border-[#1E4384] hover:bg-slate-50 transition-colors cursor-pointer text-xs text-slate-600">
@@ -430,14 +435,17 @@ export const AdminNewsPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Image presets */}
                 <div className="mt-1.5 flex flex-wrap gap-1.5 text-[11px] text-slate-500">
                   <span className="font-medium text-slate-600">Gợi ý ảnh:</span>
                   <button
                     type="button"
                     onClick={() =>
-                      setCurrentPost({ ...currentPost, imageUrl: '/images/vietlabel/label-cafe-ocop.webp' })
+                      setCurrentPost({
+                        ...currentPost,
+                        imageUrl: '/images/vietlabel/label-cafe-ocop.webp',
+                      })
                     }
                     className="text-[#1E4384] hover:underline cursor-pointer"
                   >
@@ -446,7 +454,10 @@ export const AdminNewsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      setCurrentPost({ ...currentPost, imageUrl: '/images/vietlabel/label-dau-nhot.webp' })
+                      setCurrentPost({
+                        ...currentPost,
+                        imageUrl: '/images/vietlabel/label-dau-nhot.webp',
+                      })
                     }
                     className="text-[#1E4384] hover:underline cursor-pointer"
                   >
@@ -455,7 +466,10 @@ export const AdminNewsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      setCurrentPost({ ...currentPost, imageUrl: '/images/vietlabel/label-popup.webp' })
+                      setCurrentPost({
+                        ...currentPost,
+                        imageUrl: '/images/vietlabel/label-popup.webp',
+                      })
                     }
                     className="text-[#1E4384] hover:underline cursor-pointer"
                   >
@@ -464,7 +478,10 @@ export const AdminNewsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      setCurrentPost({ ...currentPost, imageUrl: '/images/vietlabel/team-vietlabel.webp' })
+                      setCurrentPost({
+                        ...currentPost,
+                        imageUrl: '/images/vietlabel/team-vietlabel.webp',
+                      })
                     }
                     className="text-[#1E4384] hover:underline cursor-pointer"
                   >
@@ -475,7 +492,9 @@ export const AdminNewsPage: React.FC = () => {
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Trạng thái đăng bài</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Trạng thái đăng bài
+                </label>
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2 text-xs cursor-pointer">
                     <input
@@ -486,7 +505,9 @@ export const AdminNewsPage: React.FC = () => {
                       onChange={() => setCurrentPost({ ...currentPost, status: 'PUBLISHED' })}
                       className="text-[#1E4384]"
                     />
-                    <span className="font-medium text-emerald-700">Công khai (Xuất hiện trên Slider & Tin tức)</span>
+                    <span className="font-medium text-emerald-700">
+                      Công khai (Xuất hiện trên Slider & Tin tức)
+                    </span>
                   </label>
                   <label className="flex items-center gap-2 text-xs cursor-pointer">
                     <input
@@ -554,4 +575,3 @@ export const AdminNewsPage: React.FC = () => {
     </div>
   );
 };
-

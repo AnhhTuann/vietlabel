@@ -1,26 +1,32 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useTranslation } from 'react-i18next';
 import {
-  Phone,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  FileCheck,
   Mail,
   MapPin,
-  Clock,
+  Phone,
   Send,
-  CheckCircle2,
-  AlertCircle,
-  FileCheck,
 } from 'lucide-react';
-import { Button } from '../ui/Button';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
 import { submitContact } from '../../services/api';
+import { Button } from '../ui/Button';
 
 const contactSchema = z.object({
   fullName: z.string().min(2, 'Vui lòng nhập họ và tên (tối thiểu 2 ký tự)'),
   company: z.string().min(2, 'Vui lòng nhập tên công ty hoặc thương hiệu'),
   email: z.string().email('Địa chỉ email không hợp lệ'),
-  phone: z.string().min(9, 'Số điện thoại không hợp lệ (tối thiểu 9 số)'),
+  phone: z
+    .string()
+    .optional()
+    .refine(
+      (value) => !value?.trim() || value.replace(/\D/g, '').length >= 9,
+      'Số điện thoại không hợp lệ (tối thiểu 9 số)',
+    ),
   productInterest: z.string().optional(),
   quantity: z.string().optional(),
   message: z.string().min(10, 'Vui lòng mô tả yêu cầu bao bì (tối thiểu 10 ký tự)'),
@@ -64,7 +70,8 @@ export const ContactSection: React.FC = () => {
     } catch (err) {
       setSubmitResult({
         success: false,
-        message: 'Có lỗi xảy ra khi kết nối máy chủ. Vui lòng gọi trực tiếp hotline: (028) 3765 8888.',
+        message:
+          'Có lỗi xảy ra khi kết nối máy chủ. Vui lòng gọi trực tiếp hotline: (028) 3765 8888.',
       });
     } finally {
       setIsSubmitting(false);
@@ -95,7 +102,9 @@ export const ContactSection: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block font-semibold">Trụ sở & Nhà máy Vietlabel:</strong>
+                      <strong className="text-white block font-semibold">
+                        Trụ sở & Nhà máy Vietlabel:
+                      </strong>
                       <span>266/6 Lê Thị Riêng, Phường Thới An, TP. Hồ Chí Minh, Việt Nam</span>
                     </div>
                   </div>
@@ -103,12 +112,20 @@ export const ContactSection: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <Phone className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block font-semibold">{t('contact.hotline')}:</strong>
-                      <a href="tel:0868968089" className="hover:text-amber-400 text-white font-bold">
+                      <strong className="text-white block font-semibold">
+                        {t('contact.hotline')}:
+                      </strong>
+                      <a
+                        href="tel:0868968089"
+                        className="hover:text-amber-400 text-white font-bold"
+                      >
                         (+84) 086 896 8089
                       </a>
                       <span className="text-slate-400"> / </span>
-                      <a href="tel:02837658888" className="hover:text-amber-400 text-white font-bold">
+                      <a
+                        href="tel:02837658888"
+                        className="hover:text-amber-400 text-white font-bold"
+                      >
                         (028) 3765 8888
                       </a>
                     </div>
@@ -117,12 +134,20 @@ export const ContactSection: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <Mail className="w-5 h-5 text-[#BE1E2D] shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block font-semibold">Email nhận hồ sơ thầu & báo giá:</strong>
-                      <a href="mailto:thien@vietlabel.com.vn" className="hover:text-amber-400 text-white">
+                      <strong className="text-white block font-semibold">
+                        Email nhận hồ sơ thầu & báo giá:
+                      </strong>
+                      <a
+                        href="mailto:thien@vietlabel.com.vn"
+                        className="hover:text-amber-400 text-white"
+                      >
                         thien@vietlabel.com.vn
                       </a>
                       <span className="text-slate-400"> / </span>
-                      <a href="mailto:baogia@vietlabel.com.vn" className="hover:text-amber-400 text-white">
+                      <a
+                        href="mailto:baogia@vietlabel.com.vn"
+                        className="hover:text-amber-400 text-white"
+                      >
                         baogia@vietlabel.com.vn
                       </a>
                     </div>
@@ -169,7 +194,8 @@ export const ContactSection: React.FC = () => {
                   </p>
                   {submitResult.trackingId && (
                     <div className="mt-5 inline-block p-3 bg-slate-100 border border-slate-200 rounded-lg text-xs font-mono text-slate-700">
-                      Mã phiếu yêu cầu: <strong className="text-[#BE1E2D]">{submitResult.trackingId}</strong>
+                      Mã phiếu yêu cầu:{' '}
+                      <strong className="text-[#BE1E2D]">{submitResult.trackingId}</strong>
                     </div>
                   )}
                   <div className="mt-8">

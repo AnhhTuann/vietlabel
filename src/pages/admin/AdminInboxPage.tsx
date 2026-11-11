@@ -1,23 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  MessageSquare,
-  Bot,
-  User,
-  Send,
-  UserCheck,
-  RotateCcw,
-  Paperclip,
-  Phone,
-  Search,
-  CheckCircle2,
-  AlertCircle,
-  Clock,
-  Sparkles,
-  Building,
-} from 'lucide-react';
+import { MessageSquare, RotateCcw, Send, User, UserCheck } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from '../../components/ui/Button';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { useAdminRealtime } from '../../hooks/useAdminRealtime';
-import { Button } from '../../components/ui/Button';
 
 export const AdminInboxPage: React.FC = () => {
   const { user, token } = useAdminAuth();
@@ -61,21 +46,15 @@ export const AdminInboxPage: React.FC = () => {
 
   const fetchConversationDetail = async (convId: string) => {
     try {
-      const res = await fetch(`/api/admin/leads?status=ALL`, {
+      const conv = conversations.find((c) => c.id === convId);
+      if (!conv) return;
+
+      const leadRes = await fetch(`/api/admin/leads/${conv.leadId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Or find conversation directly
-      const conv = conversations.find(c => c.id === convId);
-      if (conv) {
-        // Fetch detailed lead to get messages
-        const leadRes = await fetch(`/api/admin/leads/${conv.leadId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (leadRes.ok) {
-          const detail = await leadRes.json();
-          setActiveConvData(detail);
-        }
-      }
+      if (!leadRes.ok) throw new Error('Không thể tải nội dung hội thoại.');
+      const detail = await leadRes.json();
+      setActiveConvData(detail);
     } catch (err) {
       console.error('Fetch conversation detail failed:', err);
     }
@@ -156,13 +135,14 @@ export const AdminInboxPage: React.FC = () => {
     'Dạ chuyên viên kỹ thuật dự toán đang lên bảng tính giá chi tiết, sẽ gửi lại anh/chị trong 10 phút ạ!',
   ];
 
-  const filteredConversations = conversations.filter(c => {
-    if (filterType === 'MINE') return c.humanAgentId === user?.id || c.lead?.assignedToId === user?.id;
+  const filteredConversations = conversations.filter((c) => {
+    if (filterType === 'MINE')
+      return c.humanAgentId === user?.id || c.lead?.assignedToId === user?.id;
     if (filterType === 'HUMAN') return c.mode === 'HUMAN';
     return true;
   });
 
-  const activeConv = conversations.find(c => c.id === selectedConvId);
+  const activeConv = conversations.find((c) => c.id === selectedConvId);
   const isHumanMode = activeConv?.mode === 'HUMAN';
 
   return (
@@ -185,7 +165,9 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('ALL')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'ALL' ? 'bg-[#1E4384] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'ALL'
+                  ? 'bg-[#1E4384] text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Tất cả
@@ -193,7 +175,9 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('MINE')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'MINE' ? 'bg-[#1E4384] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'MINE'
+                  ? 'bg-[#1E4384] text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Của tôi
@@ -201,7 +185,9 @@ export const AdminInboxPage: React.FC = () => {
             <button
               onClick={() => setFilterType('HUMAN')}
               className={`flex-1 py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
-                filterType === 'HUMAN' ? 'bg-[#BE1E2D] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                filterType === 'HUMAN'
+                  ? 'bg-[#BE1E2D] text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Đang tiếp quản
@@ -214,7 +200,9 @@ export const AdminInboxPage: React.FC = () => {
           {isLoading ? (
             <div className="p-8 text-center text-xs text-slate-400">Đang tải hội thoại...</div>
           ) : filteredConversations.length === 0 ? (
-            <div className="p-8 text-center text-xs text-slate-400">Không có cuộc trò chuyện nào.</div>
+            <div className="p-8 text-center text-xs text-slate-400">
+              Không có cuộc trò chuyện nào.
+            </div>
           ) : (
             filteredConversations.map((c) => {
               const isSelected = c.id === selectedConvId;
@@ -233,12 +221,19 @@ export const AdminInboxPage: React.FC = () => {
                       {c.lead?.customerName || 'Khách hàng web'}
                     </span>
                     <span className="text-[10px] text-slate-400 shrink-0">
-                      {new Date(c.lastMessageAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(c.lastMessageAt).toLocaleTimeString('vi-VN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500 truncate">
-                    {c.lead?.company && <span className="text-slate-700 font-medium truncate max-w-[120px]">{c.lead.company}</span>}
+                    {c.lead?.company && (
+                      <span className="text-slate-700 font-medium truncate max-w-[120px]">
+                        {c.lead.company}
+                      </span>
+                    )}
                     <span>• {c.lead?.productType}</span>
                   </div>
 
@@ -346,11 +341,19 @@ export const AdminInboxPage: React.FC = () => {
                       {isCustomer ? (
                         <span>Khách hàng</span>
                       ) : isStaff ? (
-                        <span className="font-bold text-[#BE1E2D]">Nhân viên: {msg.staffName || user?.name}</span>
+                        <span className="font-bold text-[#BE1E2D]">
+                          Nhân viên: {msg.staffName || user?.name}
+                        </span>
                       ) : (
                         <span className="font-semibold text-blue-600">Trợ lý AI Vietlabel</span>
                       )}
-                      <span>• {new Date(msg.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span>
+                        •{' '}
+                        {new Date(msg.createdAt).toLocaleTimeString('vi-VN', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </span>
                     </div>
 
                     <div
@@ -358,8 +361,8 @@ export const AdminInboxPage: React.FC = () => {
                         isCustomer
                           ? 'bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs'
                           : isStaff
-                          ? 'bg-[#BE1E2D] text-white rounded-tr-xs'
-                          : 'bg-[#1E4384] text-white rounded-tr-xs'
+                            ? 'bg-[#BE1E2D] text-white rounded-tr-xs'
+                            : 'bg-[#1E4384] text-white rounded-tr-xs'
                       }`}
                     >
                       {msg.text}
@@ -384,7 +387,10 @@ export const AdminInboxPage: React.FC = () => {
             </div>
 
             {/* Input Composer */}
-            <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+            <form
+              onSubmit={handleSendMessage}
+              className="p-3 bg-white border-t border-slate-200 flex items-center gap-2"
+            >
               <input
                 type="text"
                 value={inputText}

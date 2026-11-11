@@ -1,43 +1,50 @@
-import React, { useState, useMemo } from 'react';
-import { useParams, Link, useOutletContext, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowLeft,
   CheckCircle2,
-  Package,
-  Layers,
-  Sparkles,
   Clock,
-  ShieldCheck,
-  Send,
   FileCheck,
+  Layers,
+  Package,
+  Send,
+  ShieldCheck,
+  Sparkles,
   Star,
 } from 'lucide-react';
-import { SEO } from '../lib/seo';
-import { PRODUCTS_LIST } from '../data/products';
+import { AnimatePresence, motion } from 'motion/react';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
+import { useCmsProducts } from '../hooks/useCmsProducts';
+import { SEO } from '../lib/seo';
 
 export const ProductDetailPage: React.FC = () => {
   const { danhMuc, slug } = useParams<{ danhMuc: string; slug: string }>();
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const navigate = useNavigate();
+  const { products, isLoading } = useCmsProducts();
   const { onOpenQuoteModal } = useOutletContext<{ onOpenQuoteModal: (prod?: string) => void }>();
 
   // Find product by slug
   const product = useMemo(() => {
-    return PRODUCTS_LIST.find((p) => p.slug === slug);
-  }, [slug]);
+    return products.find((p) => p.slug === slug && p.categorySlug === danhMuc);
+  }, [products, slug, danhMuc]);
 
   const [selectedImage, setSelectedImage] = useState(product?.heroImage || '');
 
   // Related products in the same category
   const relatedProducts = useMemo(() => {
-    return PRODUCTS_LIST.filter(
-      (p) => p.categoryId === product?.categoryId && p.id !== product?.id
-    ).slice(0, 3);
-  }, [product]);
+    return products
+      .filter((p) => p.categoryId === product?.categoryId && p.id !== product?.id)
+      .slice(0, 3);
+  }, [products, product]);
+
+  if (!product && isLoading) {
+    return (
+      <div className="pt-32 pb-20 text-center text-sm text-slate-500">Đang tải sản phẩm...</div>
+    );
+  }
 
   if (!product) {
     return (
@@ -62,7 +69,7 @@ export const ProductDetailPage: React.FC = () => {
       />
 
       {/* Main Product Showcase */}
-      <motion.section 
+      <motion.section
         className="py-16 bg-gradient-to-b from-white to-[#FAFAFC]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -77,7 +84,7 @@ export const ProductDetailPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <motion.div 
+              <motion.div
                 className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 border-2 border-slate-200 shadow-xl"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
@@ -98,7 +105,7 @@ export const ProductDetailPage: React.FC = () => {
                     }}
                   />
                 </AnimatePresence>
-                <motion.div 
+                <motion.div
                   className="absolute top-4 left-4 bg-gradient-to-r from-[#1E4384] to-[#0a2342] text-white font-mono text-xs font-bold px-4 py-2 rounded-full backdrop-blur-md shadow-lg"
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -110,7 +117,7 @@ export const ProductDetailPage: React.FC = () => {
 
               {/* Thumbnails */}
               {product.gallery.length > 1 && (
-                <motion.div 
+                <motion.div
                   className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -146,14 +153,18 @@ export const ProductDetailPage: React.FC = () => {
               )}
 
               {/* Trust Badges */}
-              <motion.div 
+              <motion.div
                 className="p-4 rounded-2xl bg-gradient-to-br from-[#FAFAFC] to-white border border-slate-200 shadow-md grid grid-cols-2 gap-3 text-xs text-slate-700"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
                 {[
-                  { icon: ShieldCheck, color: 'text-emerald-500', text: 'Chứng nhận chuẩn FSC® & ISO' },
+                  {
+                    icon: ShieldCheck,
+                    color: 'text-emerald-500',
+                    text: 'Chứng nhận chuẩn FSC® & ISO',
+                  },
                   { icon: Clock, color: 'text-blue-500', text: 'Thời gian sản xuất 5-7 ngày' },
                   { icon: Sparkles, color: 'text-amber-500', text: 'Duyệt mẫu mockup miễn phí' },
                   { icon: FileCheck, color: 'text-purple-500', text: 'Bảo hành chất lượng 100%' },
@@ -185,7 +196,7 @@ export const ProductDetailPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <motion.span 
+                <motion.span
                   className="text-xs font-bold uppercase tracking-wider text-[#BE1E2D] px-3 py-1.5 bg-gradient-to-r from-red-50 to-orange-50 rounded-full border border-red-100 inline-block shadow-sm"
                   initial={{ scale: 0.8 }}
                   animate={{ scale: 1 }}
@@ -214,37 +225,53 @@ export const ProductDetailPage: React.FC = () => {
                 </div>
                 <div className="divide-y divide-slate-200/80 text-xs">
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Chất liệu giấy:</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Chất liệu giấy:
+                    </span>
                     <span className="col-span-2 text-slate-800 font-medium">
                       {currentLang === 'vi' ? product.specs.materialVi : product.specs.materialEn}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Kích thước tham khảo:</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Kích thước tham khảo:
+                    </span>
                     <span className="col-span-2 text-slate-800 font-medium">
-                      {currentLang === 'vi' ? product.specs.dimensionsVi : product.specs.dimensionsEn}
+                      {currentLang === 'vi'
+                        ? product.specs.dimensionsVi
+                        : product.specs.dimensionsEn}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Công nghệ in ấn:</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Công nghệ in ấn:
+                    </span>
                     <span className="col-span-2 text-slate-800 font-medium">
-                      {currentLang === 'vi' ? product.specs.printTechniqueVi : product.specs.printTechniqueEn}
+                      {currentLang === 'vi'
+                        ? product.specs.printTechniqueVi
+                        : product.specs.printTechniqueEn}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Gia công hoàn thiện:</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Gia công hoàn thiện:
+                    </span>
                     <span className="col-span-2 text-slate-800 font-medium">
                       {currentLang === 'vi' ? product.specs.finishingVi : product.specs.finishingEn}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Số lượng tối thiểu (MOQ):</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Số lượng tối thiểu (MOQ):
+                    </span>
                     <span className="col-span-2 text-[#BE1E2D] font-bold font-mono">
                       {product.specs.moq}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors group">
-                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">Tiến độ giao hàng:</span>
+                    <span className="font-semibold text-slate-500 group-hover:text-[#1E4384]">
+                      Tiến độ giao hàng:
+                    </span>
                     <span className="col-span-2 text-slate-800 font-medium">
                       {currentLang === 'vi' ? product.specs.leadTimeVi : product.specs.leadTimeEn}
                     </span>
@@ -293,24 +320,26 @@ export const ProductDetailPage: React.FC = () => {
                   Ngành hàng ứng dụng
                 </h3>
                 <div className="flex flex-wrap gap-2 text-xs">
-                  {(currentLang === 'vi' ? product.applicationsVi : product.applicationsEn).map((app, i) => (
-                    <motion.span
-                      key={i}
-                      className="px-4 py-2 bg-gradient-to-r from-[#1E4384] to-[#0a2342] text-white rounded-lg font-medium shadow-md hover:shadow-lg"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: i * 0.03 }}
-                    >
-                      {app}
-                    </motion.span>
-                  ))}
+                  {(currentLang === 'vi' ? product.applicationsVi : product.applicationsEn).map(
+                    (app, i) => (
+                      <motion.span
+                        key={i}
+                        className="px-4 py-2 bg-gradient-to-r from-[#1E4384] to-[#0a2342] text-white rounded-lg font-medium shadow-md hover:shadow-lg"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: i * 0.03 }}
+                      >
+                        {app}
+                      </motion.span>
+                    ),
+                  )}
                 </div>
               </motion.div>
 
               {/* Quotation CTA Buttons */}
-              <motion.div 
+              <motion.div
                 className="pt-6 flex flex-wrap items-center gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -329,7 +358,12 @@ export const ProductDetailPage: React.FC = () => {
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link to="/san-pham">
-                    <Button variant="outline" size="lg" icon={<ArrowLeft className="w-4 h-4" />} iconPosition="left">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      icon={<ArrowLeft className="w-4 h-4" />}
+                      iconPosition="left"
+                    >
                       Về danh mục
                     </Button>
                   </Link>
@@ -369,7 +403,7 @@ export const ProductDetailPage: React.FC = () => {
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <motion.section 
+        <motion.section
           className="py-20 bg-gradient-to-b from-[#FAFAFC] to-white border-t border-slate-200"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -414,14 +448,14 @@ export const ProductDetailPage: React.FC = () => {
                           e.currentTarget.src = '/images/vietlabel/hero-banner.webp';
                         }}
                       />
-                      <motion.div 
+                      <motion.div
                         className="absolute inset-0 bg-gradient-to-t from-[#1E4384]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
                         initial={{ opacity: 0 }}
                         whileHover={{ opacity: 1 }}
                       />
                     </div>
                     <div className="p-5">
-                      <motion.span 
+                      <motion.span
                         className="text-[11px] font-bold text-[#BE1E2D] uppercase tracking-wider"
                         whileHover={{ scale: 1.05 }}
                       >

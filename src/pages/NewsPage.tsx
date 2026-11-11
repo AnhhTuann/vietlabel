@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import {
+  ArrowRight,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Newspaper,
+  Search,
+} from 'lucide-react';
 import { motion } from 'motion/react';
-import { Calendar, Clock, ArrowRight, Search, Newspaper, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { POSTS_LIST } from '../data/posts';
 import { SEO } from '../lib/seo';
 import { api } from '../services/api';
-import { POSTS_LIST } from '../data/posts';
-import { SectionTitle } from '../components/ui/SectionTitle';
 
 export const NewsPage: React.FC = () => {
   const { i18n } = useTranslation();
@@ -20,7 +27,8 @@ export const NewsPage: React.FC = () => {
     const fetchPosts = async () => {
       try {
         const res = await api.get('/cms/posts');
-        if (isMounted && res.data && Array.isArray(res.data) && res.data.length > 0) {
+        if (isMounted && Array.isArray(res.data)) {
+          const managedSlugs = new Set(res.data.map((p: any) => p.slug));
           const mapped = res.data
             .filter((p: any) => p.status === 'PUBLISHED')
             .map((p: any) => {
@@ -43,7 +51,10 @@ export const NewsPage: React.FC = () => {
                 titleEn: p.title || staticPost?.titleEn,
                 summaryVi: p.summary || staticPost?.summaryVi,
                 summaryEn: p.summary || staticPost?.summaryEn,
-                image: p.imageUrl || staticPost?.image || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+                image:
+                  p.imageUrl ||
+                  staticPost?.image ||
+                  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
                 categoryNameVi: staticPost?.categoryNameVi || p.category || 'Tin tức',
                 categoryNameEn: staticPost?.categoryNameEn || p.category || 'News',
                 date: displayDate || 'Vừa cập nhật',
@@ -54,17 +65,17 @@ export const NewsPage: React.FC = () => {
                 createdAt: p.createdAt,
               };
             });
-          if (mapped.length > 0) {
-            mapped.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-            // Merge CMS posts with static POSTS_LIST so crawled posts are never lost
-            const combined = [
-              ...mapped,
-              ...POSTS_LIST.filter(p => !mapped.some(m => m.slug === p.slug))
-            ];
-            setPostsList(combined);
-          }
+          mapped.sort(
+            (a: any, b: any) =>
+              new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime(),
+          );
+          const combined = [
+            ...mapped,
+            ...POSTS_LIST.filter((post) => !managedSlugs.has(post.slug)),
+          ];
+          setPostsList(combined);
         }
-      } catch(err) {
+      } catch (err) {
         console.warn('CMS posts fetch failed, falling back to static posts:', err);
       } finally {
         if (isMounted) setLoading(false);
@@ -104,7 +115,7 @@ export const NewsPage: React.FC = () => {
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PER_PAGE));
   const currentPosts = filteredPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
+    currentPage * POSTS_PER_PAGE,
   );
 
   const handlePageChange = (page: number) => {
@@ -137,7 +148,7 @@ export const NewsPage: React.FC = () => {
       />
 
       {/* Header */}
-      <motion.section 
+      <motion.section
         className="relative isolate overflow-hidden bg-gradient-to-br from-[#1E4384] via-[#0a2342] to-[#05172d] text-white py-24 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -226,13 +237,14 @@ export const NewsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            Chia sẻ kiến thức kỹ thuật in ấn, cập nhật xu hướng bao bì xanh toàn cầu và các dự án thiết kế tem nhãn tiêu biểu của Vietlabel.
+            Chia sẻ kiến thức kỹ thuật in ấn, cập nhật xu hướng bao bì xanh toàn cầu và các dự án
+            thiết kế tem nhãn tiêu biểu của Vietlabel.
           </motion.p>
         </div>
       </motion.section>
 
       {/* Filter and Search Bar */}
-      <motion.section 
+      <motion.section
         className="py-6 bg-white border-b border-slate-200 sticky top-16 z-20 backdrop-blur-md bg-white/95 shadow-sm"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -265,7 +277,7 @@ export const NewsPage: React.FC = () => {
           </div>
 
           {/* Search Input */}
-          <motion.div 
+          <motion.div
             className="relative w-full md:w-80"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -290,7 +302,7 @@ export const NewsPage: React.FC = () => {
       <section className="py-20 bg-gradient-to-b from-[#FAFAFC] to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredPosts.length === 0 ? (
-            <motion.div 
+            <motion.div
               className="py-20 text-center"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -318,9 +330,7 @@ export const NewsPage: React.FC = () => {
                         to={`/tin-tuc/${post.slug}`}
                         className="block relative aspect-[16/10] overflow-hidden bg-slate-100 flex-shrink-0"
                       >
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-t from-[#1E4384]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        />
+                        <motion.div className="absolute inset-0 bg-gradient-to-t from-[#1E4384]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <motion.img
                           src={post.image}
                           alt={currentLang === 'vi' ? post.titleVi : post.titleEn}
@@ -330,7 +340,7 @@ export const NewsPage: React.FC = () => {
                           whileHover={{ scale: 1.1 }}
                           transition={{ duration: 0.5 }}
                         />
-                        <motion.div 
+                        <motion.div
                           className="absolute top-4 left-4 bg-gradient-to-r from-[#1E4384] to-[#0a2342] text-white text-[11px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider backdrop-blur-md shadow-lg"
                           initial={{ x: -20, opacity: 0 }}
                           whileInView={{ x: 0, opacity: 1 }}
@@ -339,7 +349,7 @@ export const NewsPage: React.FC = () => {
                         >
                           {currentLang === 'vi' ? post.categoryNameVi : post.categoryNameEn}
                         </motion.div>
-                        <motion.div 
+                        <motion.div
                           className="absolute top-4 right-4 bg-white/95 backdrop-blur-md text-[#1E4384] text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-lg border border-slate-200"
                           initial={{ x: 20, opacity: 0 }}
                           whileInView={{ x: 0, opacity: 1 }}
@@ -352,15 +362,17 @@ export const NewsPage: React.FC = () => {
 
                       <div className="p-6 flex-grow">
                         <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
-                          <motion.span 
+                          <motion.span
                             className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-lg font-medium"
                             whileHover={{ scale: 1.05 }}
                           >
                             <Calendar className="w-3.5 h-3.5 text-[#BE1E2D]" />
                             {post.date}
                           </motion.span>
-                          <span aria-hidden="true" className="text-slate-300">·</span>
-                          <motion.span 
+                          <span aria-hidden="true" className="text-slate-300">
+                            ·
+                          </span>
+                          <motion.span
                             className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-lg"
                             whileHover={{ scale: 1.05 }}
                           >
@@ -398,7 +410,7 @@ export const NewsPage: React.FC = () => {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <motion.div 
+                <motion.div
                   className="mt-16 flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}

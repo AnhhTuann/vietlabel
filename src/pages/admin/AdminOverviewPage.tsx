@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
-  Flame,
   AlertCircle,
-  CheckCircle2,
-  Clock,
-  TrendingUp,
-  Package,
-  Users,
-  ChevronRight,
-  RefreshCw,
-  Phone,
-  MessageCircle,
   Award,
+  ChevronRight,
+  Clock,
+  Flame,
+  Package,
+  Phone,
+  RefreshCw,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 
 export const AdminOverviewPage: React.FC = () => {
@@ -27,7 +25,9 @@ export const AdminOverviewPage: React.FC = () => {
     try {
       const [statsRes, leadsRes] = await Promise.all([
         fetch('/api/admin/stats', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('/api/admin/leads?status=NEEDS_HUMAN&limit=5', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch('/api/admin/leads?status=NEEDS_HUMAN&limit=5', {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
       ]);
 
       if (statsRes.ok) {
@@ -62,7 +62,8 @@ export const AdminOverviewPage: React.FC = () => {
             Tổng Quan Hoạt Động Tư Vấn & Kinh Doanh
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Theo dõi dòng chảy khách hàng tiềm năng, hiệu suất phản hồi và tỷ lệ chuyển đổi đơn hàng.
+            Theo dõi dòng chảy khách hàng tiềm năng, hiệu suất phản hồi và tỷ lệ chuyển đổi đơn
+            hàng.
           </p>
         </div>
 
@@ -89,7 +90,7 @@ export const AdminOverviewPage: React.FC = () => {
           </div>
           <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
             <TrendingUp className="w-3 h-3" />
-            +18% so với tuần trước
+            Dữ liệu ghi nhận trong hệ thống
           </span>
         </div>
 
@@ -99,12 +100,8 @@ export const AdminOverviewPage: React.FC = () => {
             <span className="text-xs font-bold uppercase text-[#BE1E2D]">Lead HOT</span>
             <Flame className="w-4 h-4 text-[#BE1E2D]" />
           </div>
-          <div className="text-3xl font-black text-[#BE1E2D]">
-            {stats?.metrics?.hotLeads || 0}
-          </div>
-          <span className="text-[11px] text-slate-500">
-            Số lượng lớn hoặc deadline gấp
-          </span>
+          <div className="text-3xl font-black text-[#BE1E2D]">{stats?.metrics?.hotLeads || 0}</div>
+          <span className="text-[11px] text-slate-500">Số lượng lớn hoặc deadline gấp</span>
         </div>
 
         {/* Metric 3 */}
@@ -113,12 +110,8 @@ export const AdminOverviewPage: React.FC = () => {
             <span className="text-xs font-bold uppercase text-rose-600">Chờ hỗ trợ</span>
             <AlertCircle className="w-4 h-4 text-rose-500" />
           </div>
-          <div className="text-3xl font-black text-rose-600">
-            {stats?.metrics?.needsHuman || 0}
-          </div>
-          <span className="text-[11px] text-rose-700 font-medium">
-            Khách đang chờ nhân viên
-          </span>
+          <div className="text-3xl font-black text-rose-600">{stats?.metrics?.needsHuman || 0}</div>
+          <span className="text-[11px] text-rose-700 font-medium">Khách đang chờ nhân viên</span>
         </div>
 
         {/* Metric 4 */}
@@ -128,11 +121,12 @@ export const AdminOverviewPage: React.FC = () => {
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
           <div className="text-3xl font-black text-slate-800">
-            {stats?.metrics?.avgFrtMinutes || 18} <span className="text-sm font-semibold text-slate-500">phút</span>
+            {stats?.metrics?.avgFrtMinutes ?? '—'}{' '}
+            <span className="text-sm font-semibold text-slate-500">
+              {stats?.metrics?.avgFrtMinutes == null ? '' : 'phút'}
+            </span>
           </div>
-          <span className="text-[11px] text-slate-500">
-            Mục tiêu cam kết &lt; 30 phút
-          </span>
+          <span className="text-[11px] text-slate-500">Mục tiêu cam kết &lt; 30 phút</span>
         </div>
       </div>
 
@@ -177,12 +171,16 @@ export const AdminOverviewPage: React.FC = () => {
                     </span>
                   </div>
                   <div className="text-xs text-slate-600 flex items-center gap-3">
-                    <span><strong>Nhu cầu:</strong> {l.productType}</span>
-                    {l.quantity && <span>• <strong>SL:</strong> {l.quantity}</span>}
-                    {l.phone && (
-                      <span className="text-emerald-700 font-bold font-mono">
-                        📞 {l.phone}
+                    <span>
+                      <strong>Nhu cầu:</strong> {l.productType}
+                    </span>
+                    {l.quantity && (
+                      <span>
+                        • <strong>SL:</strong> {l.quantity}
                       </span>
+                    )}
+                    {l.phone && (
+                      <span className="text-emerald-700 font-bold font-mono">📞 {l.phone}</span>
                     )}
                   </div>
                 </div>

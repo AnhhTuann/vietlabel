@@ -1,20 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, User } from 'lucide-react';
 import { motion } from 'motion/react';
-import {
-  Calendar,
-  Clock,
-  User,
-  ArrowLeft,
-  Share2,
-  Bookmark,
-  CheckCircle2,
-  ArrowRight,
-} from 'lucide-react';
-import { SEO } from '../lib/seo';
-import { POSTS_LIST } from '../data/posts';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
+import { POSTS_LIST } from '../data/posts';
+import { SEO } from '../lib/seo';
 import { api } from '../services/api';
 
 export const NewsDetailPage: React.FC = () => {
@@ -23,56 +14,83 @@ export const NewsDetailPage: React.FC = () => {
   const currentLang = i18n.language;
   const navigate = useNavigate();
   const [cmsPost, setCmsPost] = useState<any | null>(null);
+  const [isCmsPostUnpublished, setIsCmsPostUnpublished] = useState(false);
+  const [isLoadingCmsPost, setIsLoadingCmsPost] = useState(true);
 
   useEffect(() => {
-    const localPost = POSTS_LIST.find((p) => p.slug === slug);
-    if (!localPost && slug) {
-      api.get('/cms/posts').then((res) => {
-        if (res.data && Array.isArray(res.data)) {
-          const found = res.data.find((p: any) => p.slug === slug && p.status === 'PUBLISHED');
-          if (found) {
-            let displayDate = undefined;
-            if (found.createdAt) {
-              const d = new Date(found.createdAt);
-              if (!isNaN(d.getTime())) {
-                const day = String(d.getDate()).padStart(2, '0');
-                const month = String(d.getMonth() + 1).padStart(2, '0');
-                const year = d.getFullYear();
-                displayDate = `${day} Tháng ${month}, ${year}`;
-              }
-            }
-            setCmsPost({
-              id: found.id,
-              slug: found.slug,
-              category: found.category || 'nganh-bao-bi',
-              categoryNameVi: found.category || 'Tin tức',
-              categoryNameEn: found.category || 'News',
-              titleVi: found.title,
-              titleEn: found.title,
-              summaryVi: found.summary,
-              summaryEn: found.summary,
-              image: found.imageUrl || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-              date: displayDate || 'Vừa cập nhật',
-              readTimeVi: '5 phút đọc',
-              readTimeEn: '5 min read',
-              author: found.author || 'Ban biên tập Vietlabel',
-              contentVi: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
-              contentEn: typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
-              contentHtml: found.contentHtml,
-            });
+    let isMounted = true;
+    setCmsPost(null);
+    setIsCmsPostUnpublished(false);
+    setIsLoadingCmsPost(true);
+
+    api
+      .get('/cms/posts')
+      .then((res) => {
+        if (!isMounted || !Array.isArray(res.data)) return;
+        const found = res.data.find((item: any) => item.slug === slug);
+        if (!found) return;
+        if (found.status !== 'PUBLISHED') {
+          setIsCmsPostUnpublished(true);
+          return;
+        }
+
+        let displayDate: string | undefined;
+        if (found.createdAt) {
+          const date = new Date(found.createdAt);
+          if (!isNaN(date.getTime())) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            displayDate = `${day} Tháng ${month}, ${date.getFullYear()}`;
           }
         }
-      }).catch(console.error);
-    }
+        setCmsPost({
+          id: found.id,
+          slug: found.slug,
+          category: found.category || 'nganh-bao-bi',
+          categoryNameVi: found.category || 'Tin tức',
+          categoryNameEn: found.category || 'News',
+          titleVi: found.title,
+          titleEn: found.title,
+          summaryVi: found.summary,
+          summaryEn: found.summary,
+          image:
+            found.imageUrl ||
+            'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+          date: displayDate || 'Vừa cập nhật',
+          readTimeVi: '5 phút đọc',
+          readTimeEn: '5 min read',
+          author: found.author || 'Ban biên tập Vietlabel',
+          contentVi:
+            typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
+          contentEn:
+            typeof found.content === 'string' ? found.content.split('\n\n') : [found.content],
+          contentHtml: found.contentHtml,
+        });
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isMounted) setIsLoadingCmsPost(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   const post = useMemo(() => {
-    return POSTS_LIST.find((p) => p.slug === slug) || cmsPost || POSTS_LIST[0];
-  }, [slug, cmsPost]);
+    if (isCmsPostUnpublished) return null;
+    return POSTS_LIST.find((p) => p.slug === slug) || (cmsPost?.slug === slug ? cmsPost : null);
+  }, [slug, cmsPost, isCmsPostUnpublished]);
 
   const relatedPosts = useMemo(() => {
     return POSTS_LIST.filter((p) => p.id !== post?.id).slice(0, 2);
   }, [post]);
+
+  if (!post && isLoadingCmsPost) {
+    return (
+      <div className="pt-32 pb-20 text-center text-sm text-slate-500">Đang tải bài viết...</div>
+    );
+  }
 
   if (!post) {
     return (
@@ -90,8 +108,8 @@ export const NewsDetailPage: React.FC = () => {
   const paragraphs: string[] = Array.isArray(rawParagraphs)
     ? rawParagraphs
     : typeof rawParagraphs === 'string'
-    ? [rawParagraphs]
-    : [];
+      ? [rawParagraphs]
+      : [];
 
   return (
     <div className="pt-24 pb-20">
@@ -103,7 +121,7 @@ export const NewsDetailPage: React.FC = () => {
       />
 
       {/* Breadcrumb Header */}
-      <motion.section 
+      <motion.section
         className="bg-gradient-to-r from-slate-100 to-white py-5 border-b border-slate-200"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -114,9 +132,13 @@ export const NewsDetailPage: React.FC = () => {
             className="flex items-center gap-2 text-xs text-slate-600"
             animate={{ opacity: 1 }}
           >
-            <Link to="/" className="hover:text-[#BE1E2D] transition-colors">Trang chủ</Link>
+            <Link to="/" className="hover:text-[#BE1E2D] transition-colors">
+              Trang chủ
+            </Link>
             <span className="text-slate-400">/</span>
-            <Link to="/tin-tuc" className="hover:text-[#BE1E2D] transition-colors">Tin tức</Link>
+            <Link to="/tin-tuc" className="hover:text-[#BE1E2D] transition-colors">
+              Tin tức
+            </Link>
             <span className="text-slate-400">/</span>
             <span className="text-slate-900 font-semibold truncate max-w-sm">{title}</span>
           </motion.div>
@@ -228,21 +250,26 @@ export const NewsDetailPage: React.FC = () => {
                 dangerouslySetInnerHTML={{ __html: post.contentHtml }}
               />
             ) : (
-              paragraphs.map((p, idx) => (
-                <p key={idx}>{p}</p>
-              ))
+              paragraphs.map((p, idx) => <p key={idx}>{p}</p>)
             )}
 
             <motion.div
               className="p-6 rounded-2xl bg-[#1E4384] text-white my-8 space-y-3 shadow-lg"
               whileHover={{ scale: 1.01 }}
             >
-              <h3 className="text-lg font-bold text-white">Bạn đang tìm kiếm giải pháp bao bì & tem nhãn tương tự?</h3>
+              <h3 className="text-lg font-bold text-white">
+                Bạn đang tìm kiếm giải pháp bao bì & tem nhãn tương tự?
+              </h3>
               <p className="text-xs sm:text-sm text-slate-300">
-                Hãy liên hệ ngay với đội ngũ R&D và kỹ thuật của Vietlabel để nhận tư vấn cấu trúc, dựng mẫu thử 3D và báo giá chi tiết trong 2 giờ.
+                Hãy liên hệ ngay với đội ngũ R&D và kỹ thuật của Vietlabel để nhận tư vấn cấu trúc,
+                dựng mẫu thử 3D và báo giá chi tiết trong 2 giờ.
               </p>
               <div className="pt-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-block"
+                >
                   <Link to="/lien-he">
                     <Button variant="primary" size="sm">
                       Tư vấn miễn phí cùng chuyên gia
@@ -257,7 +284,12 @@ export const NewsDetailPage: React.FC = () => {
           <div className="pt-8 mt-8 border-t border-slate-200 flex justify-between items-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link to="/tin-tuc">
-                <Button variant="outline" size="sm" icon={<ArrowLeft className="w-4 h-4" />} iconPosition="left">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  icon={<ArrowLeft className="w-4 h-4" />}
+                  iconPosition="left"
+                >
                   Quay lại danh sách bài viết
                 </Button>
               </Link>

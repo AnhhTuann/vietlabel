@@ -1,19 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Settings,
-  Users,
-  Shield,
-  Clock,
-  Send,
-  Plus,
-  Save,
-  CheckCircle2,
-  KeyRound,
-  UserCheck,
-  AlertCircle,
-} from 'lucide-react';
-import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import { AlertCircle, CheckCircle2, Clock, Plus, Save, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../components/ui/Button';
+import { useAdminAuth } from '../../contexts/AdminAuthContext';
 
 export const AdminSettingsPage: React.FC = () => {
   const { token, user } = useAdminAuth();
@@ -29,6 +17,8 @@ export const AdminSettingsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const canEditSettings = user?.role === 'ADMIN';
 
   // New user form state
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -50,7 +40,7 @@ export const AdminSettingsPage: React.FC = () => {
 
       if (settingsRes.ok) {
         const sData = await settingsRes.json();
-        setSettings(sData.settings || {});
+        setSettings((current: typeof settings) => ({ ...current, ...(sData.settings || {}) }));
       }
       if (usersRes.ok) {
         const uData = await usersRes.json();
@@ -71,6 +61,7 @@ export const AdminSettingsPage: React.FC = () => {
     e.preventDefault();
     setIsSaving(true);
     setSaveSuccess(false);
+    setSaveError(null);
     try {
       const res = await fetch('/api/admin/settings', {
         method: 'PUT',
@@ -80,9 +71,13 @@ export const AdminSettingsPage: React.FC = () => {
       if (res.ok) {
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setSaveError(data.error || 'Không thể lưu cài đặt. Vui lòng thử lại.');
       }
     } catch (err) {
       console.error('Save settings error:', err);
+      setSaveError('Lỗi kết nối máy chủ. Cài đặt chưa được lưu.');
     } finally {
       setIsSaving(false);
     }
@@ -144,99 +139,137 @@ export const AdminSettingsPage: React.FC = () => {
           <span>Đã lưu thành công cấu hình hệ thống!</span>
         </div>
       )}
+      {saveError && (
+        <div
+          role="alert"
+          className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold"
+        >
+          {saveError}
+        </div>
+      )}
 
       {/* 1. Core Operating Settings */}
-      <form onSubmit={handleSaveSettings} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
-        <div className="border-b border-slate-100 pb-3">
-          <h2 className="text-base font-bold text-[#1E4384] flex items-center gap-2">
-            <Clock className="w-4 h-4 text-[#BE1E2D]" />
-            Khung Giờ Hoạt Động & Quy Tắc Nhắc Việc
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700">Khung giờ làm việc trực tiếp</label>
-            <input
-              type="text"
-              value={settings.working_hours || ''}
-              onChange={(e) => setSettings({ ...settings, working_hours: e.target.value })}
-              placeholder="08:00 - 17:30"
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
-            />
-            <span className="text-[11px] text-slate-400">Ngoài giờ này bot sẽ hẹn phản hồi trước 9h00 sáng mai</span>
+      <form
+        onSubmit={handleSaveSettings}
+        className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6"
+      >
+        {!canEditSettings && (
+          <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-3">
+            Bạn có quyền xem cài đặt nhưng chỉ Quản trị viên mới có thể thay đổi.
+          </p>
+        )}
+        <fieldset disabled={!canEditSettings || isSaving} className="space-y-6">
+          <div className="border-b border-slate-100 pb-3">
+            <h2 className="text-base font-bold text-[#1E4384] flex items-center gap-2">
+              <Clock className="w-4 h-4 text-[#BE1E2D]" />
+              Khung Giờ Hoạt Động & Quy Tắc Nhắc Việc
+            </h2>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700">Thời gian nhắc nhở Telegram (phút)</label>
-            <input
-              type="number"
-              value={settings.escalation_minutes || 10}
-              onChange={(e) => setSettings({ ...settings, escalation_minutes: Number(e.target.value) })}
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
-            />
-            <span className="text-[11px] text-slate-400">Nếu lead HOT chưa có ai nhận sau số phút này</span>
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-700">Ngưỡng số lượng xếp hạng HOT</label>
-            <input
-              type="number"
-              value={settings.hot_threshold_quantity || 5000}
-              onChange={(e) => setSettings({ ...settings, hot_threshold_quantity: Number(e.target.value) })}
-              className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
-            />
-            <span className="text-[11px] text-slate-400">Đơn hàng từ ngưỡng này trở lên sẽ xếp hạng HOT</span>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-700 block">Kênh thông báo tự động</label>
-            <div className="flex flex-wrap gap-4 pt-1">
-              <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={settings.telegram_enabled}
-                  onChange={(e) => setSettings({ ...settings, telegram_enabled: e.target.checked })}
-                  className="rounded text-[#BE1E2D]"
-                />
-                <span>Telegram Bot</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700">
+                Khung giờ làm việc trực tiếp
               </label>
+              <input
+                type="text"
+                value={settings.working_hours || ''}
+                onChange={(e) => setSettings({ ...settings, working_hours: e.target.value })}
+                placeholder="08:00 - 17:30"
+                className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
+              />
+              <span className="text-[11px] text-slate-400">
+                Ngoài giờ này bot sẽ hẹn phản hồi trước 9h00 sáng mai
+              </span>
+            </div>
 
-              <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={settings.zalo_enabled}
-                  onChange={(e) => setSettings({ ...settings, zalo_enabled: e.target.checked })}
-                  className="rounded text-[#BE1E2D]"
-                />
-                <span>Zalo OA API</span>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700">
+                Thời gian nhắc nhở Telegram (phút)
               </label>
+              <input
+                type="number"
+                value={settings.escalation_minutes || 10}
+                onChange={(e) =>
+                  setSettings({ ...settings, escalation_minutes: Number(e.target.value) })
+                }
+                className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
+              />
+              <span className="text-[11px] text-slate-400">
+                Nếu lead HOT chưa có ai nhận sau số phút này
+              </span>
+            </div>
 
-              <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={settings.email_enabled}
-                  onChange={(e) => setSettings({ ...settings, email_enabled: e.target.checked })}
-                  className="rounded text-[#BE1E2D]"
-                />
-                <span>Email Sales</span>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700">
+                Ngưỡng số lượng xếp hạng HOT
               </label>
+              <input
+                type="number"
+                value={settings.hot_threshold_quantity || 5000}
+                onChange={(e) =>
+                  setSettings({ ...settings, hot_threshold_quantity: Number(e.target.value) })
+                }
+                className="w-full text-xs p-2.5 border border-slate-300 rounded-xl focus:border-[#BE1E2D] focus:outline-none"
+              />
+              <span className="text-[11px] text-slate-400">
+                Đơn hàng từ ngưỡng này trở lên sẽ xếp hạng HOT
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 block">
+                Kênh thông báo tự động
+              </label>
+              <div className="flex flex-wrap gap-4 pt-1">
+                <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.telegram_enabled}
+                    onChange={(e) =>
+                      setSettings({ ...settings, telegram_enabled: e.target.checked })
+                    }
+                    className="rounded text-[#BE1E2D]"
+                  />
+                  <span>Telegram Bot</span>
+                </label>
+
+                <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.zalo_enabled}
+                    onChange={(e) => setSettings({ ...settings, zalo_enabled: e.target.checked })}
+                    className="rounded text-[#BE1E2D]"
+                  />
+                  <span>Zalo OA API</span>
+                </label>
+
+                <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.email_enabled}
+                    onChange={(e) => setSettings({ ...settings, email_enabled: e.target.checked })}
+                    className="rounded text-[#BE1E2D]"
+                  />
+                  <span>Email Sales</span>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex justify-end pt-3 border-t border-slate-100">
-          <Button
-            type="submit"
-            disabled={isSaving}
-            variant="primary"
-            size="md"
-            className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
-          >
-            <Save className="w-3.5 h-3.5 mr-1.5" />
-            <span>{isSaving ? 'Đang lưu...' : 'Lưu cài đặt'}</span>
-          </Button>
-        </div>
+          <div className="flex justify-end pt-3 border-t border-slate-100">
+            <Button
+              type="submit"
+              disabled={isSaving}
+              variant="primary"
+              size="md"
+              className="bg-[#BE1E2D] hover:bg-[#D04210] font-bold text-xs"
+            >
+              <Save className="w-3.5 h-3.5 mr-1.5" />
+              <span>{isSaving ? 'Đang lưu...' : 'Lưu cài đặt'}</span>
+            </Button>
+          </div>
+        </fieldset>
       </form>
 
       {/* 2. User Management Section */}
@@ -287,14 +320,16 @@ export const AdminSettingsPage: React.FC = () => {
                         u.role === 'ADMIN'
                           ? 'bg-purple-100 text-purple-800'
                           : u.role === 'MANAGER'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-slate-100 text-slate-700'
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-slate-100 text-slate-700'
                       }`}
                     >
                       {u.role}
                     </span>
                   </td>
-                  <td className="py-3 px-3 font-mono text-slate-500">{u.telegramUserId || 'Chưa liên kết'}</td>
+                  <td className="py-3 px-3 font-mono text-slate-500">
+                    {u.telegramUserId || 'Chưa liên kết'}
+                  </td>
                   <td className="py-3 px-3 text-right">
                     <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
                       Hoạt động
@@ -374,7 +409,9 @@ export const AdminSettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block">Telegram Username</label>
+                  <label className="text-xs font-bold text-slate-700 block">
+                    Telegram Username
+                  </label>
                   <input
                     type="text"
                     value={newUserTele}
@@ -386,7 +423,12 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
 
               <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" size="sm" onClick={() => setShowAddUserModal(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAddUserModal(false)}
+                >
                   Hủy
                 </Button>
                 <Button

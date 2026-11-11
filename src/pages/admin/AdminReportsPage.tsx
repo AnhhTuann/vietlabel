@@ -1,18 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {
-  BarChart3,
-  Download,
-  Calendar,
-  Clock,
-  CheckCircle2,
-  TrendingUp,
-  Award,
-  Star,
-  Users,
-  Percent,
-} from 'lucide-react';
-import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import { Award, Clock, Download, Percent, Star, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../components/ui/Button';
+import { useAdminAuth } from '../../contexts/AdminAuthContext';
 
 export const AdminReportsPage: React.FC = () => {
   const { token } = useAdminAuth();
@@ -54,7 +43,8 @@ export const AdminReportsPage: React.FC = () => {
             Báo Cáo Hiệu Suất Tư Vấn & Chuyển Đổi Lead
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Đo lường thời gian phản hồi, tỷ lệ đủ thông tin và hiệu suất của từng nhân viên kinh doanh.
+            Đo lường thời gian phản hồi, tỷ lệ đủ thông tin và hiệu suất của từng nhân viên kinh
+            doanh.
           </p>
         </div>
 
@@ -77,9 +67,18 @@ export const AdminReportsPage: React.FC = () => {
             <Clock className="w-4 h-4 text-blue-500" />
           </div>
           <div className="text-3xl font-black text-[#1E4384]">
-            {stats?.metrics?.avgFrtMinutes || 18} <span className="text-sm font-semibold text-slate-500">phút</span>
+            {stats?.metrics?.avgFrtMinutes ?? '—'}{' '}
+            <span className="text-sm font-semibold text-slate-500">
+              {stats?.metrics?.avgFrtMinutes == null ? '' : 'phút'}
+            </span>
           </div>
-          <span className="text-[11px] text-emerald-600 font-semibold">Đạt chuẩn SLA 30 phút</span>
+          <span className="text-[11px] text-slate-500 font-semibold">
+            {stats?.metrics?.avgFrtMinutes == null
+              ? 'Chưa có dữ liệu phản hồi'
+              : stats.metrics.avgFrtMinutes <= 30
+                ? 'Đạt chuẩn SLA 30 phút'
+                : 'Chưa đạt SLA 30 phút'}
+          </span>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-1">
@@ -88,7 +87,7 @@ export const AdminReportsPage: React.FC = () => {
             <Percent className="w-4 h-4 text-[#BE1E2D]" />
           </div>
           <div className="text-3xl font-black text-[#BE1E2D]">
-            {stats?.metrics?.informationCompletionRate || 88}%
+            {stats?.metrics?.informationCompletionRate ?? 0}%
           </div>
           <span className="text-[11px] text-slate-500">AI thu thập đủ quy cách</span>
         </div>
@@ -99,7 +98,7 @@ export const AdminReportsPage: React.FC = () => {
             <TrendingUp className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="text-3xl font-black text-emerald-600">
-            {stats?.metrics?.conversionRate || 34}%
+            {stats?.metrics?.conversionRate ?? 0}%
           </div>
           <span className="text-[11px] text-slate-500">Từ lead đến hợp đồng sản xuất</span>
         </div>
@@ -110,9 +109,14 @@ export const AdminReportsPage: React.FC = () => {
             <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
           </div>
           <div className="text-3xl font-black text-slate-800">
-            {stats?.metrics?.csatAvg || 4.8} <span className="text-sm font-semibold text-slate-400">/ 5.0</span>
+            {stats?.metrics?.csatAvg ?? '—'}{' '}
+            <span className="text-sm font-semibold text-slate-400">
+              {stats?.metrics?.csatAvg == null ? '' : '/ 5.0'}
+            </span>
           </div>
-          <span className="text-[11px] text-amber-600 font-semibold">Dựa trên đánh giá của khách</span>
+          <span className="text-[11px] text-amber-600 font-semibold">
+            {stats?.metrics?.csatAvg == null ? 'Chưa có đánh giá' : 'Dựa trên đánh giá của khách'}
+          </span>
         </div>
       </div>
 
