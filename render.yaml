@@ -1,0 +1,24 @@
+# Single full-stack service for Vietlabel on Render Free.
+# PostgreSQL remains in the existing Neon project; no data reset or reseed.
+services:
+  - type: web
+    name: vietlabel-fullstack
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: npm run db:ensure && node --import tsx server.ts
+    healthCheckPath: /api/health
+    domains:
+      - vietlabel.duckdns.org
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: UPLOAD_STORAGE_BACKEND
+        value: postgres
+      - key: AI_PROVIDER
+        value: rules

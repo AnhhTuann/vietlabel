@@ -12,7 +12,8 @@
     "db:migrate": "tsx server/db/migrate.ts",
     "test": "tsx --test tests/*.test.ts",
     "ingest": "tsx -e \"import { loadKnowledgeBase } from './server/lib/rag'; console.log('Ingested chunks:', loadKnowledgeBase().length);\"",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "db:ensure": "tsx server/db/ensureRuntimeSchema.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

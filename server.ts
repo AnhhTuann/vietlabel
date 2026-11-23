@@ -13,21 +13,14 @@ const isProduction = process.env.NODE_ENV === 'production';
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
-  // Test PostgreSQL connection
-  let databaseAvailable = false;
+  // Never report a healthy production website when its database is unavailable.
+  // Render retries failed starts; the database is the source of truth for CMS/CRM.
+  await testConnection();
+
   try {
-    await testConnection();
-    databaseAvailable = true;
-  } catch (err: any) {
-    console.error('⚠️ [DB Warning] Could not connect to PostgreSQL:', err.message);
-    console.error('Make sure PostgreSQL is running: docker compose up -d postgres');
-  }
-  if (databaseAvailable) {
-    try {
-      await kbService.reingest();
-    } catch (err) {
-      console.error('⚠️ [KB Warning] Could not reload approved knowledge documents:', err);
-    }
+    await kbService.reingest();
+  } catch (err) {
+    console.error('⚠️ [KB Warning] Could not reload approved knowledge documents:', err);
   }
 
   const app = createHttpApp();
