@@ -1,0 +1,24 @@
+# Vietlabel full-stack on Render Free + existing Neon PostgreSQL.
+# This is a *proposal* until the Render Blueprint is reviewed and approved.
+services:
+  - type: web
+    name: vietlabel-fullstack
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: node --import tsx server.ts
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: UPLOAD_STORAGE_BACKEND
+        value: postgres
+      - key: AI_PROVIDER
+        value: rules
+      - key: APP_BASE_URL
+        sync: false
