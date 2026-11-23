@@ -14,9 +14,9 @@ if (!connectionString) {
 
 export const pool = new Pool({
   connectionString,
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  max: 5,
+  idleTimeoutMillis: 10000,
+  connectionTimeoutMillis: 10000,
 });
 
 pool.on('error', (err) => {
