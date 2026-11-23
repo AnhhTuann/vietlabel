@@ -188,6 +188,14 @@ async function run() {
         updated_at TEXT NOT NULL
       );
 
+      -- Private CV and design files must survive free-host restarts.
+      -- Existing upload rows are preserved by CREATE TABLE IF NOT EXISTS.
+      CREATE TABLE IF NOT EXISTS private_uploads (
+        id UUID PRIMARY KEY,
+        content BYTEA NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+
       CREATE TABLE IF NOT EXISTS job_applications (
         id TEXT PRIMARY KEY,
         job_id TEXT NOT NULL,
