@@ -1,37 +1,59 @@
-# Vietlabel full-stack — cloud Free deployment review
+# Vietlabel full-stack — free-cloud deployment
 
-## Current state
+## Deployment design
 
-The Render static frontend is live at https://vietlabel-preview.onrender.com.
-This Blueprint would create **another** Render Free Node web service serving frontend and backend at one origin.
-It is NOT activated by this PR.
+- One Render Free Node web service serves both the built Vite frontend and Express API on the same origin.
+- Existing Neon PostgreSQL project `vietlabel` remains the system of record.
+- A cloned Neon branch named `vietlabel-free-cloud-staging` is used for deployment verification first. It preserves a copy of current data while keeping production separate.
+- Private CV/design files use the `private_uploads` PostgreSQL BYTEA table with a 256 MiB application quota. Render's ephemeral filesystem is never used for production uploads.
+- `AI_PROVIDER=rules` avoids paid AI calls. Real email delivery is optional and disabled until `RESEND_API_KEY` and a verified `EMAIL_FROM` are supplied.
+- Existing admin accounts are preserved. The deployment does not set `INITIAL_ADMIN_EMAIL` or `INITIAL_ADMIN_PASSWORD`, and it does not run the full seed migration.
 
-## Required production checks
+## Verified database snapshot
 
-1. In Neon, confirm existing project `vietlabel`, correct database, valid backup and schema. NEVER reset it or import demo users over production.
-2. Review migration script: it includes CMS seeds and initial-Admin bootstrap. Do **not** run it automatically on the existing production DB. The only new schema this change needs is:
-   ```sql
-   CREATE TABLE IF NOT EXISTS private_uploads (
-     id UUID PRIMARY KEY,
-     content BYTEA NOT NULL,
-     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-   );
-   ```
-3. Approve Render Blueprint only when the `DATABASE_URL` (Neon pooled, SSL) and `APP_BASE_URL` are set privately in Render. The URL must be the actual Render hostname or eventual custom domain.
-4. The Blueprint generates `JWT_SECRET` once: keep it stable across redeploys; changing it invalidates existing sessions.
-5. On Render set `UPLOAD_STORAGE_BACKEND=postgres`. Private CVs and artwork then use a non-public PostgreSQL BYTEA table rather than Render's ephemeral filesystem. A hard 256 MiB application quota is enforced for all stored file bytes; Neon Free has a finite total per-project storage limit. Monitor this usage.
-6. The default `AI_PROVIDER=rules` avoids Gemini billing. Features requiring Gemini, Telegram, Google Sheets, SMTP or other paid integrations remain disabled until explicitly configured.
-7. Test /api/health, CMS, admin login, contact, upload and **authenticated** CV download, and check browser network and CORS before switching `vietlabel.duckdns.org`.
+At staging creation, the clone contained:
+- 1 active ADMIN account
+- 12 products
+- 4 posts
+- 3 job listings
+- 4 knowledge-base documents
+- 0 leads and 0 job applications
 
-## Free-tier caveats
+The staging branch has the same initial records as the source production branch. The additive `private_uploads` table was created and verified on staging only.
 
-- Render Free 512 MiB RAM; sleeps after 15 minutes idle, ~1-minute wakeup.
-- 750 monthly free instance hours shared by **all** free web services in the same workspace.
-- Render filesystem is ephemeral. Never set `UPLOAD_STORAGE_BACKEND` to the default disk for production; this patch fails closed.
-- Store business and client data with a reviewed retention policy; PostgreSQL BYTEA is intentionally a temporary low-volume solution. If uploads grow, migrate to access-controlled object storage.
-- If the Neon project hits its Free usage/storage ceiling, DB requests can fail until limits reset/plan changed.
-- Keep secrets in hosting settings, never committed to GitHub.
+## Safe startup
 
-## DNS
+Render runs `npm run db:ensure && node --import tsx server.ts`.
+The `db:ensure` script only executes `CREATE TABLE IF NOT EXISTS private_uploads`; it does not reseed, reset, delete, or alter existing users/CMS/CRM records.
+The server fails to start if PostgreSQL is unreachable, so the Render health check cannot report a working service while the database is disconnected.
 
-Do not change DuckDNS to point at the Render service until the full-stack service is live and its domain has been verified. Keep Portfolio's `anhhtuann.duckdns.org` untouched.
+## Required manual secret
+
+On the Render service Environment page, set `DATABASE_URL` to the **pooled** Neon connection string for:
+- Project: `vietlabel`
+- Branch: `vietlabel-free-cloud-staging`
+- Database: `neondb`
+- Role: `neondb_owner`
+- SSL: required
+
+Never commit or paste this URL into GitHub issues, PR comments, or public chat. Keep it in Render's secret environment variable UI.
+
+The Blueprint generates `JWT_SECRET` automatically. Keep it stable after deployment because changing it invalidates existing login tokens.
+
+## Optional email
+
+For real email notifications, configure a verified sender domain in Resend, then set `RESEND_API_KEY` and `EMAIL_FROM` in Render. Without these, leads are still saved to CRM and visible in Admin, but email is not sent. No SMTP is used because Render Free blocks outbound SMTP ports.
+
+## Free-tier limitations
+
+- Render Free web services have 512 MiB RAM, spin down after 15 minutes without inbound traffic, and take about a minute to wake.
+- 750 Free instance hours are shared across the workspace per calendar month. Other Free web services (including Portfolio) also use this allowance when running.
+- Render says Free instances are for testing/hobby projects and not production applications. This is a no-cost compromise, not production-grade availability.
+- Render filesystem is ephemeral; the upload adapter stores private files in Neon instead.
+- Neon Free has finite compute, storage and egress allowances. Monitor usage. Current Neon Free docs list 1 GB storage and 100 CU-hours per project per month.
+- The 256 MiB file quota is intentionally below the database storage allowance. Large file libraries should move to a dedicated object-storage bucket.
+
+## DNS / cutover
+
+Do not change any DuckDNS or other custom domain until the new full-stack service passes public-page, health, Admin login, CRM lead, CMS edit, CV upload/download, and mobile checks.
+Keep the current static preview and the Portfolio domain untouched during staging.
