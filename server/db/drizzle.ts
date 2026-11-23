@@ -12,7 +12,7 @@ if (!connectionString) {
   );
 }
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString,
   max: 10,
   idleTimeoutMillis: 30000,
