@@ -1,6 +1,7 @@
 import { get, put } from '@vercel/blob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { pool } from '../db/drizzle.js';
 
 export const MAX_CV_SIZE = 5 * 1024 * 1024;
 export const MAX_GENERAL_UPLOAD_SIZE = 10 * 1024 * 1024;
@@ -72,6 +73,44 @@ export function isSupportedGeneralFile(fileName: string, buffer: Buffer): boolea
   return false;
 }
 
+
+const MAX_POSTGRES_UPLOAD_BYTES = 256 * 1024 * 1024; // Reserve most Neon Free storage for business data.
+const usePostgresStorage = () => process.env.UPLOAD_STORAGE_BACKEND === 'postgres';
+
+async function saveDatabaseUpload(uploadId: string, content: Buffer): Promise<void> {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Serialize upload writes so simultaneous requests cannot bypass the budget.
+    await client.query('SELECT pg_advisory_xact_lock(20261123)');
+    const used = await client.query<{ used: string }>(
+      'SELECT COALESCE(SUM(OCTET_LENGTH(content)), 0)::bigint AS used FROM private_uploads'
+    );
+    if (Number(used.rows[0].used) + content.length > MAX_POSTGRES_UPLOAD_BYTES) {
+      throw new Error('Private upload storage quota reached');
+    }
+    await client.query(
+      'INSERT INTO private_uploads (id, content) VALUES ($1::uuid, $2::bytea)',
+      [uploadId, content]
+    );
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+async function readDatabaseUpload(uploadId: string): Promise<Buffer> {
+  const result = await pool.query<{ content: Buffer }>(
+    'SELECT content FROM private_uploads WHERE id = $1::uuid',
+    [uploadId]
+  );
+  if (!result.rows.length) throw new Error('Uploaded file not found');
+  return result.rows[0].content;
+}
+
 export async function savePrivateUpload(uploadId: string, content: Buffer): Promise<void> {
   if (process.env.VERCEL === '1') {
     await put(getBlobPath(uploadId), content, {
@@ -80,6 +119,14 @@ export async function savePrivateUpload(uploadId: string, content: Buffer): Prom
       allowOverwrite: false,
     });
     return;
+  }
+
+  if (usePostgresStorage()) {
+    await saveDatabaseUpload(uploadId, content);
+    return;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Production file uploads require durable storage (Blob or PostgreSQL)');
   }
 
   const directory = getUploadDirectory();
@@ -94,5 +141,9 @@ export async function readPrivateUpload(uploadId: string): Promise<Buffer> {
     return Buffer.from(await new Response(blob.stream).arrayBuffer());
   }
 
+  if (usePostgresStorage()) return readDatabaseUpload(uploadId);
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Production file uploads require durable storage');
+  }
   return fs.readFile(getUploadPath(uploadId));
 }
