@@ -9,6 +9,8 @@ services:
     buildCommand: npm ci && npm run build
     startCommand: npm run db:ensure && node --import tsx server.ts
     healthCheckPath: /api/health
+    domains:
+      - vietlabel.duckdns.org
     envVars:
       - key: NODE_ENV
         value: production
